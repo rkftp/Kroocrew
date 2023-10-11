@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
 
-import 'Top.dart' as Top;
+import 'Top_timetable.dart' as Top;
 import 'Middle.dart' as Middle;
 import 'Bottom.dart' as Bottom;
 
 void main() {
   runApp(
       MaterialApp(
-          home : MyApp()
+          home :Timetable()
       )
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class Timetable extends StatelessWidget {
+  Timetable({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children:[
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
           Top.Top(),
-          Middle.Middle(),
-        ]
+        ],
       ),
       bottomNavigationBar: Bottom.Bottom(),
     );

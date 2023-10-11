@@ -1,4 +1,6 @@
+
 import 'package:flutter/material.dart';
+
 
 class Bottom extends StatelessWidget {
   Bottom({super.key});
@@ -17,11 +19,46 @@ class Bottom extends StatelessWidget {
           child: Row (
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Home_button(),
-                TimeTable_button(),
-                Project_button(),
-                Chat_button(),
-                MyPage_button(),
+                ElevatedButton(
+                  child: Home_button(),
+                  onPressed: (){},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                  ),
+                ),
+                ElevatedButton(
+                  child: TimeTable_button(),
+                  onPressed: (){},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                  ),
+                ),
+                ElevatedButton(
+                  child: Project_button(),
+                  onPressed: (){},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                  ),
+                ),
+                ElevatedButton(
+                  child: Chat_button(),
+                  onPressed: (){},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                  ),
+                ),
+                ElevatedButton(
+                  child: MyPage_button(),
+                  onPressed: (){},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                  ),
+                ),
               ]
           ),
         )
@@ -34,14 +71,16 @@ class Home_button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Icon(Icons.home, color:Color(0xff473CCE)),
-          Text('홈', style: TextStyle(color: Color(0xffADA8F0)),),
-        ]
-      )
+    return  Container(
+        child: Column(
+            children: [
+              Icon(Icons.home, color:Color(0xff473CCE)),
+              Text('홈', style: TextStyle(color: Color(0xffADA8F0)),),
+
+            ]
+        )
     );
+
   }
 }
 
