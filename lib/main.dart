@@ -1,31 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 
 import 'Top.dart' as Top;
 import 'Middle.dart' as Middle;
 import 'Bottom.dart' as Bottom;
+import 'app.dart';
 
 void main() {
-  runApp(
-      MaterialApp(
-          home : MyApp()
-      )
-  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children:[
-          Top.Top(),
-          Middle.Middle(),
-        ]
+    return GetMaterialApp(
+      title: 'Kroocrew',
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
       ),
-      bottomNavigationBar: Bottom.Bottom(),
+      home: App(),
     );
   }
 }
