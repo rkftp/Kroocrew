@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
-import 'Top.dart' as Top;
-import 'Middle.dart' as Middle;
-import 'Bottom.dart' as Bottom;
+import 'old/Top.dart' as Top;
+import 'widgets/home/Middle.dart' as Middle;
+import 'old/Bottom.dart' as Bottom;
+import 'widgets/Bottom_Navigate.dart';
+import 'widgets/projects/Projects.dart';
 import 'app.dart';
 
 void main() {
@@ -12,18 +13,28 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return GetMaterialApp( //
       title: 'Kroocrew',
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
       home: App(),
+      initialBinding: InitBinding(),
     );
   }
 }
+
+class InitBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.put(BottomNavController());
+  }
+}
+
+
+
 
 
 

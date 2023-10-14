@@ -76,7 +76,6 @@ class Home_button extends StatelessWidget {
             children: [
               Icon(Icons.home, color:Color(0xff473CCE)),
               Text('홈', style: TextStyle(color: Color(0xffADA8F0)),),
-
             ]
         )
     );

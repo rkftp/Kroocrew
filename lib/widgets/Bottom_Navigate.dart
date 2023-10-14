@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class BottomNavigate extends StatelessWidget {
+class BottomNavigate extends GetView<BottomNavController> {
   const BottomNavigate({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
+    return Obx(()=> BottomNavigationBar(
       backgroundColor: Colors.white,
       selectedItemColor: Color(0xff473CCE),
       unselectedItemColor: Colors.grey,
       type: BottomNavigationBarType.fixed,
-      items: [
+      currentIndex: controller.selectedIndex.value,
+      onTap: controller.changeIndex,
+      items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: '홈',
@@ -32,6 +35,18 @@ class BottomNavigate extends StatelessWidget {
           label: '내정보',
         ),
       ],
-    );
+    ));
   }
 }
+
+class BottomNavController extends GetxController {
+
+  static BottomNavController get to => Get.find();
+
+  final RxInt selectedIndex = 0.obs;
+
+  void changeIndex(int index) {
+    selectedIndex(index);
+  }
+}
+

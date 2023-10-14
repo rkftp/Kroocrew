@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'Bottom_Navigate.dart' as Bottom;
-import 'Top.dart' as Top;
-import 'Middle.dart' as Middle;
+import 'widgets/Bottom_Navigate.dart';
+import 'widgets/home/Middle.dart' as _home;
+
+import 'widgets/timetables/Timetables.dart';
+import 'widgets/projects/Projects.dart';
+import 'widgets/chat/Chat.dart';
+import 'widgets/myinfo/Myinfo.dart';
 
 
 class App extends StatelessWidget {
@@ -12,13 +16,20 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Top.Top(),
-          Middle.Middle(),
-        ],
+      body: Obx(
+        () => IndexedStack(
+          index: BottomNavController.to.selectedIndex.value,
+          children: [
+            _home.Middle(),//home
+            Timetables(),
+            Projects(),//projects
+            Chat(),
+            Myinfo(),
+          ],
+        ),
       ),
-      bottomNavigationBar: Bottom.BottomNavigate(),
+      bottomNavigationBar: BottomNavigate(),
     );
   }
 }
+

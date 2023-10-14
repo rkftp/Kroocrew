@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'Top_timetable.dart' as Top;
+import '../../old/Top_timetable.dart' as Top;
 import 'Middle.dart' as Middle;
-import 'Bottom.dart' as Bottom;
+import '../../old/Bottom.dart' as Bottom;
 
 void main() {
   runApp(
