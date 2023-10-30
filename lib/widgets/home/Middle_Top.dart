@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
+
 
 
 class Top_Bar extends StatelessWidget {
-  const Top_Bar({super.key});
+  Top_Bar({super.key});
+  final my_name = '한진우';
 
   @override
   Widget build(BuildContext context) {
@@ -119,26 +123,46 @@ class Day_name extends StatelessWidget {
   }
 }
 class Day_num extends StatelessWidget {
-  const Day_num({super.key});
+  const Day_num({super.key, this.now});
+  final now;
 
   @override
   Widget build(BuildContext context) {
+
+   DateTime firstTime = DateTime(now.year, now.month, now.day - (now.weekday - 1));
+    var lastTime = DateTime(now.year, now.month, now.day + (7 - now.weekday));
+    String first = DateFormat('d').format(firstTime);
+    String second = (int.parse(first)+1).toString();
+   String third = (int.parse(first)+2).toString();
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         Container(
             height: 23,
             width: 23,
-
-            padding: EdgeInsets.fromLTRB(7, 2, 0, 0),
+            padding: EdgeInsets.fromLTRB(0, 2, 0, 0),
             decoration: BoxDecoration(
               color: Color(0xff473CCE),
               borderRadius: BorderRadius.circular(50),
               border: Border.all(color: Color(0xff473CCE), width: 1),
             ),
-            child: Text("9",style: TextStyle(
+            child: Text(first,style: TextStyle(
                 color: Color(0xffffffff),
-                fontSize: 13))),
+                fontSize: 12),
+                textAlign: TextAlign.center,)),
+        Container(
+            height: 23,
+            width: 23,
+            padding: EdgeInsets.fromLTRB(0, 2, 0, 0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+              //border: Border.all(color: Colors.black, width: 1),
+            ),
+            child: Text(second,style: TextStyle(
+                color: Color(0xff000000),
+                fontSize: 12),
+              textAlign: TextAlign.center,)),
         Container(
             height: 23,
             width: 23,
@@ -147,20 +171,10 @@ class Day_num extends StatelessWidget {
               borderRadius: BorderRadius.circular(50),
               //border: Border.all(color: Colors.black, width: 1),
             ),
-            child: Text("10",style: TextStyle(
+            child: Text(third,style: TextStyle(
                 color: Color(0xff000000),
-                fontSize: 13))),
-        Container(
-            height: 23,
-            width: 23,
-            padding: EdgeInsets.fromLTRB(3, 2, 0, 0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              //border: Border.all(color: Colors.black, width: 1),
-            ),
-            child: Text("11",style: TextStyle(
-                color: Color(0xff000000),
-                fontSize: 13))),
+                fontSize: 12),
+              textAlign: TextAlign.center,)),
         Container(
             height: 23,
             width: 23,
@@ -234,7 +248,7 @@ class name extends StatelessWidget {
             ),
             Container(
               margin: EdgeInsets.fromLTRB(20,0, 0,0),
-              child: Text('한진우',style:TextStyle(
+              child: Text("한진우",style:TextStyle(
                   color: Color(0xff000000),
                   fontSize: 20,
                   fontWeight: FontWeight.bold

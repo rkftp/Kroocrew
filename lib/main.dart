@@ -7,14 +7,20 @@ import 'old/Bottom.dart' as Bottom;
 import 'widgets/Bottom_Navigate.dart';
 import 'widgets/projects/Projects.dart';
 import 'app.dart';
+import 'package:timer_builder/timer_builder.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
-void main() {
+void main() async {
+  await initializeDateFormatting();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
   @override
+
   Widget build(BuildContext context) {
+
     return GetMaterialApp( //
       title: 'Kroocrew',
       theme: ThemeData(
