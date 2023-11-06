@@ -7,6 +7,7 @@ import 'old/Bottom.dart' as Bottom;
 import 'widgets/Bottom_Navigate.dart';
 import 'widgets/projects/Projects.dart';
 import 'app.dart';
+import 'login.dart';
 import 'package:timer_builder/timer_builder.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -15,8 +16,16 @@ void main() async {
   runApp(MyApp());
 }
 
+
+
+
 class MyApp extends StatelessWidget {
 
+  bool log_in = true;
+
+  loginAcc() {
+    log_in = true;
+  }
   @override
 
   Widget build(BuildContext context) {
@@ -26,7 +35,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
-      home: App(),
+        home:
+        log_in == true ?  App() :  login(loginAcc: loginAcc),
+
       initialBinding: InitBinding(),
     );
   }
