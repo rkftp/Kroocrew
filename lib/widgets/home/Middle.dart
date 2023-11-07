@@ -6,17 +6,16 @@ import '4List.dart' as Middle_Cal;
 
 
 
-var app_name = 'Kroocrew';
-var user_uni_name = "중앙대";
-var user_dep_name = "소프트웨어 학과 소프트웨어 학부";
 
-var user_name = '한진우';
-var user_speed = '100';
 
 
 class Middle extends StatelessWidget {
-  Middle({super.key});
-
+  Middle({super.key,this.app_name, this.user_uni_name,this.user_dep_name,this.user_name,this.user_speed});
+ final app_name;
+ final user_uni_name;
+ final user_dep_name;
+ final user_name;
+ final user_speed;
   @override
 
   Widget build(BuildContext context) {

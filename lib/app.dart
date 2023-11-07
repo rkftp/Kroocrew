@@ -10,8 +10,18 @@ import 'widgets/chat/Chat.dart';
 import 'widgets/myinfo/Myinfo.dart';
 
 
+
+
 class App extends StatelessWidget {
-  const App({super.key});
+
+  App({super.key});
+  var app_name = 'Kroocrew';
+  var user_uni_name = "중앙대";
+  var user_dep_name = "소프트웨어 학과 소프트웨어 학부";
+
+  var user_name = '한진우';
+  var user_speed = '100';
+  var user_num = '20213949';
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +30,11 @@ class App extends StatelessWidget {
         () => IndexedStack(
           index: BottomNavController.to.selectedIndex.value,
           children: [
-            _home.Middle(),//home
+            _home.Middle(app_name:app_name,user_uni_name : user_uni_name, user_dep_name:user_dep_name,user_name:user_name,user_speed:user_speed),//home
             Timetables(),
             Projects(),//projects
             Chat(),
-            Myinfo(),
+            Myinfo(user_name:user_name,user_uni_name:user_uni_name,user_dep_name:user_dep_name,user_num:user_num),
           ],
         ),
       ),
