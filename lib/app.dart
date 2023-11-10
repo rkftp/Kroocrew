@@ -21,6 +21,8 @@ class App extends StatelessWidget {
   var user_speed = '100';
   var user_num = '20213949';
 
+  var user_id = 'idididid';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +34,7 @@ class App extends StatelessWidget {
             Timetables(),
             Projects(),//projects
             Chat(),
-            Myinfo(user_name:user_name,user_uni_name:user_uni_name,user_dep_name:user_dep_name,user_num:user_num),
+            Myinfo(user_name:user_name,user_uni_name:user_uni_name,user_dep_name:user_dep_name,user_num:user_num,user_speed: user_speed,user_id:user_id),
           ],
         ),
       ),

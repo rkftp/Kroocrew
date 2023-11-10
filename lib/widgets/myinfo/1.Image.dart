@@ -7,7 +7,7 @@ class image_box extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+      margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
       height: 60,
       width: 60,
       decoration: BoxDecoration(
