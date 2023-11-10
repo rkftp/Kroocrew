@@ -76,7 +76,7 @@ class _MiddleState extends State<Middle> {
 
 class Subject_Box extends StatefulWidget {
   final String state;
-  var onoff_week;
+  final onoff_week;
 
   Subject_Box({Key? key, required this.state,required this.onoff_week}) : super(key: key);
 
@@ -145,7 +145,7 @@ class Context_Box_W extends StatelessWidget {
     if(week_box == true) {
       return Container(margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
           padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-          height: count_w*45+10,
+          height: (count_w*45+10).toDouble(),
           decoration: BoxDecoration(
             color: Color(0xffD9D9D9),
             borderRadius: BorderRadius.circular(15),
@@ -175,7 +175,7 @@ class Context_Box_M extends StatelessWidget {
     if(month_box == true) {
       return Container(margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
           padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-          height: count_m*45+10,
+          height: (count_m*45+10).toDouble(),
           decoration: BoxDecoration(
             color: Color(0xffD9D9D9),
             borderRadius: BorderRadius.circular(15),
@@ -200,7 +200,7 @@ class Context_Box_A extends StatelessWidget {
     if(all_box == true) {
       return Container(margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
           padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-          height: count_all*45+10,
+          height: (count_all*45+10).toDouble(),
           decoration: BoxDecoration(
             color: Color(0xffD9D9D9),
             borderRadius: BorderRadius.circular(15),
