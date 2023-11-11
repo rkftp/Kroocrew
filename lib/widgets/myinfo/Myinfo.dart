@@ -1,16 +1,14 @@
+import 'package:contact/widgets/home/4List.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:flutter/widgets.dart';
 import '0.Head.dart' as Head;
-import '1.Image.dart' as Image;
 import '2.Name.dart' as Name;
 import '3.Infomation.dart' as Infornation;
 import '4.Account.dart' as Account;
 import '5.AppSet.dart' as AppSet;
 import '6.Etc.dart' as Etc;
-import '3.Text.dart' as Text;
+
 
 
 class Myinfo extends StatelessWidget {
@@ -27,23 +25,64 @@ class Myinfo extends StatelessWidget {
         child: ListView(
           children: [
             Head.head(),
-            Container(
-
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children:[Image.image_box(),Name.name_box(user_name:user_name)]),
-            ),
-            Infornation.imformation(user_uni_name:user_uni_name,user_dep_name:user_dep_name,user_num:user_num,user_speed:user_speed),
-            Account.account(user_id: user_id),
-            AppSet.appset(),
-            Etc.etc(),
+            Name.name_box(user_name: user_name),
+            button(text:'개인정보',icon:Icons.person_outlined,next_page: Infornation.imformation(user_uni_name:user_uni_name,user_dep_name:user_dep_name,user_num:user_num,user_speed:user_speed) ),
+            button(text:'계정', icon:Icons.lock_outline, next_page:Account.account(user_id: user_id)),
+            button(text: '개인 설정', icon:Icons.settings,next_page:AppSet.appset()),
+            button(text: '기타', icon:Icons.more_horiz_outlined,next_page: Etc.etc(),),
           ],
         ),
       );
     }
   }
 
+class button extends StatelessWidget {
+  const button({super.key,this.text,this.icon,this.next_page});
+  final text;
+  final icon;
+  final next_page;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 60,
+      child: ElevatedButton(
+        onPressed: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => next_page)
+          );
+        },
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Colors.transparent),
+          shadowColor: MaterialStateProperty.all(Colors.transparent),
+          elevation: MaterialStateProperty.all(0),
+          overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                (Set<MaterialState> states) {
+              if (states.contains(MaterialState.pressed)) {
+                return Colors.grey.withOpacity(0.2);
+              }
+              return null;
+            },
+          ),
+        ),
+        child: Row(
+          children: [
+            Container(
+                margin: EdgeInsets.fromLTRB(5, 5, 10, 5),
+                child: Icon(icon,color: Colors.black,size: 25)),
+
+            Text(text,style: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.w100
+            )),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 
 
