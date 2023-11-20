@@ -34,7 +34,9 @@ class MyApp extends StatelessWidget {
       title: 'Kroocrew',
       theme: ThemeData(
         primarySwatch: Colors.indigo,
+        fontFamily: 'NPSfont'
       ),
+        themeMode: ThemeMode.system,
         home:
         log_in == true ?  App() :  login(loginAcc: loginAcc),
 
