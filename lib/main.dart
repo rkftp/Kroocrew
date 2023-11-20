@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'old/Top.dart' as Top;
-import 'widgets/home/Middle.dart' as Middle;
-import 'old/Bottom.dart' as Bottom;
+
 import 'widgets/Bottom_Navigate.dart';
-import 'widgets/projects/Projects.dart';
 import 'app.dart';
 import 'login.dart';
-import 'package:timer_builder/timer_builder.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
@@ -17,33 +13,40 @@ void main() async {
 }
 
 
+class LoginController extends GetxController {
+  var log_in = false.obs;
 
-
-class MyApp extends StatelessWidget {
-
-  bool log_in = true;
-
-  loginAcc() {
-    log_in = true;
+  void loginAcc() {
+    Future.microtask(() {
+      log_in.value = true;
+    });
   }
+  void loginDacc() {
+    Future.microtask(() {
+      log_in.value = false;
+    });
+  }
+}
+class MyApp extends StatelessWidget {
   @override
-
   Widget build(BuildContext context) {
+    final LoginController loginController = Get.put(LoginController());
 
-    return GetMaterialApp( //
+    return GetMaterialApp(
       title: 'Kroocrew',
       theme: ThemeData(
-        primarySwatch: Colors.indigo,
-        fontFamily: 'NPSfont'
+          primarySwatch: Colors.indigo,
+          fontFamily: 'NPSfont'
       ),
-        themeMode: ThemeMode.system,
-        home:
-        log_in == true ?  App() :  login(loginAcc: loginAcc),
-
+      themeMode: ThemeMode.system,
+      home: Obx(() =>
+      loginController.log_in.value ? App(loginDacc: loginController.loginDacc) : login(loginAcc: loginController.loginAcc),
+      ),
       initialBinding: InitBinding(),
     );
   }
 }
+
 
 class InitBinding extends Bindings {
   @override

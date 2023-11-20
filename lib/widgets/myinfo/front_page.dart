@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 import 'package:flutter/widgets.dart';
 import '0.Head.dart' as Head;
 import '1.Name.dart' as Name;
@@ -11,7 +11,8 @@ import '5.Etc.dart' as Etc;
 
 
 class Myinfo extends StatelessWidget {
-  Myinfo({Key? key, this.user_name,this.user_uni_name,this.user_dep_name,this.user_num,this.user_speed,this.user_id}) : super(key: key);
+  Myinfo({Key? key,this.loginDacc, this.user_name,this.user_uni_name,this.user_dep_name,this.user_num,this.user_speed,this.user_id}) : super(key: key);
+  final loginDacc;
   final user_name;
   final user_uni_name;
   final user_dep_name;
@@ -28,7 +29,7 @@ class Myinfo extends StatelessWidget {
           button(text:'개인정보',icon:Icons.person_outlined,next_page: Infornation.imformation(user_uni_name:user_uni_name,user_dep_name:user_dep_name,user_num:user_num,user_speed:user_speed) ),
           button(text:'계정', icon:Icons.lock_outline, next_page:Account.account(user_id: user_id)),
           button(text: '개인 설정', icon:Icons.settings,next_page:AppSet.appset()),
-          button(text: '기타', icon:Icons.more_horiz_outlined,next_page: Etc.etc(),),
+          button(text: '기타', icon:Icons.more_horiz_outlined,next_page: Etc.etc(loginDacc:loginDacc),),
         ],
       ),
     );

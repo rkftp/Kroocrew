@@ -12,7 +12,8 @@ import 'widgets/Top_Appbar.dart';
 
 class App extends StatelessWidget {
 
-  App({super.key});
+  App({super.key,this.loginDacc});
+  final loginDacc;
   var app_name = 'Kroocrew';
   var user_uni_name = "중앙대";
   var user_dep_name = "소프트웨어 학과 소프트웨어 학부";
@@ -34,7 +35,7 @@ class App extends StatelessWidget {
             Timetables(),
             Projects(),//projects
             Chat(),
-            Myinfo(user_name:user_name,user_uni_name:user_uni_name,user_dep_name:user_dep_name,user_num:user_num,user_speed: user_speed,user_id:user_id),
+            Myinfo(loginDacc:loginDacc,user_name:user_name,user_uni_name:user_uni_name,user_dep_name:user_dep_name,user_num:user_num,user_speed: user_speed,user_id:user_id),
           ],
         ),
       ),

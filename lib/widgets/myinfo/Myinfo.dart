@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 import 'package:flutter/widgets.dart';
 import 'front_page.dart' as front;
 import '0.Head.dart' as Head;
@@ -7,7 +7,8 @@ import '1.Name.dart' as Name;
 
 
 class Myinfo extends StatelessWidget {
-  Myinfo({Key? key, this.user_name,this.user_uni_name,this.user_dep_name,this.user_num,this.user_speed,this.user_id}) : super(key: key);
+  Myinfo({Key? key,this.loginDacc, this.user_name,this.user_uni_name,this.user_dep_name,this.user_num,this.user_speed,this.user_id}) : super(key: key);
+  final loginDacc;
   final user_name;
   final user_uni_name;
   final user_dep_name;
@@ -20,7 +21,7 @@ class Myinfo extends StatelessWidget {
         child: Container(
           child: Column(
             children: [
-              header(front: front.Myinfo(user_name: user_name,user_id: user_id,user_speed: user_speed,user_dep_name: user_dep_name,user_num: user_num,user_uni_name: user_uni_name)),
+              header(front: front.Myinfo(loginDacc:loginDacc,user_name: user_name,user_id: user_id,user_speed: user_speed,user_dep_name: user_dep_name,user_num: user_num,user_uni_name: user_uni_name)),
               Name.name_box(user_name: user_name),
               uni(text: '학교',info:user_uni_name),
               uni(text: '학과',info:user_dep_name),
