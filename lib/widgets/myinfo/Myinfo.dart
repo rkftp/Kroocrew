@@ -1,14 +1,9 @@
-import 'package:contact/widgets/home/4List.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter/widgets.dart';
+import 'front_page.dart' as front;
 import '0.Head.dart' as Head;
-import '2.Name.dart' as Name;
-import '3.Infomation.dart' as Infornation;
-import '4.Account.dart' as Account;
-import '5.AppSet.dart' as AppSet;
-import '6.Etc.dart' as Etc;
-
+import '1.Name.dart' as Name;
 
 
 class Myinfo extends StatelessWidget {
@@ -22,15 +17,17 @@ class Myinfo extends StatelessWidget {
   @override
   Widget build(BuildContext _context) {
       return Expanded(
-        child: ListView(
-          children: [
-            Head.head(),
-            Name.name_box(user_name: user_name),
-            button(text:'개인정보',icon:Icons.person_outlined,next_page: Infornation.imformation(user_uni_name:user_uni_name,user_dep_name:user_dep_name,user_num:user_num,user_speed:user_speed) ),
-            button(text:'계정', icon:Icons.lock_outline, next_page:Account.account(user_id: user_id)),
-            button(text: '개인 설정', icon:Icons.settings,next_page:AppSet.appset()),
-            button(text: '기타', icon:Icons.more_horiz_outlined,next_page: Etc.etc(),),
-          ],
+        child: Container(
+          child: Column(
+            children: [
+              header(front: front.Myinfo(user_name: user_name,user_id: user_id,user_speed: user_speed,user_dep_name: user_dep_name,user_num: user_num,user_uni_name: user_uni_name)),
+              Name.name_box(user_name: user_name),
+              uni(text: '학교',info:user_uni_name),
+              uni(text: '학과',info:user_dep_name),
+              uni(text: '학번',info:user_num),
+              uni(text: '속력',info:user_speed),
+            ],
+          )
         ),
       );
     }
@@ -86,4 +83,66 @@ class button extends StatelessWidget {
 
 
 
+class header extends StatelessWidget {
+  const header({super.key,this.front});
+  final front;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
 
+      padding: EdgeInsets.fromLTRB(30, 10, 0,10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+
+
+          Text('내 정보',style:TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w900,
+          ),
+          ),
+          IconButton(onPressed: (){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => front)
+            );
+          }, icon: Icon(Icons.settings)),
+        ],
+      ),
+
+
+
+
+    );
+  }
+}
+
+class uni extends StatelessWidget {
+  const uni({super.key,this.text,this.info});
+  final text;
+  final info;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: EdgeInsets.fromLTRB(20, 15, 20,15),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('$text : ',style: TextStyle(
+              fontSize: 18,
+            )),
+            text =='속력' ? Text( '$info km/h',style: TextStyle(
+                fontSize: 15,
+                color: Colors.blue
+            ))
+                : Text( '$info',style: TextStyle(
+                fontSize: 15,
+                color: Colors.blue
+            )),
+
+
+          ],
+        )
+    );
+  }
+}
