@@ -25,7 +25,6 @@ class Middle extends StatelessWidget {
         child: ListView(
           children: [
             Head.Head(app_name: app_name,user_uni_name:user_uni_name, user_dep_name:user_dep_name),
-            NamePlace.NamePlace(user_name: user_name,user_speed:user_speed),
             Cal_Test.TableCalendarScreen(),
             Middle_Cal.Middle(),
 

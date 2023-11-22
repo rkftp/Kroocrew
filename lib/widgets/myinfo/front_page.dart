@@ -25,7 +25,7 @@ class Myinfo extends StatelessWidget {
       body: ListView(
         children: [
           Head.head(),
-          Name.name_box(user_name: user_name),
+          Name.NamePlace(user_name: user_name,user_speed: user_speed,),
           button(text:'개인정보',icon:Icons.person_outlined,next_page: Infornation.imformation(user_uni_name:user_uni_name,user_dep_name:user_dep_name,user_num:user_num,user_speed:user_speed) ),
           button(text:'계정', icon:Icons.lock_outline, next_page:Account.account(user_id: user_id)),
           button(text: '개인 설정', icon:Icons.settings,next_page:AppSet.appset()),

@@ -53,7 +53,7 @@ class _MiddleState extends State<Middle> {
 
   final b2 = [['10월 29일(일)', '과제마감', '리눅스 시스템 응용 설계', '개인']];
 
-  final b3 = [['','','',''],['','','','']];
+  final b3 = [];
 
   @override
   Widget build(BuildContext context) {
@@ -145,14 +145,22 @@ class Context_Box_W extends StatelessWidget {
     if(week_box == true) {
       return Container(margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
           padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-          height: (count_w*45+10).toDouble(),
+          height: (count_w > 0? count_w*55+10: 45).toDouble(),
           decoration: BoxDecoration(
             color: Color(0xffD9D9D9),
             borderRadius: BorderRadius.circular(15),
             border: Border.all(color: Color(0xff473cce), width: 2),
           ),
-          child: ListView.builder(itemCount:count_w,itemBuilder: (c,i){
+          child: count_w > 0?ListView.builder(itemCount:count_w,itemBuilder: (c,i){
             return Con(state:state[i]);
+          },) :
+          ListView.builder(itemCount:1,itemBuilder: (c,i){
+            return Container(
+                padding: EdgeInsets.fromLTRB(10, 87, 10, 5),
+                child: Text('일정이 없습니다.',style: TextStyle(
+                  fontSize: 15,
+
+                )));
           },)
 
       );
@@ -175,15 +183,23 @@ class Context_Box_M extends StatelessWidget {
     if(month_box == true) {
       return Container(margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
           padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-          height: (count_m*45+10).toDouble(),
+          height: (count_m > 0 ? count_m*55+10 : 45).toDouble(),
           decoration: BoxDecoration(
             color: Color(0xffD9D9D9),
             borderRadius: BorderRadius.circular(15),
             border: Border.all(color: Color(0xff473cce), width: 2),
           ),
-          child: ListView.builder(itemCount:count_m,itemBuilder: (c,i){
+          child: count_m > 0 ? ListView.builder(itemCount:count_m,itemBuilder: (c,i){
             return Con(state:state[i]);
+          },) : ListView.builder(itemCount:1,itemBuilder: (c,i){
+            return Container(
+                padding: EdgeInsets.fromLTRB(10, 7, 10, 5),
+                child: Text('일정이 없습니다.',style: TextStyle(
+                  fontSize: 15,
+
+                )));
           },)
+
 
       );
     }
@@ -200,14 +216,20 @@ class Context_Box_A extends StatelessWidget {
     if(all_box == true) {
       return Container(margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
           padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-          height: (count_all*45+10).toDouble(),
+          height: (count_all > 0 ?count_all*55+10 : 45).toDouble(),
           decoration: BoxDecoration(
             color: Color(0xffD9D9D9),
             borderRadius: BorderRadius.circular(15),
             border: Border.all(color: Color(0xff473cce), width: 2),
           ),
-          child: ListView.builder(itemCount:count_all,itemBuilder: (c,i){
+          child: count_all > 0 ? ListView.builder(itemCount:count_all,itemBuilder: (c,i){
             return Con(state:state[i]);
+          },) : ListView.builder(itemCount:1,itemBuilder: (c,i){
+            return Container(
+                padding: EdgeInsets.fromLTRB(10, 7, 10, 5),
+                child: Text('일정이 없습니다.',style: TextStyle(
+                  fontSize: 15,
+            )));
           },)
 
       );
@@ -281,39 +303,42 @@ class Con extends StatelessWidget {
         child: Row(
           children: [
             Flexible(child: Container(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 25),
                 child: Icon(Icons.star, size: 15, color: Color(0xff000000))
             ),
                 flex: 1),
-            Flexible(child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(state[0], style: TextStyle(
-                        color: Color(0xff000000),
-                        fontSize: 14,
-                      )),
-                      Text(state[1], style: TextStyle(
-                        color: Color(0xff000000),
-                        fontSize: 14,
-                      )),
-                    ],
-                  ),
-                  Row(
+            Flexible(child: Container(
+              padding: EdgeInsets.fromLTRB(0, 7, 0, 10),
+              child: Column(
+                  children: [
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(state[2], style: TextStyle(
+                        Text(state[0], style: TextStyle(
                           color: Color(0xff000000),
-                          fontSize: 14,
+                          fontSize: 15,
                         )),
-                        Text(state[3], style: TextStyle(
+                        Text(state[1], style: TextStyle(
                           color: Color(0xff000000),
-                          fontSize: 14,
+                          fontSize: 15,
                         )),
-                      ]
-                  )
-                ]
+                      ],
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(state[2], style: TextStyle(
+                            color: Color(0xff000000),
+                            fontSize: 15,
+                          )),
+                          Text(state[3], style: TextStyle(
+                            color: Color(0xff000000),
+                            fontSize: 15,
+                          )),
+                        ]
+                    )
+                  ]
+              ),
             ),
                 flex: 10),
           ],

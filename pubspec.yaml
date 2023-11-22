@@ -90,12 +90,54 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-fonts:
-  - family: NPSfont
-    fonts:
-      - asset: assets/fonts/NPSfont_regular.ttf
-        weight: 100
-      - asset: assets/fonts/NPSfont_bold.ttf
-        weight: 200
-      - asset: assets/fonts/NPSfont_extrabold.ttf
-        weight: 300
+
+  fonts:
+    - family: Maple
+      fonts:
+        - asset: assets/fonts/Maplestory Light.ttf
+          weight: 100
+        - asset: assets/fonts/Maplestory Bold.ttf
+          weight: 200
+    - family: NotoSansKR
+      fonts:
+        - asset: assets/fonts/NotoSansKR-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/NotoSansKR-Light.ttf
+          weight: 200
+        - asset: assets/fonts/NotoSansKR-Regular.ttf
+          weight: 300
+        - asset: assets/fonts/NotoSansKR-Medium.ttf
+          weight: 400
+        - asset: assets/fonts/NotoSansKR-SemiBold.ttf
+          weight: 500
+        - asset: assets/fonts/NotoSansKR-Bold.ttf
+          weight: 600
+        - asset: assets/fonts/NotoSansKR-ExtraBold.ttf
+          weight: 700
+        - asset: assets/fonts/NotoSansKR-Black.ttf
+          weight: 800
+
+    - family: MaruBuri
+      fonts:
+        - asset: assets/fonts/MaruBuri-ExtraLight.ttf
+          weight: 100
+        - asset: assets/fonts/MaruBuri-Light.ttf
+          weight: 200
+        - asset: assets/fonts/MaruBuri-Regular.ttf
+          weight: 300
+        - asset: assets/fonts/MaruBuri-SemiBold.ttf
+          weight: 400
+        - asset: assets/fonts/MaruBuri-Bold.ttf
+          weight: 500
+
+    - family: NanumSqareRound
+      fonts:
+
+        - asset: assets/fonts/NanumSquareRoundR.ttf
+          weight: 100
+        - asset: assets/fonts/NanumSquareRoundB.ttf
+          weight: 200
+        - asset: assets/fonts/NanumSquareRoundEB.ttf
+          weight: 300
+
+

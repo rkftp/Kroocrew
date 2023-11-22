@@ -31,7 +31,7 @@ class appName extends StatelessWidget {
         child: Text(app_name,style: TextStyle(
             color:Colors.black,
             fontSize: 32,
-            fontWeight: FontWeight.bold
+            fontWeight: FontWeight.w800
             ),
         ),
     );
@@ -48,7 +48,7 @@ class uniName extends StatelessWidget {
         child: Text(user_uni_name,style: TextStyle(
             color:Color(0xff473CCE),
             fontSize: 20,
-            fontWeight: FontWeight.bold
+            fontWeight: FontWeight.w700
         ),)
     );
   }

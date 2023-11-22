@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
       title: 'Kroocrew',
       theme: ThemeData(
           primarySwatch: Colors.indigo,
-          fontFamily: 'NPSfont'
+          fontFamily: 'NanumSqareRound'
       ),
       themeMode: ThemeMode.system,
       home: Obx(() =>
