@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'empty.dart';
 class NamePlace extends StatelessWidget {
   NamePlace({super.key, this.user_name, this.user_speed});
   final user_name;
@@ -7,11 +7,17 @@ class NamePlace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row( //name
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
       children: [
-        name(user_name: user_name,),
-        speed(user_speed: user_speed,),
+        Row( //name
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            name(user_name: user_name,),
+
+            speed(user_speed: user_speed,),
+          ],
+        ),
+        button(text: '프로필 수정', next_page: empty()),
       ],
     );
   }
@@ -29,8 +35,8 @@ class name extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              height: 46,
-              width: 46,
+              height: 60,
+              width: 60,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
                 border: Border.all(color: Colors.black12, width: 3),
@@ -49,6 +55,57 @@ class name extends StatelessWidget {
     );
   }
 }
+
+class button extends StatelessWidget {
+  const button({super.key,this.text,this.next_page});
+  final text;
+  final next_page;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(10),
+      child:Container(
+        width: double.infinity,
+        height: 40,
+        child: ElevatedButton(
+            onPressed: (){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => next_page)
+              );
+            },
+            style: ButtonStyle(
+
+              backgroundColor: MaterialStateProperty.all(Colors.blueGrey),
+              shadowColor: MaterialStateProperty.all(Colors.grey),
+              elevation: MaterialStateProperty.all(0),
+              overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                    (Set<MaterialState> states) {
+                  if (states.contains(MaterialState.pressed)) {
+                    return Colors.grey.withOpacity(0.2);
+                  }
+                  return null;
+                },
+              ),
+            ),
+            child: Container(
+
+              alignment: Alignment.center,
+              child: Text(text,style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+
+              ),),
+            )
+        ),
+      ),
+    );
+
+
+
+  }
+}
+
 class speed extends StatelessWidget {
   speed({super.key, this.user_speed});
   final user_speed;

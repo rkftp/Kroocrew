@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'front_page.dart' as front;
 import '0.Head.dart' as Head;
 import '1.Name.dart' as Name;
+import 'SpeedChart.dart' as SpeedChart;
 
 
 class Myinfo extends StatelessWidget {
@@ -24,6 +25,7 @@ class Myinfo extends StatelessWidget {
                 children: [
                   header(front: front.Myinfo(loginDacc:loginDacc,user_name: user_name,user_id: user_id,user_speed: user_speed,user_dep_name: user_dep_name,user_num: user_num,user_uni_name: user_uni_name)),
                   Name.NamePlace(user_name: user_name,user_speed: user_speed,),
+                  SpeedChart.SpeedChart(speed: user_speed),
                   uni(text: '학교',info:user_uni_name),
                   uni(text: '학과',info:user_dep_name),
                   uni(text: '학번',info:user_num),
