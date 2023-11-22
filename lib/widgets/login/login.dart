@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../app.dart';
 import 'find_id.dart' as find_id;
 import 'find_pw.dart' as find_pw;
 import 'sign_up.dart' as sign_up;
@@ -27,8 +26,6 @@ class login extends StatelessWidget {
                 box1(),
                 login_button(loginAcc: loginAcc,),
                 box2(),
-
-
               ],
             ),
           ),
@@ -49,8 +46,6 @@ class box1 extends StatelessWidget {
           id_box(),
           pw_text(),
           pw_box(),
-          
-          
         ],
       )
     );
@@ -148,7 +143,6 @@ class login_button extends StatelessWidget {
             ),
           ]
         ),
-
         child: TextButton( onPressed: () {loginAcc();}, child: Text("로그인",style: TextStyle(
             color:Colors.black
         ),), )
@@ -164,7 +158,6 @@ class box2 extends StatelessWidget {
     return Container(
         padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
         child: Row(
-        
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           button(text:'아이디 찾기',next_page: find_id.find_id()),
@@ -193,7 +186,6 @@ class button extends StatelessWidget {
             fontSize: 14,
         ),), )
     );
-
   }
 }
 

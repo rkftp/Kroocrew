@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-
 import 'widgets/Bottom_Navigate.dart';
 import 'app.dart';
 import 'widgets/login/login.dart';
@@ -11,7 +9,6 @@ void main() async {
   await initializeDateFormatting();
   runApp(MyApp());
 }
-
 
 class LoginController extends GetxController {
   var log_in = false.obs;
@@ -27,6 +24,7 @@ class LoginController extends GetxController {
     });
   }
 }
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -35,18 +33,17 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Kroocrew',
       theme: ThemeData(
-          primarySwatch: Colors.indigo,
-          fontFamily: 'NanumSqareRound'
+        primarySwatch: Colors.indigo,
+        fontFamily: 'NanumSqareRound',
       ),
       themeMode: ThemeMode.system,
       home: Obx(() =>
-      loginController.log_in.value ? App(loginDacc: loginController.loginDacc) : login(loginAcc: loginController.loginAcc),
+        loginController.log_in.value ? App(loginDacc: loginController.loginDacc) : login(loginAcc: loginController.loginAcc),
       ),
       initialBinding: InitBinding(),
     );
   }
 }
-
 
 class InitBinding extends Bindings {
   @override
@@ -54,9 +51,3 @@ class InitBinding extends Bindings {
     Get.put(BottomNavController());
   }
 }
-
-
-
-
-
-

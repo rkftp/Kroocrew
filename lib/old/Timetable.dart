@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'Top_timetable.dart' as Top;
-import '../widgets/home/Middle.dart' as Middle;
+import '../widgets/home/home_main.dart' as Middle;
 import 'Bottom.dart' as Bottom;
 
 void main() {

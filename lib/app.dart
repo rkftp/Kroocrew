@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'widgets/Bottom_Navigate.dart';
-import 'widgets/home/Middle.dart' as _home;
-
+import 'widgets/home/home_main.dart' as _home;
 import 'widgets/timetables/Timetables.dart';
 import 'widgets/projects/Projects.dart';
 import 'widgets/chat/Chat.dart';
 import 'widgets/myinfo/Myinfo.dart';
-import 'widgets/Top_Appbar.dart';
 
 class App extends StatelessWidget {
 
   App({super.key,this.loginDacc});
+
   final loginDacc;
   var app_name = 'Kroocrew';
   var user_uni_name = "중앙대";
   var user_dep_name = "소프트웨어 학과 소프트웨어 학부";
-
   var user_name = '한진우';
   var user_speed = '100';
   var user_num = '20213949';
-
   var user_id = 'idididid';
 
   @override
