@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '1Head.dart' as Head;
-import '2NamePlace.dart' as NamePlace;
+
 import '3Cal_Test.dart' as Cal_Test;
 import '4List.dart' as Middle_Cal;
 
