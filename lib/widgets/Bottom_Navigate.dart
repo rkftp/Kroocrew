@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 class BottomNavigate extends GetView<BottomNavController> {
   const BottomNavigate({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return Obx(()=> BottomNavigationBar(

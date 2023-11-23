@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'widgets/Bottom_Navigate.dart';
 import 'app.dart';
-import 'widgets/login/login.dart';
+import 'screens/login/login.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {

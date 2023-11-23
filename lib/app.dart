@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'widgets/Bottom_Navigate.dart';
-import 'widgets/home/home_main.dart' as _home;
-import 'widgets/timetables/Timetables.dart';
-import 'widgets/projects/Projects.dart';
-import 'widgets/chat/Chat.dart';
-import 'widgets/myinfo/Myinfo.dart';
+import 'screens/home/home_main.dart' as _home;
+import 'screens/timetables/Timetables.dart';
+import 'screens/projects/Projects.dart';
+import 'screens/chat/Chat.dart';
+import 'screens/myinfo/Myinfo.dart';
 
 class App extends StatelessWidget {
 
