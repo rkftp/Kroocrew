@@ -14,7 +14,6 @@ class NamePlace extends StatelessWidget {
           children: [
             name(user_name: user_name,),
 
-            speed(user_speed: user_speed,),
           ],
         ),
         button(text: '프로필 수정', next_page: empty()),

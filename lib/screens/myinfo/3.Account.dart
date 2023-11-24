@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'empty.dart';
 
 class account extends StatelessWidget {
-  const account({super.key,this.user_id});
+  const account({super.key,this.user_id,this.loginDacc});
   final user_id;
+  final loginDacc;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +19,8 @@ class account extends StatelessWidget {
               uni(text: 'id',info: user_id),
               button(text:'비밀번호 변경',next_page: empty(),),
               button(text:'프로필 이미지 변경',next_page: empty(),),
+              button( text: '회원탈퇴',next_page: empty(),),
+              button_2( text: '로그아웃', next_page: loginDacc()),
 
             ]
         ),
@@ -102,6 +105,48 @@ class button extends StatelessWidget {
                 context,
                 MaterialPageRoute(builder: (context) => next_page)
             );
+          },
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.transparent),
+            shadowColor: MaterialStateProperty.all(Colors.transparent),
+            elevation: MaterialStateProperty.all(0),
+            overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                  (Set<MaterialState> states) {
+                if (states.contains(MaterialState.pressed)) {
+                  return Colors.grey.withOpacity(0.2);
+                }
+                return null;
+              },
+            ),
+          ),
+          child: Container(
+            padding: EdgeInsets.fromLTRB(0, 15, 20,15),
+            alignment: Alignment.centerLeft,
+            child: Text(text,style: TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+
+            ),),
+          )
+      ),
+    );
+
+  }
+}
+class button_2 extends StatelessWidget {
+  const button_2({super.key,this.text,this.next_page});
+  final text;
+  final next_page;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: 60,
+      child: ElevatedButton(
+          onPressed: (){
+            next_page;
+            Navigator.pop(context);
+            Navigator.pop(context);
           },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.transparent),

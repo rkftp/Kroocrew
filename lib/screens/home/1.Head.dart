@@ -30,7 +30,7 @@ class appName extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(15, 30, 0, 0),
         child: Text(app_name,style: TextStyle(
             color:Colors.black,
-            fontSize: 32,
+            fontSize: 35,
             fontWeight: FontWeight.w800
         ),),
     );
@@ -46,7 +46,7 @@ class uniName extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
         child: Text(user_uni_name,style: TextStyle(
             color:Color(0xff473CCE),
-            fontSize: 20,
+            fontSize: 22,
             fontWeight: FontWeight.w700
         ),)
     );
@@ -62,7 +62,7 @@ class depName extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
         child: Text(user_dep_name,style: TextStyle(
             color:Colors.black,
-            fontSize: 13,
+            fontSize: 15,
             fontWeight: FontWeight.bold
         ),)
     );

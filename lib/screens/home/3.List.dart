@@ -38,7 +38,7 @@ class _MiddleState extends State<Middle> {
 
   final week = "이번주 일정";
   final month = '이번달 일정';
-  final all = '전 체 일정';
+  final all = '전체 일정';
   final b1 = [['10/9(월)', '한글날', '캡스톤디자인(1)', 'Orange'],
     ['10/13(금)', '멘토링 보고서 2차', '캡스톤디자인(1)', 'Orange'],
     ['10/14(토)', '최종발표', '컴퓨터그래픽스', '개인']];
@@ -66,9 +66,10 @@ class _MiddleState extends State<Middle> {
 
 class Subject_Box extends StatefulWidget {
   final String state;
-  final onoff_week;
+  final VoidCallback onoff_week;
 
-  Subject_Box({Key? key, required this.state,required this.onoff_week}) : super(key: key);
+  Subject_Box({Key? key, required this.state, required this.onoff_week}) : super(key: key);
+
   @override
   State<Subject_Box> createState() => _Subject_BoxState();
 }
@@ -78,41 +79,41 @@ class _Subject_BoxState extends State<Subject_Box> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-      padding: EdgeInsets.all(5),
-      height: 34,
-      width: 120,
-      decoration: BoxDecoration(
-        color: Color(0xffD9D9D9),
-        borderRadius: BorderRadius.circular(50),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center, // Align children in the center of the row
-        children: [
-          GestureDetector(
-            onTap: () {
-              widget.onoff_week();
-              setState(() {
-                isArrowUp = !isArrowUp;
-              });
-            },
-            child: Icon(
+    return GestureDetector(
+      onTap: () {
+        widget.onoff_week();
+        setState(() {
+          isArrowUp = !isArrowUp;
+        });
+      },
+      child: Container(
+        margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+        padding: EdgeInsets.all(5),
+        height: 34,
+        width: 120,
+        decoration: BoxDecoration(
+          color: Color(0xffD9D9D9),
+          borderRadius: BorderRadius.circular(50),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
               isArrowUp ? Icons.arrow_drop_up : Icons.arrow_drop_down,
               size: 25,
               color: Color(0xff473CCE),
             ),
-          ),
-          SizedBox(width: 8), // Add some space between icon and text
-          Text(
-            widget.state,
-            style: TextStyle(
-              color: Color(0xff473CCE),
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
+            SizedBox(width: 8),
+            Text(
+              widget.state,
+              style: TextStyle(
+                color: Color(0xff473CCE),
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

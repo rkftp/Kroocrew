@@ -29,7 +29,6 @@ class Myinfo extends StatelessWidget {
                   uni(text: '학교',info:user_uni_name),
                   uni(text: '학과',info:user_dep_name),
                   uni(text: '학번',info:user_num),
-                  uni(text: '속력',info:user_speed),
                 ],
               )
           ),
