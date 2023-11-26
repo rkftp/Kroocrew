@@ -2,6 +2,58 @@ import 'package:flutter/material.dart';
 import 'find_id.dart' as find_id;
 import 'find_pw.dart' as find_pw;
 import 'sign_up.dart' as sign_up;
+import 'package:dio/dio.dart';
+import 'package:get/get.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+final storage = FlutterSecureStorage();
+final TextEditingController idController = TextEditingController();
+final TextEditingController pwController = TextEditingController();
+
+class LoginDTO {
+  String id;
+  String password;
+
+  LoginDTO ({
+    required this.id,
+    required this.password
+  });
+
+  LoginDTO copyWith({
+    String? id,
+    String? password,
+  }) {
+    return LoginDTO(
+      id: id ?? this.id,
+      password: password ?? this.password,
+    );
+  }
+}
+
+class loginService {
+  Future<void> login(LoginDTO loginDTO, BuildContext context) async {
+    final dio = Dio();
+    print('로그인 시도: ${loginDTO.id}, ${loginDTO.password}');
+
+    final response = await dio.post('http://20.39.186.138:1234/login', queryParameters: {
+      'Student_id' : loginDTO.id,
+      'Student_pw' : loginDTO.password,
+    });
+
+    print('로그인 응답: ${response.data}');
+    print('로그인 응답2: ${response.data['success']}');
+    if (response.data['success'] == true) {
+      // 로그인 성공
+      await storage.write(key: 'id', value: loginDTO.id);
+      await storage.write(key: 'password', value: loginDTO.password);
+      Get.snackbar('로그인 성공', '로그인 성공');
+      // Navigator.pushNamed(context, '/main');
+    } else {
+      // 로그인 실패
+      Get.snackbar('로그인 실패', '로그인 실패');
+    }
+  }
+}
 
 
 class login extends StatelessWidget {
@@ -43,9 +95,29 @@ class box1 extends StatelessWidget {
       child: Column(
         children: [
           id_text(),
-          id_box(),
+          Container(
+            height: 30,
+            width: double.infinity,
+            alignment: Alignment.center,
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: TextField(
+                controller: idController,
+                decoration: InputDecoration(
+                )
+            ),
+          ),
           pw_text(),
-          pw_box(),
+          Container(
+            height: 30,
+            width: double.infinity,
+            alignment: Alignment.center,
+            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: TextField(
+                controller: pwController,
+                decoration: InputDecoration(
+                )
+            ),
+          ),
         ],
       )
     );
@@ -143,7 +215,13 @@ class login_button extends StatelessWidget {
             ),
           ]
         ),
-        child: TextButton( onPressed: () {loginAcc();}, child: Text("로그인",style: TextStyle(
+        child: TextButton( onPressed: () {final loginDTO = LoginDTO(
+          id: idController.text,
+          password: pwController.text,
+        );
+
+        // 로그인 서비스 호출
+        loginService().login(loginDTO, context);}, child: Text("로그인",style: TextStyle(
             color:Colors.black
         ),), )
     );
@@ -177,10 +255,10 @@ class button extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: TextButton( onPressed: () {
-          Navigator.push(
+          /*Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => next_page)
-          );
+          );*/
         }, child: Text(text ,style: TextStyle(
             color:Colors.grey,
             fontSize: 14,
