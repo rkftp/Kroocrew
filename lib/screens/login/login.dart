@@ -9,9 +9,9 @@ import 'package:contact/screens/home/home_main.dart' as Home;
 import '/screens/projects/Projects.dart';
 import 'package:contact/app.dart';
 
-final storage = FlutterSecureStorage();
 final TextEditingController idController = TextEditingController();
 final TextEditingController pwController = TextEditingController();
+final storage = FlutterSecureStorage();
 
 class LoginDTO {
   String id;
@@ -36,8 +36,8 @@ class LoginDTO {
 class loginService {
   Future<void> login(LoginDTO loginDTO, BuildContext context) async {
     final dio = Dio();
-    print('로그인 시도: ${loginDTO.id}, ${loginDTO.password}');
 
+    print('로그인 시도: ${loginDTO.id}, ${loginDTO.password}');
     final response = await dio.post('http://20.39.186.138:1234/login', queryParameters: {
       'Student_id' : loginDTO.id,
       'Student_pw' : loginDTO.password,
@@ -49,6 +49,8 @@ class loginService {
       // 로그인 성공
       await storage.write(key: 'id', value: loginDTO.id);
       await storage.write(key: 'password', value: loginDTO.password);
+      await storage.write(key:'token', value: response.data['token']);
+      print ('token' + response.data['token']);
       Get.snackbar('로그인 성공', '로그인 성공');
       Get.to(()=>App());
     } else {
@@ -56,6 +58,28 @@ class loginService {
       Get.snackbar('로그인 실패', '로그인 실패');
     }
   }
+}
+
+class signupService {
+  Future<void> signup( BuildContext context) async {
+    final dio = Dio();
+    final response = await dio.get('http://20.39.186.138:1234/singup', queryParameters: {
+      'Student_id' : idController.text,
+      'Student_pw' : pwController.text,
+      'year_semester' : '2023-3',
+      'portal_id' : 'fdsa4321',
+      'portal_pw' : 'rewqrewq',
+    });
+
+    print('signup 응답: ${response.data}');
+    print('signup 응답2: ${response.data['success']}');
+    if (response.data['success'] == true) {
+      // 로그인 성공
+    } else {
+      // 로그인 실패
+    }
+  }
+
 }
 
 
