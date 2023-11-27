@@ -6,36 +6,103 @@ import '0.Head.dart' as Head;
 import '1.Name.dart' as Name;
 import 'SpeedChart.dart' as SpeedChart;
 
+import '/screens/login/login.dart' as login;
+import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class Myinfo extends StatelessWidget {
-  Myinfo({Key? key,this.loginDacc, this.user_name,this.user_uni_name,this.user_dep_name,this.user_num,this.user_speed,this.user_id}) : super(key: key);
+class getMainApi {
+  Future<Map<String, dynamic>?> mainAPI( BuildContext context) async {
+    final dio = Dio();
+
+    final response = await dio.get('http://20.39.186.138:1234/my_page',
+        queryParameters: {},
+        options: Options(
+          headers: {
+            'Authorization' : await login.storage.read(key: 'token')
+          },
+        )
+    );
+
+    print('응답: ${response.data}');
+
+    print('응답2: ${response.data['success']}');
+    if (response.data['success'] == true) {
+      print("성공해버린..");
+      return response.data;
+    } else {
+      print('불러오기 실패' + response.data['success'].toString());
+      return response.data;
+    }
+  }
+
+}
+
+
+
+
+
+class Myinfo extends StatefulWidget {
+  Myinfo({Key? key,this.loginDacc,this.user_uni_name,this.user_speed}) : super(key: key);
   final loginDacc;
-  final user_name;
+
   final user_uni_name;
-  final user_dep_name;
-  final user_num;
+
+
   final user_speed;
-  final user_id;
+
+
+  @override
+  State<Myinfo> createState() => _MyinfoState();
+}
+
+class _MyinfoState extends State<Myinfo> {
+  Future<Map<String, dynamic>?>? apiResult;
+
+  @override
+  void initState() {
+    super.initState();
+    apiResult = getMainApi().mainAPI(context); // initState에서 API 요청을 수행
+  }
   @override
   Widget build(BuildContext _context) {
       return Scaffold(
         body: SafeArea(
           child: Container(
-              child: Column(
-                children: [
-                  header(front: front.Myinfo(loginDacc:loginDacc,user_name: user_name,user_id: user_id,user_speed: user_speed,user_dep_name: user_dep_name,user_num: user_num,user_uni_name: user_uni_name)),
-                  Name.NamePlace(user_name: user_name,user_speed: user_speed,),
-                  SpeedChart.SpeedChart(speed: user_speed),
-                  uni(text: '학교',info:user_uni_name),
-                  uni(text: '학과',info:user_dep_name),
-                  uni(text: '학번',info:user_num),
-                ],
-              )
+              child:
+              FutureBuilder<Map<String, dynamic>?>(
+                future: apiResult, // FutureBuilder에 future로 apiResult를 사용
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator(); // 로딩 인디케이터
+                  }
+                  if (snapshot.hasError) {
+                    return Text("Error: ${snapshot.error}");
+                  }
+                  if (!snapshot.hasData) {
+                    return Text("No data received");
+                  }
+
+                  var data = snapshot.data!;
+                  return Column(
+                    children: [
+
+                      header(front: front.Myinfo(loginDacc:widget.loginDacc,user_name: data['Student_name'],user_id: data['Student_id'],user_speed: widget.user_speed,user_dep_name: data['department'],user_num: data['Student_number'],user_uni_name: widget.user_uni_name)),
+                      Name.NamePlace(user_name: data['Student_name'],user_speed: widget.user_speed,),
+                      SpeedChart.SpeedChart(speed: widget.user_speed),
+                      uni(text: '학교',info:widget.user_uni_name),
+                      uni(text: '학과',info: data['department']),
+                      uni(text: '학번',info:data['Student_number']),
+                    ],
+
+                  );
+                },
+              ),
+
           ),
         ),
       );
     }
-  }
+}
 
 class button extends StatelessWidget {
   const button({super.key,this.text,this.icon,this.next_page});
