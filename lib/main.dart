@@ -4,6 +4,15 @@ import 'widgets/Bottom_Navigate.dart';
 import 'app.dart';
 import 'screens/login/login.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:go_router/go_router.dart';
+
+import '/screens/home/home_main.dart';
+import '/screens/timetables/Timetables.dart';
+import '/screens/projects/Projects.dart';
+import '/screens/chat/Chat.dart';
+import '/screens/myinfo/Myinfo.dart';
+
+
 
 void main() async {
   await initializeDateFormatting();

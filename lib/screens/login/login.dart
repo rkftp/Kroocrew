@@ -5,6 +5,9 @@ import 'sign_up.dart' as sign_up;
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:contact/screens/home/home_main.dart' as Home;
+import '/screens/projects/Projects.dart';
+import 'package:contact/app.dart';
 
 final storage = FlutterSecureStorage();
 final TextEditingController idController = TextEditingController();
@@ -47,7 +50,7 @@ class loginService {
       await storage.write(key: 'id', value: loginDTO.id);
       await storage.write(key: 'password', value: loginDTO.password);
       Get.snackbar('로그인 성공', '로그인 성공');
-      // Navigator.pushNamed(context, '/main');
+      Get.to(()=>App());
     } else {
       // 로그인 실패
       Get.snackbar('로그인 실패', '로그인 실패');
