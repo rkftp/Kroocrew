@@ -57,12 +57,13 @@ class LoginController extends StateNotifier<LoginDTO> {
     Dio _dio = DioServices().to(); // dio_service에서 생성한 객체를 가져옵니다.
     KeyBox _keyBox = KeyBox().to(); // token_keybox에서 생성한 객체를 가져옵니다.
 
-    print("\n1111111111");
+    print("\n토큰가져오기시작");
 
     final response = await _dio.post('/login', queryParameters: {
       'Student_id' : loginDTO.id,
       'Student_pw' : loginDTO.password,
     }); // baseOption에 url을 미리 세팅해두었기에, 이어질 url만 사용합니다.
+    print("\n토큰저장 성공, ${response}");
 
     print('로그인 시도: ${loginDTO.id}, ${loginDTO.password}');
 
@@ -71,10 +72,11 @@ class LoginController extends StateNotifier<LoginDTO> {
         String? token = response.data['token'];
 
         if(token != null) {
-          print("token success: ${token}");
+          print("토큰 받기 성공:}");
 
           _keyBox.deleteToken();
           _keyBox.setToken(token);
+          print("토큰 저장 성공: ");
 
           ref.read(authStateProvider.notifier).setAuthState(true);
           context.go('/');
