@@ -9,56 +9,13 @@ import 'package:contact/screens/home/home_main.dart' as Home;
 import '/screens/projects/Projects.dart';
 import 'package:contact/app.dart';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '/providers/auth.dart';
+
+
 final TextEditingController idController = TextEditingController();
 final TextEditingController pwController = TextEditingController();
-final storage = FlutterSecureStorage();
-
-class LoginDTO {
-  String id;
-  String password;
-
-  LoginDTO ({
-    required this.id,
-    required this.password
-  });
-
-  LoginDTO copyWith({
-    String? id,
-    String? password,
-  }) {
-    return LoginDTO(
-      id: id ?? this.id,
-      password: password ?? this.password,
-    );
-  }
-}
-
-class loginService {
-  Future<void> login(LoginDTO loginDTO, BuildContext context) async {
-    final dio = Dio();
-
-    print('로그인 시도: ${loginDTO.id}, ${loginDTO.password}');
-    final response = await dio.post('http://20.39.186.138:1234/login', queryParameters: {
-      'Student_id' : loginDTO.id,
-      'Student_pw' : loginDTO.password,
-    });
-
-    print('로그인 응답: ${response.data}');
-    print('로그인 응답2: ${response.data['success']}');
-    if (response.data['success'] == true) {
-      // 로그인 성공
-      await storage.write(key: 'id', value: loginDTO.id);
-      await storage.write(key: 'password', value: loginDTO.password);
-      await storage.write(key:'token', value: response.data['token']);
-      print ('token' + response.data['token']);
-      Get.snackbar('로그인 성공', '로그인 성공');
-      Get.to(()=>App());
-    } else {
-      // 로그인 실패
-      Get.snackbar('로그인 실패', '로그인 실패');
-    }
-  }
-}
 
 class signupService {
   Future<void> signup( BuildContext context) async {
@@ -103,7 +60,7 @@ class login extends StatelessWidget {
                     ),)
                 ),
                 box1(),
-                login_button(loginAcc: loginAcc,),
+                login_button(),
                 box2(),
               ],
             ),
@@ -220,11 +177,10 @@ class pw_box extends StatelessWidget {
   }
 }
 
-class login_button extends StatelessWidget {
-  const login_button({super.key,this.loginAcc});
-  final loginAcc;
+class login_button extends ConsumerWidget {
+  const login_button({super.key});
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
         margin: EdgeInsets.fromLTRB(20, 20, 20, 20),
 
@@ -242,13 +198,11 @@ class login_button extends StatelessWidget {
             ),
           ]
         ),
-        child: TextButton( onPressed: () {final loginDTO = LoginDTO(
-          id: idController.text,
-          password: pwController.text,
-        );
-
-        // 로그인 서비스 호출
-        loginService().login(loginDTO, context);}, child: Text("로그인",style: TextStyle(
+        child: TextButton( onPressed: () {
+          final loginDTO = LoginDTO(id: idController.text, password: pwController.text);
+          ref.read(loginProvider.notifier).login(loginDTO, context, ref);
+          },
+          child: Text("로그인",style: TextStyle(
             color:Colors.black
         ),), )
     );
