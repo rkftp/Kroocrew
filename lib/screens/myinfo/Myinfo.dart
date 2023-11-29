@@ -10,23 +10,21 @@ import '/screens/login/login.dart' as login;
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+
+import '/utils/dio_service.dart';
+import '/utils/token_keybox.dart';
+
 class getMainApi {
   Future<Map<String, dynamic>?> mainAPI( BuildContext context) async {
-    final dio = Dio();
+    Dio _dio = DioServices().to();
 
-    final response = await dio.get('http://20.39.186.138:1234/my_page',
-        queryParameters: {},
-        options: Options(
-          headers: {
-            'Authorization' : await login.storage.read(key: 'token')
-          },
-        )
+    final response = await _dio.get('/main_page',
+      queryParameters: {
+        'year_semester' : '2023-3',
+      },
     );
 
-    print('응답: ${response.data}');
-
-    print('응답2: ${response.data['success']}');
-    if (response.data['success'] == true) {
+    if (response.statusCode == 200) {
       print("성공해버린..");
       return response.data;
     } else {
@@ -42,8 +40,7 @@ class getMainApi {
 
 
 class Myinfo extends StatefulWidget {
-  Myinfo({Key? key,this.loginDacc,this.user_uni_name,this.user_speed}) : super(key: key);
-  final loginDacc;
+  Myinfo({Key? key,this.user_uni_name,this.user_speed}) : super(key: key);
 
   final user_uni_name;
 
@@ -86,7 +83,7 @@ class _MyinfoState extends State<Myinfo> {
                   return Column(
                     children: [
 
-                      header(front: front.Myinfo(loginDacc:widget.loginDacc,user_name: data['Student_name'],user_id: data['Student_id'],user_speed: widget.user_speed,user_dep_name: data['department'],user_num: data['Student_number'],user_uni_name: widget.user_uni_name)),
+                      header(front: front.Myinfo(user_name: data['Student_name'],user_id: data['Student_id'],user_speed: widget.user_speed,user_dep_name: data['department'],user_num: data['Student_number'],user_uni_name: widget.user_uni_name)),
                       Name.NamePlace(user_name: data['Student_name'],user_speed: widget.user_speed,),
                       SpeedChart.SpeedChart(speed: widget.user_speed),
                       uni(text: '학교',info:widget.user_uni_name),

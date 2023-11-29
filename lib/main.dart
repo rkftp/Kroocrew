@@ -11,15 +11,35 @@ import '/screens/timetables/Timetables.dart';
 import '/screens/projects/Projects.dart';
 import '/screens/chat/Chat.dart';
 import '/screens/myinfo/Myinfo.dart';
+import 'router.dart';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
 
 void main() async {
   await initializeDateFormatting();
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
-class LoginController extends GetxController {
+class MyApp extends ConsumerWidget{
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final GoRouter _router = ref.watch(goRouterProvider);
+    return MaterialApp.router(
+      routerConfig: _router,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      title: 'Kroocrew',
+    );
+  }
+}
+
+
+/*class LoginController extends GetxController {
   var log_in = false.obs;
 
   void loginAcc() {
@@ -59,4 +79,4 @@ class InitBinding extends Bindings {
   void dependencies() {
     Get.put(BottomNavController());
   }
-}
+}*/

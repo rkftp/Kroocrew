@@ -7,28 +7,21 @@ import '/screens/login/login.dart' as login;
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-
+import '/utils/dio_service.dart';
+import '/utils/token_keybox.dart';
 
 
 class getMainApi {
   Future<Map<String, dynamic>?> mainAPI( BuildContext context) async {
-    final dio = Dio();
+    Dio _dio = DioServices().to();
 
-    final response = await dio.get('http://20.39.186.138:1234/main_page',
-        queryParameters: {
-          'year_semester': '2023-3'
-        },
-        options: Options(
-          headers: {
-            'Authorization' : await login.storage.read(key: 'token')
-          },
-        )
+    final response = await _dio.get('/main_page',
+      queryParameters: {
+        'year_semester' : '2023-3',
+      },
     );
 
-    print('응답: ${response.data}');
-
-    print('응답2: ${response.data['success']}');
-    if (response.data['success'] == true) {
+    if (response.statusCode == 200) {
       print("성공해버린..");
       return response.data;
     } else {
