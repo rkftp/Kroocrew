@@ -61,7 +61,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                       ),
                     ],
                     backgroundColor: Colors.white,
-                    selectedItemColor: Colors.blue,
+                    selectedItemColor: Color(0xff473CCE),
                     unselectedItemColor: Colors.grey,
                     type: BottomNavigationBarType.fixed,
                     currentIndex: navigationShell.currentIndex,

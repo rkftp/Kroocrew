@@ -19,19 +19,19 @@ class DioServices {
   }
 
   Future<void> _initializeDio() async {
-    print('\n2222222222\n');
+    print('\ndio실행이 시작됐습니다\n');
     storedToken = await _keyBox.getToken();
-    print('토큰: $storedToken');
+    print('토큰 저장이 성공했습니다: $storedToken');
     BaseOptions _options = BaseOptions(
         baseUrl: 'http://20.39.186.138:1234',
-        headers: {
-          if (storedToken != null) 'Authorization': storedToken,
-        }
     );
 
     _dio = Dio(_options);
+    print('dio실행이 끝났습니다\n');
     // _dio.interceptors.add(DioInterceptor()); --> 인터셉터 추가 (추후 구현)
   }
 
   Dio to() => _dio;
 }
+
+

@@ -5,11 +5,15 @@ class KeyBox {
 
   factory KeyBox() => _keyBox;
 
-  KeyBox._internal();
 
-  static final storage = FlutterSecureStorage();
+  final storage = FlutterSecureStorage();
 
-  static const String _key = 'token';
+  String _key = 'token';
+
+  KeyBox._internal(){
+    getToken();
+    deleteToken();
+  }
 
   Future<void> setToken(String token) async {
     await storage.write(key: _key, value: token);

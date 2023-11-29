@@ -21,6 +21,30 @@ class Projects extends GetView<ProjectsController> {
         child: AppBar(
           elevation: 0,
           backgroundColor: Colors.white,
+          flexibleSpace: Column(
+            children:[
+              Padding(
+                padding: EdgeInsets.fromLTRB(20, 70, 20, 0),
+                child: TextField(
+                  focusNode: FocusNode(),
+                  decoration: InputDecoration(
+                    hintText: '검색',
+                    contentPadding: EdgeInsets.symmetric(vertical: 0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                      borderSide: BorderSide.none, // 테두리 선 없음
+                    ),
+                    filled: true,
+                    fillColor: Colors.grey[200],
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child: Icon(Icons.search, color: Colors.grey),
+                    ),
+                  ),
+                ),
+              )
+            ]
+          ),
           bottom: TabBar(
             controller: controller.tabController,
             tabs: controller.myTabs,

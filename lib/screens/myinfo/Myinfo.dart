@@ -18,10 +18,17 @@ class getMainApi {
   Future<Map<String, dynamic>?> mainAPI( BuildContext context) async {
     Dio _dio = DioServices().to();
 
-    final response = await _dio.get('/main_page',
+    KeyBox _keyBox = KeyBox().to();
+
+    late String? storedToken;
+    storedToken = await _keyBox.getToken();
+
+    final response = await _dio.get('/my_page',
       queryParameters: {
-        'year_semester' : '2023-3',
       },
+      options: Options(
+        headers: {'Authorization' :  '${storedToken}'},
+      )
     );
 
     if (response.statusCode == 200) {
