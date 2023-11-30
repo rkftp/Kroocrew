@@ -79,6 +79,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                     builder: (context, state) {
                       return Middle(app_name:app_name,user_uni_name : user_uni_name, user_speed:user_speed);
                     },
+
                   ),
                 ]
             ),
