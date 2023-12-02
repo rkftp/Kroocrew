@@ -32,8 +32,8 @@
     titleTextStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), // 제목 스타일 변경
     ),
     daysOfWeekStyle: DaysOfWeekStyle(
-      weekdayStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-      weekendStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+      weekdayStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+      weekendStyle: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
     ),
     calendarFormat: CalendarFormat.week,
     calendarStyle: CalendarStyle(
@@ -42,8 +42,8 @@
     color: Color(0xff473CCE),
     shape: BoxShape.circle,
     ),
-    defaultTextStyle: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.bold),
-    weekendTextStyle: TextStyle(color: Colors.blueAccent, fontSize: 14, fontWeight: FontWeight.bold),
+    defaultTextStyle: TextStyle(color: Colors.black, fontSize: 13, fontWeight: FontWeight.bold),
+    weekendTextStyle: TextStyle(color: Colors.blueAccent, fontSize: 13, fontWeight: FontWeight.bold),
     ),
     calendarBuilders: CalendarBuilders(
     defaultBuilder: (context, day, focusedDay) {

@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'empty.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+
+var user_image;
 class NamePlace extends StatelessWidget {
   NamePlace({super.key, this.user_name, this.user_speed});
   final user_name;
   final user_speed;
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +23,7 @@ class NamePlace extends StatelessWidget {
 
           ],
         ),
-        button(text: '프로필 수정', next_page: empty()),
+        button(text: '프로필 사진 수정'),
       ],
     );
   }
@@ -37,8 +44,11 @@ class name extends StatelessWidget {
               height: 60,
               width: 60,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                border: Border.all(color: Colors.black12, width: 3),
+                  borderRadius: BorderRadius.circular(50),
+                  border: Border.all(color: Colors.black12, width: 3),
+
+
+
               ),
             ),
             Container(
@@ -55,10 +65,16 @@ class name extends StatelessWidget {
   }
 }
 
-class button extends StatelessWidget {
-  const button({super.key,this.text,this.next_page});
+class button extends StatefulWidget {
+  button({super.key,this.text});
   final text;
-  final next_page;
+
+  @override
+  State<button> createState() => _buttonState();
+}
+
+class _buttonState extends State<button> {
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -67,11 +83,55 @@ class button extends StatelessWidget {
         width: double.infinity,
         height: 40,
         child: ElevatedButton(
-            onPressed: (){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => next_page)
+            onPressed: ()async{
+              var picker = ImagePicker();
+              var image;
+              showDialog(
+                context: context,
+                barrierDismissible:true,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: Container(
+                      height: 140,
+                      child: Column(
+                        children: [
+                          Container(
+                              padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                              child: Text('어떤 앱을 실행하겠습니까?')),
+                          TextButton(
+                            child: const Text('카메라'),
+                            onPressed: ()async {
+                              Navigator.of(context).pop();
+                              image = await picker.pickImage(source: ImageSource.camera);
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('갤러리'),
+                            onPressed: ()async {
+                              Navigator.of(context).pop();
+                              image = await picker.pickImage(source: ImageSource.gallery);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        child: const Text('닫기'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+
+                  );
+                }
               );
+              if (image != null) {
+                setState(() {
+                  user_image = File(image.path);
+                });
+              }
             },
             style: ButtonStyle(
 
@@ -90,7 +150,7 @@ class button extends StatelessWidget {
             child: Container(
 
               alignment: Alignment.center,
-              child: Text(text,style: TextStyle(
+              child: Text(widget.text,style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,
 
