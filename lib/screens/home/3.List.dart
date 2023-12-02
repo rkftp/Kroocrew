@@ -129,7 +129,7 @@ class Context_Box_W extends StatelessWidget {
     if(week_box == true) {
       return Container(margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
           padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-          height: (count_w > 0? count_w*65+5: 45).toDouble(),
+          height: (count_w > 0? count_w*55+5: 45).toDouble(),
           decoration: BoxDecoration(
             color: Color(0xffD9D9D9),
             borderRadius: BorderRadius.circular(15),
@@ -161,7 +161,7 @@ class Context_Box_M extends StatelessWidget {
     if(month_box == true) {
       return Container(margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
           padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-          height: (count_m > 0 ? count_m*65+5 : 45).toDouble(),
+          height: (count_m > 0 ? count_m*55+5 : 45).toDouble(),
           decoration: BoxDecoration(
             color: Color(0xffD9D9D9),
             borderRadius: BorderRadius.circular(15),
@@ -192,7 +192,7 @@ class Context_Box_A extends StatelessWidget {
     if(all_box == true) {
       return Container(margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
           padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-          height: (count_all > 0 ?count_all*65+5 : 45).toDouble(),
+          height: (count_all > 0 ?count_all*55+5 : 45).toDouble(),
           decoration: BoxDecoration(
             color: Color(0xffD9D9D9),
             borderRadius: BorderRadius.circular(15),

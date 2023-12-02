@@ -25,8 +25,8 @@ class timetableController extends StateNotifier<List<CustomCardData>> {
 
     final response = await _dio.post('/get_timetable_from_portal',
         data: {
-          "portal_id" : "smilebank7",
-          "portal_pw" : "Jhlee971214!",
+          "portal_id" : "",
+          "portal_pw" : "",
         },
         options: Options(
           headers: {'Authorization' :  '${storedToken}'},
