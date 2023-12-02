@@ -16,7 +16,7 @@ class head extends StatelessWidget {
 
             Text('설정',style:TextStyle(
               fontSize: 20,
-              fontWeight: FontWeight.w900,
+              fontWeight: FontWeight.w700,
               ),
             ),
           ],

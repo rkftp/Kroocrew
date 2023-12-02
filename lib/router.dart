@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/login/login.dart';
+import 'screens/login/sign_up.dart';
 import 'screens/home/home_main.dart';
 import 'screens/timetables/Timetables.dart';
 import 'screens/projects/Projects.dart';
@@ -31,6 +32,12 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           path: '/login',
           builder: (context, state) {
             return login();
+          },
+        ),
+        GoRoute(
+          path: '/signup',
+          builder: (context, state) {
+            return sign_up();
           },
         ),
         StatefulShellRoute.indexedStack(

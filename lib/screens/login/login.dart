@@ -1,13 +1,10 @@
+import 'package:contact/screens/login/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'find_id.dart' as find_id;
 import 'find_pw.dart' as find_pw;
 import 'sign_up.dart' as sign_up;
-import 'package:dio/dio.dart';
-import 'package:get/get.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:contact/screens/home/home_main.dart' as Home;
-import '/screens/projects/Projects.dart';
-import 'package:contact/app.dart';
+import 'package:go_router/go_router.dart';
+
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,34 +14,13 @@ import '/providers/auth.dart';
 final TextEditingController idController = TextEditingController();
 final TextEditingController pwController = TextEditingController();
 
-class signupService {
-  Future<void> signup( BuildContext context) async {
-    final dio = Dio();
-    final response = await dio.get('http://20.39.186.138:1234/singup', queryParameters: {
-      'Student_id' : idController.text,
-      'Student_pw' : pwController.text,
-      'year_semester' : '2023-3',
-      'portal_id' : 'fdsa4321',
-      'portal_pw' : 'rewqrewq',
-    });
-
-    print('signup 응답: ${response.data}');
-    print('signup 응답2: ${response.data['success']}');
-    if (response.data['success'] == true) {
-      // 로그인 성공
-    } else {
-      // 로그인 실패
-    }
-  }
-
-}
 
 
-class login extends StatelessWidget {
+class login extends ConsumerWidget {
   const login({super.key, this.loginAcc});
   final loginAcc;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body:SingleChildScrollView(
           child:Container(
@@ -56,7 +32,7 @@ class login extends StatelessWidget {
                     child: Text('Kroocrew',style: TextStyle(
                         fontSize: 50,
                         fontWeight: FontWeight.bold,
-                        color: Colors.blue
+                        color: Color(0xff473CCE),
                     ),)
                 ),
                 box1(),
@@ -97,9 +73,20 @@ class box1 extends StatelessWidget {
             alignment: Alignment.center,
             padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
             child: TextField(
-                controller: pwController,
-                decoration: InputDecoration(
-                )
+              obscureText: true,
+              controller: pwController,
+              decoration: InputDecoration(
+                border: UnderlineInputBorder(),
+                suffixIcon: Padding(
+                  padding: EdgeInsets.only(bottom: 12),
+                  child: IconButton(
+                    icon: Icon(Icons.remove_red_eye,size: 17),
+                    onPressed: () {
+
+                    },
+                  ),
+                ),
+              ),
             ),
           ),
         ],
@@ -140,42 +127,7 @@ class pw_text extends StatelessWidget {
   }
 }
 
-class id_box extends StatelessWidget {
-  const id_box({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 30,
-      width: double.infinity,
-      alignment: Alignment.center,
-      padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-      child: TextField(
-          decoration: InputDecoration(
-          )
-      ),
-    );
-  }
-}
-
-class pw_box extends StatelessWidget {
-  const pw_box({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 30,
-      width: double.infinity,
-      alignment: Alignment.center,
-      padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-      child: TextField(
-          obscureText: true,
-          decoration: InputDecoration(
-          )
-      ),
-    );
-  }
-}
 
 class login_button extends ConsumerWidget {
   const login_button({super.key});
@@ -221,7 +173,7 @@ class box2 extends StatelessWidget {
         children: [
           button(text:'아이디 찾기',next_page: find_id.find_id()),
           button(text:'비밀번호 찾기',next_page: find_pw.find_pw()),
-          button(text: '회원가입', next_page:sign_up.sign_up())
+          button(text:'회원가입',next_page:sign_up.sign_up()),
         ],
       )
     );
@@ -236,10 +188,12 @@ class button extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: TextButton( onPressed: () {
-          /*Navigator.push(
+
+
+          Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => next_page)
-          );*/
+          );
         }, child: Text(text ,style: TextStyle(
             color:Colors.grey,
             fontSize: 14,

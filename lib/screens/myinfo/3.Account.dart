@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:contact/providers/auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import '/utils/token_keybox.dart';
 
 import 'empty.dart';
 
@@ -18,9 +22,8 @@ class account extends StatelessWidget {
               subject(text: '계정'),
               uni(text: 'id',info: user_id),
               button(text:'비밀번호 변경',next_page: empty(),),
-              button(text:'프로필 이미지 변경',next_page: empty(),),
               button( text: '회원탈퇴',next_page: empty(),),
-              button_2( text: '로그아웃', next_page: loginDacc()),
+              button_2( text: '로그아웃',),
 
             ]
         ),
@@ -133,20 +136,53 @@ class button extends StatelessWidget {
 
   }
 }
-class button_2 extends StatelessWidget {
-  const button_2({super.key,this.text,this.next_page});
+class button_2 extends ConsumerWidget {
+  const button_2({super.key,this.text,});
   final text;
-  final next_page;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref ) {
     return Container(
       width: double.infinity,
-      height: 60,
+      height: 80,
       child: ElevatedButton(
           onPressed: (){
-            next_page;
-            Navigator.pop(context);
-            Navigator.pop(context);
+            showDialog(
+                context: context,
+                barrierDismissible:true,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: Container(
+                      height: 50,
+                        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                        child: Text('로그아웃 하시겠습니까?'),
+                    ),
+                    actions: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          TextButton(
+                            child: const Text('네'),
+                            onPressed: () {
+                              ref.read(authStateProvider.notifier).setAuthState(false);
+                              KeyBox _keyBox = KeyBox().to();
+                              _keyBox.deleteToken();
+                              context.go('/login');
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('아니오'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+
+                  );
+                }
+            );
           },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.transparent),

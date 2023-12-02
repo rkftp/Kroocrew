@@ -173,7 +173,7 @@ class header extends StatelessWidget {
 
           Text('내 정보',style:TextStyle(
             fontSize: 20,
-            fontWeight: FontWeight.w900,
+            fontWeight: FontWeight.w700,
           ),
           ),
           IconButton(onPressed: (){

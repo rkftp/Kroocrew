@@ -56,7 +56,7 @@ class name extends StatelessWidget {
               child: Text(user_name ,style:TextStyle(
                   color: Color(0xff000000),
                   fontSize: 20,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.w700
               )),
             ),
           ],
