@@ -1,59 +1,159 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/cupertino.dart';
 
-part 'Timetables.g.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '/utils/dio_service.dart';
+import '/utils/token_keybox.dart';
+
+import 'dart:convert';
+
+class timetableController extends StateNotifier<List<CustomCardData>> {
+  timetableController() : super([]);
+
+  Future<void> getPortal(BuildContext context, WidgetRef ref) async {
+    Dio _dio = DioServices().to();
+
+    KeyBox _keyBox = KeyBox().to();
+
+    late String? storedToken;
+    storedToken = await _keyBox.getToken();
+
+    final response = await _dio.post('/get_timetable_from_portal',
+        data: {
+          "portal_id" : "smilebank7",
+          "portal_pw" : "Jhlee971214!",
+        },
+        options: Options(
+          headers: {'Authorization' :  '${storedToken}'},
+        )
+    );
+
+    if (response.statusCode == 200) {
+      print("성공해버린..");
+      final List<dynamic> data = response.data['timetable_small'];
+
+      state = data
+          .map((item) => CustomCardData.fromTimetableSmall(item))
+          .toList();
+      print(data);
+
+    } else {
+      print('불러오기 실패' + response.data['success'].toString());
+    }
+  }
+
+  Future<void> getDB(BuildContext context, WidgetRef ref) async {
+    Dio _dio = DioServices().to();
+
+    KeyBox _keyBox = KeyBox().to();
+
+    late String? storedToken;
+    storedToken = await _keyBox.getToken();
+
+    final response = await _dio.post('/get_timetable_from_db',
+        options: Options(
+          headers: {'Authorization' :  '${storedToken}'},
+        )
+    );
+
+    if (response.statusCode == 200) {
+      print("성공해버린..");
+      final List<dynamic> data = response.data['timetable_small'];
+
+      state = data
+          .map((item) => CustomCardData.fromTimetableSmall(item))
+          .toList();
+      print(data);
+    } else {
+      print('불러오기 실패' + response.data['success'].toString());
+    }
+  }
+
+}
+
+final timetableProvider = StateNotifierProvider<timetableController, List<CustomCardData>>((ref) {
+  return timetableController();
+});
+
+
 
 class CustomCardData {
-  final String subjectName;
+  final String CourseId;
   final String time;
-  final bool isActive;
 
   CustomCardData({
-    required this.subjectName,
+    required this.CourseId,
     required this.time,
-    required this.isActive,
   });
+
+  factory CustomCardData.fromTimetableSmall(Map<String,dynamic> json) {
+    final courseId = json['Course_id'];
+
+    return CustomCardData(
+      CourseId: extractCourseId(courseId),
+      time: extractTime(courseId),
+    );
+  }
+
+  static String extractCourseId(String courseId) {
+    return courseId.substring(12); // Extract from the 13th character onward
+  }
+
+  static String extractTime(String courseId) {
+    return courseId.substring(7, 12); // Extract from the 8th to 12th characters
+  }
 }
 
-@swidget
-Widget timetables() {
-  List<CustomCardData> cardDataList = [
-    CustomCardData(subjectName: "컴퓨터통신", time: "월 2교시, 수1~2교시", isActive: true),
-    CustomCardData(subjectName: "샌즈", time: "월 2교시, 수1~2교시", isActive: false),
-    CustomCardData(subjectName: "인공지능", time: "월 2교시, 수1~2교시", isActive: true),
-    CustomCardData(subjectName: "오토마타와 샌즈", time: "월 2교시, 수1~2교시", isActive: false),
-  ];
+class Timetables extends ConsumerStatefulWidget{
+  const Timetables({Key? key}) : super(key: key);
 
-
-  return Scaffold(
-    appBar: PreferredSize(
-      preferredSize: Size.fromHeight(130.0),
-      child: CustomAppBar(),
-    ),
-    body: SafeArea(
-      child: ListView.builder(
-        itemCount: cardDataList.length,
-        itemBuilder: (context, index) {
-          CustomCardData cardData = cardDataList[index];
-
-          return CustomCard(
-            subjectName: cardData.subjectName,
-            time: cardData.time,
-            isActive: cardData.isActive,
-          );
-        },
-      ),
-    ),
-    floatingActionButton:  CustomFloatingButton(),
-  );
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _TimetablesState();
 }
 
-class CustomAppBar extends StatelessWidget {
+class _TimetablesState extends ConsumerState<Timetables> {
+
+  @override
+  void initState() {
+    super.initState();
+    //run getDB
+    ref.read(timetableProvider.notifier).getDB(context, ref);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final timetableList = ref.watch(timetableProvider);
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(130.0),
+        child: CustomAppBar(),
+      ),
+      body: SafeArea(
+        child: ListView.builder(
+          itemCount: timetableList.length,
+          itemBuilder: (context, index) {
+            CustomCardData cardData = timetableList[index];
+
+            return CustomCard(
+              subjectName: cardData.CourseId,
+              time: cardData.time,
+            );
+          },
+        ),
+      ),
+      floatingActionButton: CustomFloatingButton(),
+    );
+  }
+}
+
+class CustomAppBar extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context,WidgetRef ref) {
     return AppBar(
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,7 +216,7 @@ class CustomAppBar extends StatelessWidget {
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
               child: Text(
-                '*팀플 게시판이 개설되지 않았다면?',
+                '*시간표가 보이지 않는다면?',
                 style: TextStyle(
                   color: Colors.grey,
                   fontSize: 14,
@@ -130,6 +230,7 @@ class CustomAppBar extends StatelessWidget {
               padding: EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
               child: ElevatedButton(
                 onPressed: () {
+                  ref.read(timetableProvider.notifier).getPortal(context, ref);
                   // "개설 신청하기" 버튼을 눌렀을 때 수행할 동작 추가
                 },
                 child: Text('시간표 가져오기'),
@@ -149,18 +250,18 @@ class CustomAppBar extends StatelessWidget {
   }
 }
 
-class CustomFloatingButton extends StatelessWidget {
+class CustomFloatingButton extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Positioned(
       bottom: 20, // 하단 여백을 제거
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           InkWell(
-            onTap: () {
-              // "가져오기" 버튼을 눌렀을 때 수행할 동작 추가
-            },
+            onTap: () { // "가져오기" 버튼을 눌렀을 때 수행할 동작 추가
+
+        },
             child: Container(
               height: 55,
               width: 100,
@@ -187,6 +288,7 @@ class CustomFloatingButton extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
+              ref.read(timetableProvider.notifier).getDB(context, ref);
               // "직접 추가" 버튼을 눌렀을 때 수행할 동작 추가
             },
             child: Container(
@@ -219,13 +321,17 @@ class CustomFloatingButton extends StatelessWidget {
   }
 }
 
-class CustomCard extends StatelessWidget {
+class CustomCard extends ConsumerStatefulWidget {
   final String subjectName;
   final String time;
-  final bool isActive;
 
-  CustomCard({required this.subjectName, required this.time, required this.isActive});
+  CustomCard({required this.subjectName, required this.time});
 
+  @override
+  ConsumerState<CustomCard> createState() => _CustomCardState();
+}
+
+class _CustomCardState extends ConsumerState<CustomCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -235,21 +341,20 @@ class CustomCard extends StatelessWidget {
         side: BorderSide(color: Colors.white, width: 2),
       ),
 
-      color: isActive ? Color(0xff8983ee) :
-      Color(0xffe8e4e4),
+      color: Color(0xff8983ee),
       child: ListTile(
-        leading: Icon(CupertinoIcons.list_dash, size: 30, color: isActive ? Colors.white : Colors.black,),
+        leading: Icon(CupertinoIcons.list_dash, size: 30, color: Colors.white),
         title: Text(
-          subjectName,
+          widget.subjectName,
           style: TextStyle(
             fontWeight: FontWeight.w600,
-            color: isActive ? Colors.white : Colors.black,
+            color: Colors.white ,
           ),
         ),
         subtitle: Text(
-          time,
+          widget.time,
           style: TextStyle(
-            color: isActive ? Colors.white : Colors.black,
+            color: Colors.white ,
           ),
         ),
       ),
