@@ -1,7 +1,7 @@
+import 'package:contact/screens/projects/MyProject.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
 
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:flutter/widgets.dart';
@@ -11,38 +11,15 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '/utils/dio_service.dart';
 import '/utils/token_keybox.dart';
 
+import '/providers/projectProvider.dart';
+
 
 part 'Projects.g.dart';
 
-class getMainApi {
-  Future<Map<String, dynamic>?> mainAPI( BuildContext context) async {
-    Dio _dio = DioServices().to();
 
-    KeyBox _keyBox = KeyBox().to();
 
-    late String? storedToken;
-    storedToken = await _keyBox.getToken();
 
-    final response = await _dio.get('/list_whole_project',
-        queryParameters: {
 
-        },
-        options: Options(
-          headers: {'Authorization' :  '${storedToken}'},
-        )
-    );
-
-    if (response.statusCode == 200) {
-      print("성공해버린..");
-      return response.data;
-    } else {
-      print('불러오기 실패' + response.data['success'].toString());
-      return response.data;
-    }
-  }
-}
-
-List subject_list = [];
 
 
 
@@ -69,7 +46,6 @@ class _ProjectsState extends ConsumerState<Projects> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     final controller = ref.watch(recentTabStateProvider);
-
     final List<Tab> myTabs = <Tab>[
       Tab(
         child: Text(
@@ -82,7 +58,7 @@ class _ProjectsState extends ConsumerState<Projects> with SingleTickerProviderSt
       ),
       Tab(
         child: Text(
-          '대외활동',
+          '내 프로젝트',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w700,
@@ -99,9 +75,6 @@ class _ProjectsState extends ConsumerState<Projects> with SingleTickerProviderSt
         ),
       ),
     ];
-
-
-
 
     return Scaffold(
       appBar: PreferredSize(
@@ -121,15 +94,10 @@ class _ProjectsState extends ConsumerState<Projects> with SingleTickerProviderSt
       body: TabBarView(
         controller: controller,
         children: [
-          Projects_Subject(),
-          Projects_Activity(),
+          WholeProject(),
+          MyProject(),
           ElevatedButton(
             onPressed: () async {
-              final getMainApi _getMainApi = getMainApi();
-              final Map<String, dynamic>? response = await _getMainApi.mainAPI(context);
-              print(response);
-              subject_list = response!['data'];
-              print(subject_list);
             },
             child: Text('make api'),
           ),
@@ -158,64 +126,71 @@ Widget SearchWidget() {
 }
 
 
+class WholeProject extends ConsumerStatefulWidget {
+  const WholeProject({Key? key}) : super(key: key);
 
-@swidget
-Widget projects_Subject() {
-  return Column(
-    children: [
-      Container(
-        margin: EdgeInsets.fromLTRB(20, 14, 14, 0),
-        alignment: Alignment.centerLeft,
-        child: Column(
-            children:[
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                child: TextField(
-                  focusNode: FocusNode(),
-                  decoration: InputDecoration(
-                    hintText: '검색',
-                    contentPadding: EdgeInsets.symmetric(vertical: 0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                      borderSide: BorderSide.none, // 테두리 선 없음
-                    ),
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    prefixIcon: Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Icon(Icons.search, color: Colors.grey),
-                    ),
-                  ),
-                ),
-              ),
-              SafeArea(
-                child: Container(
-                  height: 500,
-                  child: ListView.builder(
-                    itemCount: subject_list.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return CustomCard(
-                        subjectName: subject_list[index]['subjectName'],
-                        time: subject_list[index]['time'],
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ]
-        ),
-      ),
-
-    ]
-  );
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _WholeProjectState();
 }
 
-@swidget
-Widget projects_Activity() {
-  return Center(
-    child: Text("대외활동"),
-  );
+class _WholeProjectState extends ConsumerState<WholeProject> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(projectProvider.notifier).getWholeProject();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final projectList = ref.watch(projectProvider);
+    return Column(
+        children: [
+          Container(
+            margin: EdgeInsets.fromLTRB(20, 14, 14, 0),
+            alignment: Alignment.centerLeft,
+            child: Column(
+                children:[
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                    child: TextField(
+                      focusNode: FocusNode(),
+                      decoration: InputDecoration(
+                        hintText: '검색',
+                        contentPadding: EdgeInsets.symmetric(vertical: 0),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                          borderSide: BorderSide.none, // 테두리 선 없음
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[200],
+                        prefixIcon: Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Icon(Icons.search, color: Colors.grey),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 500,
+                    child: ListView.builder(
+                      itemCount: projectList.length,
+                      itemBuilder: (content, index) {
+                        ProjectCardData cardData = projectList[index];
+                        return CustomCard(
+                          courseName: cardData.courseName,
+                          teamName: cardData.teamName,
+                        );
+                      },
+                    ),
+                  ),
+                ]
+            ),
+          ),
+        ]
+    );
+  }
 }
+
 
 @swidget
 Widget projects_Study() {
@@ -224,30 +199,45 @@ Widget projects_Study() {
   );
 }
 
-class CustomCard extends StatelessWidget {
-  final String subjectName;
-  final String time;
+class CustomCard extends ConsumerStatefulWidget {
+  final String courseName;
+  final String teamName;
 
-  CustomCard({required this.subjectName, required this.time});
+  CustomCard({required this.courseName, required this.teamName});
 
+  @override
+  ConsumerState<CustomCard> createState() => _CustomCardState();
+}
+
+class _CustomCardState extends ConsumerState<CustomCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero, // 둥근 모서리를 없앰
+      ),
+      elevation: 0, // 그림자를 없앰
       child: ListTile(
+        contentPadding: EdgeInsets.all(0), // 내용의 패딩을 없앰
+        visualDensity: VisualDensity(horizontal: 0, vertical: -4), // 아이콘과 텍스트 간격을 조절
+
+        // leading을 직접 정의
         leading: Container(
-          decoration: BoxDecoration(
-            color: Color(0xffe8e4e4),
-          ),
+          width: 48,
+          height: 48,
+          color: Color(0xffe8e4e4),
         ),
+
         title: Text(
-          subjectName,
+          widget.courseName,
           style: TextStyle(
             fontWeight: FontWeight.w600,
             color: Colors.black,
+            fontSize: 20,
           ),
         ),
         subtitle: Text(
-          time,
+          widget.teamName,
           style: TextStyle(
             color: Colors.black,
           ),
