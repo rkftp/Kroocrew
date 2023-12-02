@@ -46,8 +46,15 @@ class login extends ConsumerWidget {
   }
 }
 
-class box1 extends StatelessWidget {
+class box1 extends StatefulWidget {
   const box1({super.key});
+
+  @override
+  State<box1> createState() => _box1State();
+}
+
+class _box1State extends State<box1> {
+  bool isObscure = true;
 
   @override
   Widget build(BuildContext context) {
@@ -73,16 +80,18 @@ class box1 extends StatelessWidget {
             alignment: Alignment.center,
             padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
             child: TextField(
-              obscureText: true,
+              obscureText: isObscure,
               controller: pwController,
               decoration: InputDecoration(
                 border: UnderlineInputBorder(),
                 suffixIcon: Padding(
-                  padding: EdgeInsets.only(bottom: 12),
+                  padding: EdgeInsets.only(bottom: 10),
                   child: IconButton(
-                    icon: Icon(Icons.remove_red_eye,size: 17),
+                    icon: Icon(isObscure ? Icons.visibility_off : Icons.visibility,),
                     onPressed: () {
-
+                      setState(() {
+                        isObscure = !isObscure;
+                      });
                     },
                   ),
                 ),

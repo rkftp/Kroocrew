@@ -6,8 +6,6 @@ import '1.Name.dart' as Name;
 import '2.Infomation.dart' as Infornation;
 import '3.Account.dart' as Account;
 import '4.AppSet.dart' as AppSet;
-import '5.Etc.dart' as Etc;
-
 
 
 class Myinfo extends StatelessWidget {
@@ -28,7 +26,6 @@ class Myinfo extends StatelessWidget {
           button(text:'개인정보',icon:Icons.person_outlined,next_page: Infornation.imformation(user_uni_name:user_uni_name,user_dep_name:user_dep_name,user_num:user_num,user_speed:user_speed) ),
           button(text:'계정', icon:Icons.lock_outline, next_page:Account.account(user_id: user_id,loginDacc: loginDacc,)),
           button(text: '개인 설정', icon:Icons.settings,next_page:AppSet.appset()),
-          button(text: '기타', icon:Icons.more_horiz_outlined,next_page: Etc.etc(loginDacc:loginDacc),),
         ],
       ),
     );

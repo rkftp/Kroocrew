@@ -67,7 +67,7 @@ class _ProjectsState extends ConsumerState<Projects> with SingleTickerProviderSt
       ),
       Tab(
         child: Text(
-          '스터디',
+          '프로젝트 생성',
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w700,
