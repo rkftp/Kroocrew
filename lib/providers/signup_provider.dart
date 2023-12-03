@@ -1,14 +1,67 @@
+import 'package:contact/screens/login/sign_up.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:go_router/go_router.dart';
+import 'auth.dart';
+import '/utils/dio_service.dart';
 import 'dart:convert';
 
-import '/utils/token_keybox.dart';
-import '/utils/dio_service.dart';
+
+class IDcheckDTO {
+  String id;
+
+  IDcheckDTO({
+    required this.id,
+  });
+
+  IDcheckDTO copyWith({
+    String? id,
+  }) {
+    return IDcheckDTO(
+      id: id ?? this.id,
+    );
+  }
+}
+final idcheckProvider = StateNotifierProvider<IdcheckController, IDcheckDTO>((ref) {
+  return IdcheckController();
+});
+class IdcheckController extends StateNotifier<IDcheckDTO> {
+  IdcheckController() : super(IDcheckDTO(id: ''));
+
+  void setId(String id) {
+    state = state.copyWith(id: id);
+  }
+  Future<void> signup(IDcheckDTO IDcheckDTO, BuildContext context, WidgetRef ref) async {
+
+    Dio _dio = DioServices().to(); // dio_service에서 생성한 객체를 가져옵니다.
 
 
 
+    final response = await _dio.get('/id_duplicate_check?Student_id=${IDcheckDTO.id}'); // baseOption에 url을 미리 세팅해두었기에, 이어질 url만 사용합니다.
+    print("\n토큰저장 성공, ${response}");
+
+    print('ID 중복확인: ${IDcheckDTO.id}');
+
+    try {
+      if (response.statusCode == 200) {
+        print("성공");
+        if(response.data['success'] == true){
+          print("쌉가능");
+          idAccesstrue();
+        }else{
+          print("불가능");
+          idAccessfalse();
+        }
+
+      } else {
+        print("이미있다 아가야");
+      }
+    } catch (e) {
+      print('오류 발생: $e');
+    }
+  }
+}
 
 class SignupDTO {
   String id;
@@ -37,14 +90,6 @@ class SignupDTO {
     );
   }
 }
-class AuthStateNotifier extends StateNotifier<bool> {
-  AuthStateNotifier() : super(false);
-
-  void setAuthState(bool isLoggedIn) {
-    state = isLoggedIn;
-  }
-}
-final authStateProvider = StateNotifierProvider<AuthStateNotifier, bool>((ref) => AuthStateNotifier());
 
 final signupProvider = StateNotifierProvider<SignupController, SignupDTO>((ref) {
   return SignupController();
@@ -70,7 +115,6 @@ class SignupController extends StateNotifier<SignupDTO> {
   Future<void> signup(SignupDTO signupDTO, BuildContext context, WidgetRef ref) async {
 
     Dio _dio = DioServices().to(); // dio_service에서 생성한 객체를 가져옵니다.
-    KeyBox _keyBox = KeyBox().to(); // token_keybox에서 생성한 객체를 가져옵니다.
 
 
 
@@ -80,17 +124,19 @@ class SignupController extends StateNotifier<SignupDTO> {
       "portal_id" : signupDTO.potalid,
       "portal_pw" : signupDTO.potalpw,
     }); // baseOption에 url을 미리 세팅해두었기에, 이어질 url만 사용합니다.
-
+    print("\n토큰저장 성공, ${response}");
 
     print('회원가입 시도: ${signupDTO.id}, ${signupDTO.pw},${signupDTO.potalid}, ${signupDTO.potalpw}');
 
     try {
       if (response.statusCode == 200) {
-        ref.read(authStateProvider.notifier).setAuthState(true);
-        context.go('/');
+        print("성공");
+        Navigator.pop(context);
+
+        print("찐성공");
 
       } else {
-        //snackbar
+        print("되겠냐 ㅋ");
       }
     } catch (e) {
       print('오류 발생: $e');

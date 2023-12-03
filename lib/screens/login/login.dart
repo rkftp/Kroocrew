@@ -1,14 +1,12 @@
-import 'package:contact/screens/login/sign_up.dart';
+
 import 'package:flutter/material.dart';
+import 'package:contact/providers/auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
 import 'find_id.dart' as find_id;
 import 'find_pw.dart' as find_pw;
 import 'sign_up.dart' as sign_up;
-import 'package:go_router/go_router.dart';
-
-
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '/providers/auth.dart';
 
 
 final TextEditingController idController = TextEditingController();
@@ -17,8 +15,8 @@ final TextEditingController pwController = TextEditingController();
 
 
 class login extends ConsumerWidget {
-  const login({super.key, this.loginAcc});
-  final loginAcc;
+  const login({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -170,11 +168,11 @@ class login_button extends ConsumerWidget {
   }
 }
 
-class box2 extends StatelessWidget {
+class box2 extends ConsumerWidget {
   const box2({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,  WidgetRef ref) {
     return Container(
         padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
         child: Row(
@@ -182,7 +180,7 @@ class box2 extends StatelessWidget {
         children: [
           button(text:'아이디 찾기',next_page: find_id.find_id()),
           button(text:'비밀번호 찾기',next_page: find_pw.find_pw()),
-          button(text:'회원가입',next_page:sign_up.sign_up()),
+          button(text:'회원가입',next_page: sign_up.sign_up()),
         ],
       )
     );

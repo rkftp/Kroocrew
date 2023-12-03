@@ -1,7 +1,6 @@
 import 'package:riverpod/riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/login/login.dart';
@@ -27,19 +26,24 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         }
         return null;
       },
+
       routes: <RouteBase>[
         GoRoute(
           path: '/login',
           builder: (context, state) {
             return login();
           },
+          routes: <RouteBase>[
+            GoRoute(
+              path: 'signup',
+              builder: (context, state) {
+                return sign_up();
+              },
+            ),
+          ]
         ),
-        GoRoute(
-          path: '/signup',
-          builder: (context, state) {
-            return sign_up();
-          },
-        ),
+
+
         StatefulShellRoute.indexedStack(
           builder: (BuildContext context, GoRouterState state, StatefulNavigationShell navigationShell) {
             return Scaffold(
