@@ -57,47 +57,52 @@ class _box1State extends State<box1> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
+      child:  Stack(
+        alignment: Alignment.bottomRight,
         children: [
-          id_text(),
-          Container(
-            height: 30,
-            width: double.infinity,
-            alignment: Alignment.center,
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-            child: TextField(
-                controller: idController,
-                decoration: InputDecoration(
-                )
-            ),
-          ),
-          pw_text(),
-          Container(
-            height: 30,
-            width: double.infinity,
-            alignment: Alignment.center,
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-            child: TextField(
-              obscureText: isObscure,
-              controller: pwController,
-              decoration: InputDecoration(
-                border: UnderlineInputBorder(),
-                suffixIcon: Padding(
-                  padding: EdgeInsets.only(bottom: 10),
-                  child: IconButton(
-                    icon: Icon(isObscure ? Icons.visibility_off : Icons.visibility,),
-                    onPressed: () {
-                      setState(() {
-                        isObscure = !isObscure;
-                      });
-                    },
+          Column(
+              children: [
+                id_text(),
+                Container(
+                  height: 30,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  child: TextField(
+                      controller: idController,
+                      decoration: InputDecoration(
+                      )
                   ),
                 ),
-              ),
+                pw_text(),
+                Container(
+                  height: 30,
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  child: TextField(
+                      controller: pwController,
+                      decoration: InputDecoration(
+                      )
+                  ),
+                ),
+
+              ]
+          ),
+          Container(
+            height: 50,
+            padding: EdgeInsets.fromLTRB(0, 9, 20, 10),
+            child: IconButton(
+              icon: Icon(isObscure ? Icons.visibility_off : Icons.visibility,color:  Colors.grey),
+              onPressed: () {
+                setState(() {
+                  isObscure = !isObscure;
+                });
+              },
             ),
           ),
         ],
-      )
+      ),
     );
   }
 }

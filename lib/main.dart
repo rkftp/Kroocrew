@@ -30,6 +30,7 @@ class MyApp extends ConsumerWidget{
     final GoRouter _router = ref.watch(goRouterProvider);
     return MaterialApp.router(
       routerConfig: _router,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

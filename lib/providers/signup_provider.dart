@@ -131,8 +131,13 @@ class SignupController extends StateNotifier<SignupDTO> {
     try {
       if (response.statusCode == 200) {
         print("성공");
-        Navigator.pop(context);
+        if(response.data['success'] == true){
+          print("쌉가능");
+          Navigator.pop(context);
+        }else{
+          print("불가능");
 
+        }
         print("찐성공");
 
       } else {
