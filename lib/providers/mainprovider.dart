@@ -16,7 +16,7 @@ class MainData{
   final String department;
   final int speed;
   final List<dynamic> timeTable;
-  final List<dynamic> scedule;
+  final Map<String,dynamic>? scedule;
 
   MainData({
     required this.studentId,
@@ -29,26 +29,18 @@ class MainData{
     required this.scedule,
 });
 
-  factory MainData.fromMain(Map<String,dynamic>json){
-    final studentId = json["Student_id"];
-    final retCode = json["retCode"];
-    final studentName = json["Student_name"];
-    final studentNumber = json["Student_number"];
-    final department = json["department"];
-    final speed = json["Speed"];
-    final timeTable = json["timeTable"];
-    final scedule = json["schedule"];
-
+  factory MainData.fromMain(Map<String, dynamic> json) {
     return MainData(
-        studentId : studentId,
-        retCode : retCode,
-        studentName : studentName,
-        studentNumber : studentNumber,
-        department : department,
-        speed : speed,
-        timeTable : timeTable,
-        scedule : scedule,
-    );}
+      studentId: json['Student_id'] as String,  // String 타입으로 변환
+      retCode: json['retCode'] as bool,         // bool 타입으로 변환
+      studentName: json['Student_name'] as String,
+      studentNumber: json['Student_number'] as String,
+      department: json['department'] as String,
+      speed: json['Speed'] as int,              // int 타입으로 변환
+      timeTable: json['timeTable'] as List<dynamic>,
+      scedule: json['schedule'] as Map<String, dynamic>,
+    );
+  }
 }
 
 
@@ -62,20 +54,22 @@ class mainController extends StateNotifier<List<MainData>> {
     late String? storedToken;
     storedToken = await _keyBox.getToken();
 
-    print("sansasnasnansas");
+
     final response = await _dio.get('/main_page',
         options: Options(
             headers : {'Authorization': '${storedToken}'},
           )
     );
-    print("asdfasdfasdfasdfasdf\n");
+
 
     if (response.statusCode == 200) {
-      print("12341234123412341234\n성공해버린..");
+      print("성공해버린..");
 
       MainData data = MainData.fromMain(response.data);
-      print(data);
-      state = data as List<MainData>;
+
+
+
+      print(state);
 
 
     } else {

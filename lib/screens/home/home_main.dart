@@ -34,7 +34,7 @@ class _MiddleState extends ConsumerState<Middle> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Head.Head(app_name: 'Kroocrew', user_uni_name: '중앙대', user_dep_name:'sans'),
+          Head.Head(app_name: 'Kroocrew', user_uni_name: '중앙대', user_dep_name:'snas'),
           Cal_Test.TableCalendarScreen(),
           Middle_Cal.Middle(),
         ],
