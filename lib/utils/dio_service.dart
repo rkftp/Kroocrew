@@ -19,9 +19,9 @@ class DioServices {
   }
 
   Future<void> _initializeDio() async {
-   /* print('\ndio실행이 시작됐습니다\n');
+    /*print('\ndio실행이 시작됐습니다\n');
     storedToken = await _keyBox.getToken();
-    print('토큰 저장이 성공했습니다: $storedToken');
+    print('토큰 저장이 성공했습니다: $storedToken');*/
     BaseOptions _options = BaseOptions(
         baseUrl: 'http://20.39.186.138:1234',
     );
