@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:contact/providers/auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -82,6 +81,7 @@ class _box1State extends State<box1> {
                   padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: TextField(
                       controller: pwController,
+                      obscureText: isObscure,
                       decoration: InputDecoration(
                       )
                   ),

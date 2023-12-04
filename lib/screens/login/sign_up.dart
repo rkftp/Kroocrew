@@ -154,8 +154,6 @@ class _sign_upState extends ConsumerState<sign_up> with SingleTickerProviderStat
                                       idRule = false;
                                     });
                                   }
-
-
                                 },
                                 child: Text('중복확인'),
                                 style: ButtonStyle(
@@ -214,7 +212,7 @@ class _sign_upState extends ConsumerState<sign_up> with SingleTickerProviderStat
                           alignment: Alignment.centerLeft,
                           padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
                           child: TextField(
-
+                            obscureText: true,
                             controller: potalpwController,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
