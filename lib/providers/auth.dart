@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 
 
 import '/utils/token_keybox.dart';
-import '/utils/dio_service.dart';
 
 class LoginDTO {
   String id;
@@ -54,15 +53,13 @@ class LoginController extends StateNotifier<LoginDTO> {
 
   Future<void> login(LoginDTO loginDTO, BuildContext context, WidgetRef ref) async {
 
-    Dio _dio = DioServices().to(); // dio_service에서 생성한 객체를 가져옵니다.
+    Dio _dio = Dio();
     KeyBox _keyBox = KeyBox().to(); // token_keybox에서 생성한 객체를 가져옵니다.
 
-    print("\n토큰가져오기시작");
-
-    final response = await _dio.post('/login', queryParameters: {
-      'Student_id' : loginDTO.id,
-      'Student_pw' : loginDTO.password,
-    }); // baseOption에 url을 미리 세팅해두었기에, 이어질 url만 사용합니다.
+    final response = await _dio.post('http://20.39.186.138:1234/login', data: {
+      "Student_id" : loginDTO.id,
+      "Student_pw" : loginDTO.password
+    });
     print("\n토큰저장 성공, ${response}");
 
     print('로그인 시도: ${loginDTO.id}, ${loginDTO.password}');
@@ -71,22 +68,14 @@ class LoginController extends StateNotifier<LoginDTO> {
       if (response.statusCode == 200) {
         String? token = response.data['token'];
 
-        if(token != null) {
-          print("토큰 받기 성공:}");
-
           _keyBox.deleteToken();
-          _keyBox.setToken(token);
-          print("토큰 저장 성공: ");
+          _keyBox.setToken(token!);
 
-          ref.read(authStateProvider.notifier).setAuthState(true);
-          context.go('/');
-
-        }else {
-          print("token fail");
-          token = null;
-          _keyBox.deleteToken();
-        }
-
+          if (token != null) {
+            print('토큰 저장 완료: $token');
+            ref.read(authStateProvider.notifier).setAuthState(true);
+            context.go('/');
+          }
       } else {
         //snackbar
       }
