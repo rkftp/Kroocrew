@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/providers/signup_provider.dart';
+import 'sign_up.dart';
 
 final TextEditingController idController = TextEditingController();
 final TextEditingController pwController = TextEditingController();
 final TextEditingController pwController1 = TextEditingController();
 final TextEditingController potalidController = TextEditingController();
 final TextEditingController potalpwController = TextEditingController();
+
 
 var idAccess = false;
 idAccesstrue() {
@@ -79,13 +81,9 @@ class _sign_upState extends ConsumerState<sign_up> with SingleTickerProviderStat
     try {
       await ref.read(idcheckProvider.notifier).signup(idcheckDTO, context, ref);
       // 서버 응답이 성공적으로 완료된 후의 로직
-      setState(() {
-        idAccess = true; // 예시로 true로 설정
-      });
+
     } catch (e) {
-      setState(() {
-        idAccess = false; // 예시로 실패했을 때 false로 설정
-      });
+
     } finally {
       setState(() {
         isLoading = false; // 로딩 종료
@@ -93,6 +91,7 @@ class _sign_upState extends ConsumerState<sign_up> with SingleTickerProviderStat
     }
   }
   Widget build(BuildContext context, ) {
+    final emailController = ref.watch(emailControllerProvider);
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xff473CCE),
@@ -147,7 +146,6 @@ class _sign_upState extends ConsumerState<sign_up> with SingleTickerProviderStat
                                     setState(() {
                                       idRule = true;
                                     });
-                                    final idcheckDTO = IDcheckDTO(id: idController.text);
                                     _checkId();
                                   } else {
                                     setState(() {
@@ -240,7 +238,7 @@ class _sign_upState extends ConsumerState<sign_up> with SingleTickerProviderStat
                           child: TextButton( onPressed: () {
 
                             if(idAccess == true && pwAccess == true) {
-                              final signupDTO = SignupDTO(id: idController.text, pw: pwController.text, potalid: potalidController.text, potalpw: potalpwController.text);
+                              final signupDTO = SignupDTO(id: idController.text, pw: pwController.text, potalid: potalidController.text, potalpw: potalpwController.text,email: emailController.text);
                               ref.read(signupProvider.notifier).signup(signupDTO,context,ref);
                             } else{
                               print("애송이");// 밑에 띄워야겠지?

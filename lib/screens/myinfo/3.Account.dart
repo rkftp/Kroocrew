@@ -1,10 +1,40 @@
+
 import 'package:flutter/material.dart';
 import 'package:contact/providers/auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '/utils/token_keybox.dart';
+import 'package:dio/dio.dart';
 
 import 'empty.dart';
+
+KeyBox _keyBox = KeyBox().to();
+
+Future<void> signout() async {
+  Dio _dio = Dio(); // dio_service에서 생성한 객체를 가져옵니다.
+
+  late String? storedToken;
+  storedToken = await _keyBox.getToken();
+  print("2");
+  final response = await _dio.get('http://20.39.186.138:1234/signout',
+    options: Options(
+        headers : {'Authorization': '${storedToken}'},
+));
+  print("3");
+  try {
+    if (response.statusCode == 200) {
+      print("성공");
+      print(response.data['success']);
+      if (response.data['success'] == true) {
+        print("찐성공");
+      } else {
+        print("미친 실패");
+      }
+    } else {}
+  } catch (e) {
+    print('오류 발생: $e');
+  }
+}
 
 class account extends StatelessWidget {
   const account({super.key,this.user_id,this.loginDacc});
@@ -22,7 +52,7 @@ class account extends StatelessWidget {
               subject(text: '계정'),
               uni(text: 'id',info: user_id),
               button(text:'비밀번호 변경',next_page: empty(),),
-              button( text: '회원탈퇴',next_page: empty(),),
+              button_3( text: '회원탈퇴'),
               button_2( text: '로그아웃',),
 
             ]
@@ -164,6 +194,81 @@ class button_2 extends ConsumerWidget {
                             child: const Text('네'),
                             onPressed: () {
                               ref.read(authStateProvider.notifier).setAuthState(false);
+
+                              _keyBox.deleteToken();
+                              context.go('/login');
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('아니오'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+
+                  );
+                }
+            );
+          },
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.transparent),
+            shadowColor: MaterialStateProperty.all(Colors.transparent),
+            elevation: MaterialStateProperty.all(0),
+            overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                  (Set<MaterialState> states) {
+                if (states.contains(MaterialState.pressed)) {
+                  return Colors.grey.withOpacity(0.2);
+                }
+                return null;
+              },
+            ),
+          ),
+          child: Container(
+            padding: EdgeInsets.fromLTRB(0, 15, 20,15),
+            alignment: Alignment.centerLeft,
+            child: Text(text,style: TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+
+            ),),
+          )
+      ),
+    );
+
+  }
+}
+class button_3 extends ConsumerWidget {
+  const button_3({super.key,this.text,});
+  final text;
+  @override
+  Widget build(BuildContext context,WidgetRef ref ) {
+    return Container(
+      width: double.infinity,
+      height: 80,
+      child: ElevatedButton(
+          onPressed: (){
+            showDialog(
+                context: context,
+                barrierDismissible:true,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: Container(
+                      height: 50,
+                      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      child: Text('정말 탈퇴 하시겠습니까?'),
+                    ),
+                    actions: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          TextButton(
+                            child: const Text('네'),
+                            onPressed: () async {
+                              await signout();
                               KeyBox _keyBox = KeyBox().to();
                               _keyBox.deleteToken();
                               context.go('/login');

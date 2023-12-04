@@ -10,6 +10,8 @@ import '/providers/mainprovider.dart';
 
 
 class Middle extends ConsumerStatefulWidget {
+
+
   const Middle({Key? key}) : super(key: key);
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _MiddleState();
@@ -23,9 +25,9 @@ class _MiddleState extends ConsumerState<Middle> {
   }
 
   @override
+
   Widget build(BuildContext context) {
     final middleState = ref.watch(MainProvider);
-
     MainData mainData = middleState;
     final scheduleData = middleState.schedule;
 
@@ -40,9 +42,6 @@ class _MiddleState extends ConsumerState<Middle> {
       )).toList();
     }
 
-    print('12341234');
-    print(scheduleList[0].deadLine);
-    // sans를 Schedule객체로 매핑
 
     
 
@@ -54,7 +53,7 @@ class _MiddleState extends ConsumerState<Middle> {
           children: [
             Head.Head(app_name: 'Kroocrew', user_uni_name: '중앙대', user_dep_name:mainData.department),
             Cal_Test.TableCalendarScreen(),
-            Middle_Cal.Middle(),
+            Middle_Cal.list(b1: scheduleList),
           ],
         ),
       )

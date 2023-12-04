@@ -3,7 +3,8 @@ import 'empty.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-var user_image;
+XFile ? selectImage;
+final ImagePicker _picker = ImagePicker();
 class NamePlace extends StatelessWidget {
   NamePlace({super.key, this.user_name, this.user_speed});
   final user_name;
@@ -102,14 +103,15 @@ class _buttonState extends State<button> {
                             child: const Text('카메라'),
                             onPressed: ()async {
                               Navigator.of(context).pop();
-                              image = await picker.pickImage(source: ImageSource.camera);
+
+                              selectImage = await _picker.pickImage(source: ImageSource.camera,maxHeight: 75,maxWidth: 75,imageQuality: 30);
                             },
                           ),
                           TextButton(
                             child: const Text('갤러리'),
                             onPressed: ()async {
                               Navigator.of(context).pop();
-                              image = await picker.pickImage(source: ImageSource.gallery);
+                             selectImage = await _picker.pickImage(source: ImageSource.gallery,maxHeight: 75,maxWidth: 75,imageQuality: 30);
                             },
                           ),
                         ],
@@ -127,10 +129,8 @@ class _buttonState extends State<button> {
                   );
                 }
               );
-              if (image != null) {
-                setState(() {
-                  user_image = File(image.path);
-                });
+              if (selectImage != null) {
+
               }
             },
             style: ButtonStyle(

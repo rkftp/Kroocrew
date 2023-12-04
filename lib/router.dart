@@ -11,7 +11,6 @@ import 'screens/timetables/Timetables.dart';
 import 'screens/projects/Projects.dart';
 import 'screens/chat/Chat.dart';
 import 'screens/myinfo/Myinfo.dart';
-
 import 'providers/auth.dart';
 
 var app_name = 'Kroocrew';
@@ -138,7 +137,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   GoRoute(
                     path: '/myinfo',
                     builder: (context, state) {
-                      return Myinfo(user_uni_name:user_uni_name,user_speed: user_speed,);
+                      return Myinfo();
                     },
                   ),
                 ]

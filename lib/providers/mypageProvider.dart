@@ -12,6 +12,7 @@ class MyinfoData{
   final String department;
   final int speed;
   // 사진정보
+  final String description;
   MyinfoData({
     required this.studentId,
     required this.retCode,
@@ -19,7 +20,63 @@ class MyinfoData{
     required this.studentNumber,
     required this.department,
     required this.speed,
+    required this.description,
 });
+  factory MyinfoData.fromMain(Map<String, dynamic> json) {
+    final studentId = json['Student_id'];
+    final retCode = json['retCode'];
+    final studentName = json['Student_name'];
+    final studentNumber = json['Student_number'];
+    final department = json['department'];
+    final speed = json['Speed'];
+    final description = json['description'];
 
-  factory MyinfoData.fromMyinfo()
+    return MyinfoData(
+      studentId : studentId,
+      retCode : retCode,
+      studentName : studentName,
+      studentNumber : studentNumber,
+      department : department,
+      speed : speed,
+      description: description,
+    );}
+
+
 }
+class myinfoController extends StateNotifier<MyinfoData> {
+  myinfoController() : super(MyinfoData(studentId : '', retCode : true, studentName: '',studentNumber: '',department: '',  speed: 0,description: '' ));
+
+  Future<void> getMainAPI() async {
+    Dio _dio = DioServices().to();
+    KeyBox _keyBox = KeyBox().to();
+
+    late String? storedToken;
+    storedToken = await _keyBox.getToken();
+
+
+    final response = await _dio.get('/my_page',
+        options: Options(
+          headers : {'Authorization': '${storedToken}'},
+        )
+    );
+
+
+    if (response.statusCode == 200) {
+      print("성공해버린..");
+
+      final MyinfoData data = MyinfoData.fromMain(response.data);
+      state = data;
+
+      print(state);
+
+
+    } else {
+      print('불러오기 실패' +response.data['success'].toString());
+    }
+  }
+
+}
+
+final MyinfoProvider = StateNotifierProvider<myinfoController, MyinfoData>((ref){
+  return myinfoController();
+});

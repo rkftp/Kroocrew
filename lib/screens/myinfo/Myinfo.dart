@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:flutter/widgets.dart';
 import 'front_page.dart' as front;
@@ -9,104 +10,157 @@ import 'SpeedChart.dart' as SpeedChart;
 import '/screens/login/login.dart' as login;
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '/providers/mypageProvider.dart';
 
 
 import '/utils/dio_service.dart';
 import '/utils/token_keybox.dart';
 
-class getMainApi {
-  Future<Map<String, dynamic>?> mainAPI( BuildContext context) async {
-    Dio _dio = DioServices().to();
 
-    KeyBox _keyBox = KeyBox().to();
 
-    late String? storedToken;
-    storedToken = await _keyBox.getToken();
-
-    final response = await _dio.get('/my_page',
-      queryParameters: {
-      },
+Future<void> description(text) async {
+  Dio _dio = Dio(); // dio_service에서 생성한 객체를 가져옵니다.
+  KeyBox _keyBox = KeyBox().to();
+  late String? storedToken;
+  storedToken = await _keyBox.getToken();
+  print("2");
+  final response = await _dio.get('http://20.39.186.138:1234/add_student_description?description=${text}',
       options: Options(
-        headers: {'Authorization' :  '${storedToken}'},
-      )
-    );
-
+        headers : {'Authorization': '${storedToken}'},
+      ));
+  print("3");
+  try {
     if (response.statusCode == 200) {
-      print("성공해버린..");
-      return response.data;
-    } else {
-      print('불러오기 실패' + response.data['success'].toString());
-      return response.data;
-    }
+      print("성공");
+      print(response.data['success']);
+      if (response.data['success'] == true) {
+        print("찐성공");
+      } else {
+        print("미친 실패");
+      }
+    } else {}
+  } catch (e) {
+    print('오류 발생: $e');
   }
-
 }
-
-
-
-
-
-class Myinfo extends StatefulWidget {
-  Myinfo({Key? key,this.user_uni_name,this.user_speed}) : super(key: key);
-
-  final user_uni_name;
-
-
-  final user_speed;
-
-
+class Myinfo extends ConsumerStatefulWidget {
+  const Myinfo({Key? key}) : super(key: key);
   @override
-  State<Myinfo> createState() => _MyinfoState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _MyinfoState();
 }
-
-class _MyinfoState extends State<Myinfo> {
-  Future<Map<String, dynamic>?>? apiResult;
+class _MyinfoState extends ConsumerState<Myinfo> {
 
   @override
   void initState() {
     super.initState();
-    apiResult = getMainApi().mainAPI(context); // initState에서 API 요청을 수행
+    ref.read(MyinfoProvider.notifier).getMainAPI();
   }
+
   @override
+
   Widget build(BuildContext _context) {
-      return Scaffold(
-        body: SafeArea(
-          child: Container(
-              child:
-              FutureBuilder<Map<String, dynamic>?>(
-                future: apiResult, // FutureBuilder에 future로 apiResult를 사용
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator(); // 로딩 인디케이터
-                  }
-                  if (snapshot.hasError) {
-                    return Text("Error: ${snapshot.error}");
-                  }
-                  if (!snapshot.hasData) {
-                    return Text("No data received");
-                  }
 
-                  var data = snapshot.data!;
-                  return Column(
-                    children: [
+    final myinfoState = ref.watch(MyinfoProvider);
 
-                      header(front: front.Myinfo(user_name: data['Student_name'],user_id: data['Student_id'],user_speed: widget.user_speed,user_dep_name: data['department'],user_num: data['Student_number'],user_uni_name: widget.user_uni_name)),
-                      Name.NamePlace(user_name: data['Student_name'],user_speed: widget.user_speed,),
-                      SpeedChart.SpeedChart(speed: widget.user_speed),
-                      uni(text: '학교',info:widget.user_uni_name),
-                      uni(text: '학과',info: data['department']),
-                      uni(text: '학번',info:data['Student_number']),
-                    ],
+    MyinfoData myinfoData = myinfoState;
+    String _editedText = myinfoData.description;
 
-                  );
-                },
+    TextEditingController _textFieldController = TextEditingController(text:_editedText);
+
+    return Scaffold(
+      body: SafeArea(
+        child: Container(
+          child:Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+
+              header(front: front.Myinfo(user_name: myinfoData.studentName,user_id: myinfoData.studentId,user_speed: myinfoData.speed,user_dep_name: myinfoData.department,user_num: myinfoData.studentNumber,user_uni_name: '중앙대')),
+              Name.NamePlace(user_name: myinfoData.studentName,user_speed: myinfoData.speed,),
+              SpeedChart.SpeedChart(speed: myinfoData.speed),
+              Container(
+                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                child: Text("내 소개 글",style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                ),),
+              ),
+              Container(
+                margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                width: double.infinity,
+                height: 300,
+                decoration: BoxDecoration(
+                  color: Color(0xffffffff),
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: Color(0xff000000), width: 1.5),
+                ),
+                child: ListView(
+                  children: [Text(_editedText, style: TextStyle(
+                    fontSize: 16,
+                  ),),]
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                child: ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('내용 수정'),
+                          content: Container(
+                            width: double.maxFinite, // 팝업의 너비를 최대로 설정
+                            child: TextField(
+                              controller: _textFieldController,
+                              maxLines: null,
+                              minLines: 5, // 최소 줄 수를 증가시켜 넓이를 확보
+                              decoration: InputDecoration(
+                                hintText: "텍스트를 입력하세요",
+                                border: OutlineInputBorder(), // 네모난 테두리 적용
+                              ),
+                            ),
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              child: Text('취소'),
+                              onPressed: () {
+                                Navigator.of(context).pop(); // 팝업 닫기
+                              },
+                            ),
+                            TextButton(
+                              child: Text('저장'),
+                              onPressed: () {
+                               description(_textFieldController.text);
+                               ref.read(MyinfoProvider.notifier).getMainAPI();
+                                Navigator.of(context).pop(); // 팝업 닫기
+                              },
+                            ),
+                             // 수정된 텍스트 표시
+                          ],
+                        );
+                      },
+                    );
+                  },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Color(0xff473CCE)), // 여기에서 색상을 설정
+                    ),
+                  child: Text('수정하기'),
+
+                ),
               ),
 
+            ],
+
           ),
+
+
         ),
-      );
-    }
+      ),
+    );
+  }
 }
+
 
 class button extends StatelessWidget {
   const button({super.key,this.text,this.icon,this.next_page});

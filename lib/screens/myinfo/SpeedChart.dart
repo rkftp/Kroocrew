@@ -35,9 +35,7 @@ class SpeedChart extends StatelessWidget {
 
 class bar extends StatelessWidget {
   const bar({super.key,this.speed});
-  final speed;
-
-
+  final speed ;
 
 
   @override
@@ -63,8 +61,8 @@ class bar extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
 
                   ),
-                ),flex:int.parse(speed as String) ),
-                Flexible(child: Container(),flex:300 - int.parse(speed as String))
+                ),flex:speed ),
+                Flexible(child: Container(),flex:(300-speed)as int)
               ],
             )
 

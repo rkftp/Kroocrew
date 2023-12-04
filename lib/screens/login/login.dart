@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'find_id.dart' as find_id;
 import 'find_pw.dart' as find_pw;
 import 'sign_up.dart' as sign_up;
+import 'email.dart' as email;
 
 
 final TextEditingController idController = TextEditingController();
@@ -185,7 +186,7 @@ class box2 extends ConsumerWidget {
         children: [
           button(text:'아이디 찾기',next_page: find_id.find_id()),
           button(text:'비밀번호 찾기',next_page: find_pw.find_pw()),
-          button(text:'회원가입',next_page: sign_up.sign_up()),
+          button(text:'회원가입',next_page: email.email()),
         ],
       )
     );
