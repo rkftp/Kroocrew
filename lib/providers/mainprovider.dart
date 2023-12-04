@@ -1,51 +1,70 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/material.dart';
+
 
 import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 
 import '/utils/dio_service.dart';
 import '/utils/token_keybox.dart';
 
+class Schedule{
+  final String courseName;
+  final String projectName;
+  final String teamName;
+  final String deadLine;
+  final String description;
+
+  Schedule({
+    required this.courseName,
+    required this.projectName,
+    required this.teamName,
+    required this.deadLine,
+    required this.description,
+});
+
+  factory Schedule.fromSchedule(Map<String, dynamic> json) {
+    return Schedule(
+        courseName: json["Course_name"],
+        projectName: json["Project_name"],
+        teamName: json["Team_name"],
+        deadLine: json["Deadline"],
+        description: json["description"]
+    );
+  }
+
+}
 
 class MainData{
-  final String studentId;
   final bool retCode;
-  final String studentName;
-  final String studentNumber;
   final String department;
-  final int speed;
-  final List<dynamic> timeTable;
-  final Map<String,dynamic>? scedule;
+  final List<Schedule>? schedule;
+
+
 
   MainData({
-    required this.studentId,
+
     required this.retCode,
-    required this.studentName,
-    required this.studentNumber,
     required this.department,
-    required this.speed,
-    required this.timeTable,
-    required this.scedule,
+    required this.schedule,
 });
 
   factory MainData.fromMain(Map<String, dynamic> json) {
+    final List<dynamic> scheduleJson = json['schedule'];
+    List<Schedule> scheduleList = scheduleJson.map((item) => Schedule.fromSchedule(item)).toList();
     return MainData(
-      studentId: json['Student_id'] as String,  // String 타입으로 변환
-      retCode: json['retCode'] as bool,         // bool 타입으로 변환
-      studentName: json['Student_name'] as String,
-      studentNumber: json['Student_number'] as String,
-      department: json['department'] as String,
-      speed: json['Speed'] as int,              // int 타입으로 변환
-      timeTable: json['timeTable'] as List<dynamic>,
-      scedule: json['schedule'] as Map<String, dynamic>,
+      retCode: json['retCode'] ,
+      department: json['department'] ,
+      schedule: scheduleList ,
     );
   }
+
+
+
 }
 
 
-class mainController extends StateNotifier<List<MainData>> {
-  mainController() : super([]);
+class mainController extends StateNotifier<MainData> {
+  mainController() : super(MainData(retCode: true, department: '',  schedule: null ));
 
   Future<void> getMainAPI() async {
     Dio _dio = DioServices().to();
@@ -65,9 +84,8 @@ class mainController extends StateNotifier<List<MainData>> {
     if (response.statusCode == 200) {
       print("성공해버린..");
 
-      MainData data = MainData.fromMain(response.data);
-
-
+      final MainData data = MainData.fromMain(response.data);
+      state = data;
 
       print(state);
 
@@ -79,7 +97,7 @@ class mainController extends StateNotifier<List<MainData>> {
 
 }
 
-final MainProvider = StateNotifierProvider<mainController, List<MainData>>((ref){
+final MainProvider = StateNotifierProvider<mainController, MainData>((ref){
   return mainController();
 });
 
