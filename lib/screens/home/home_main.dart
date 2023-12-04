@@ -27,7 +27,23 @@ class _MiddleState extends ConsumerState<Middle> {
     final middleState = ref.watch(MainProvider);
 
     MainData mainData = middleState;
-    final sans = middleState.schedule;
+    final scheduleData = middleState.schedule;
+
+    List<Schedule> scheduleList = [];
+    if (scheduleData != null) {
+      scheduleList = scheduleData.map((item) => Schedule(
+        courseName: item.courseName,
+        projectName: item.projectName,
+        teamName: item.teamName,
+        deadLine: item.deadLine,
+        description: item.description,
+      )).toList();
+    }
+
+    print('12341234');
+    print(scheduleList[0].deadLine);
+    // sans를 Schedule객체로 매핑
+
     
 
 
