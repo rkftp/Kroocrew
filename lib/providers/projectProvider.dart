@@ -10,20 +10,50 @@ import '/utils/token_keybox.dart';
 class ProjectCardData{
   final String teamName;
   final String courseName;
+  final int teamId;
+  final String courseId;
+  final int maxMember;
+  final int currentMember;
+  final String teamLeader;
+  final String? description;
+  final String finishTime;
+
+
 
   ProjectCardData({
     required this.teamName,
     required this.courseName,
+    required this.teamId,
+    required this.courseId,
+    required this.maxMember,
+    required this.currentMember,
+    required this.teamLeader,
+    required this.description,
+    required this.finishTime,
   });
 
   factory ProjectCardData.fromProjects(Map<String,dynamic> json) {
     final courseName = json["Course_name"];
     final teamName = json["Team_name"];
+    final teamId = json["Team_id"];
+    final courseId = json["Course_id"];
+    final maxMember = json["max_member"];
+    final currentMember = json["current_member"];
+    final teamLeader = json["head"];
+    final description = json["description"];
+    final finishTime = json["finish_time"];
 
 
     return ProjectCardData(
       courseName: courseName,
       teamName: teamName,
+      teamId: teamId,
+      courseId: courseId,
+      maxMember: maxMember,
+      currentMember: currentMember,
+      teamLeader: teamLeader,
+      description: description,
+      finishTime: finishTime,
     );}
 
 }
@@ -55,6 +85,14 @@ class projectController extends StateNotifier<List<ProjectCardData>> {
       print('불러오기 실패' + response.data['success'].toString());
       // return response.data;
     }
+  }
+
+  Future<void> searchProject(String keyword) async {
+    if (keyword == '') {
+      getWholeProject();
+      return;
+    }
+    state = state.where((element) => element.courseName.contains(keyword)).toList();
   }
 }
 

@@ -107,24 +107,6 @@ class _ProjectsState extends ConsumerState<Projects> with SingleTickerProviderSt
   }
 }
 
-@swidget
-Widget SearchWidget() {
-  return Container(
-    padding: EdgeInsets.symmetric(horizontal: 10),
-    decoration: BoxDecoration(
-      color: Colors.grey[200],
-      borderRadius: BorderRadius.circular(20),
-    ),
-    child: Row(
-      children: [
-        Icon(Icons.search, color: Colors.grey),
-        SizedBox(width: 5),
-        Text('검색', style: TextStyle(color: Colors.grey)),
-      ],
-    ),
-  );
-}
-
 
 class WholeProject extends ConsumerStatefulWidget {
   const WholeProject({Key? key}) : super(key: key);
@@ -154,6 +136,9 @@ class _WholeProjectState extends ConsumerState<WholeProject> {
                     padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                     child: TextField(
                       focusNode: FocusNode(),
+                      onChanged: (text) {
+                        ref.read(projectProvider.notifier).searchProject(text);
+                      },
                       decoration: InputDecoration(
                         hintText: '검색',
                         contentPadding: EdgeInsets.symmetric(vertical: 0),

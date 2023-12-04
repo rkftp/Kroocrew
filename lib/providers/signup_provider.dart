@@ -34,11 +34,11 @@ class IdcheckController extends StateNotifier<IDcheckDTO> {
   }
   Future<void> signup(IDcheckDTO IDcheckDTO, BuildContext context, WidgetRef ref) async {
 
-    Dio _dio = DioServices().to(); // dio_service에서 생성한 객체를 가져옵니다.
+    Dio _dio = Dio(); // dio_service에서 생성한 객체를 가져옵니다.
 
 
 
-    final response = await _dio.get('/id_duplicate_check?Student_id=${IDcheckDTO.id}'); // baseOption에 url을 미리 세팅해두었기에, 이어질 url만 사용합니다.
+    final response = await _dio.get('http://20.39.186.138:1234/id_duplicate_check?Student_id=${IDcheckDTO.id}');
     print("\n토큰저장 성공, ${response}");
 
     print('ID 중복확인: ${IDcheckDTO.id}');
@@ -114,11 +114,11 @@ class SignupController extends StateNotifier<SignupDTO> {
   }
   Future<void> signup(SignupDTO signupDTO, BuildContext context, WidgetRef ref) async {
 
-    Dio _dio = DioServices().to(); // dio_service에서 생성한 객체를 가져옵니다.
+    Dio _dio = Dio(); // dio_service에서 생성한 객체를 가져옵니다.
 
 
 
-    final response = await _dio.post('/signup', data: {
+    final response = await _dio.post('http://20.39.186.138:1234/signup', data: {
       "Student_id" : signupDTO.id,
       "Student_pw" : signupDTO.pw,
       "portal_id" : signupDTO.potalid,
