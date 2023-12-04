@@ -119,7 +119,7 @@ class _WholeProjectState extends ConsumerState<WholeProject> {
   @override
   void initState() {
     super.initState();
-    ref.read(projectProvider.notifier).getWholeProject();
+    ref.read(projectProvider.notifier).getWholeProject('');
   }
 
   @override
@@ -137,7 +137,7 @@ class _WholeProjectState extends ConsumerState<WholeProject> {
                     child: TextField(
                       focusNode: FocusNode(),
                       onChanged: (text) {
-                        ref.read(projectProvider.notifier).searchProject(text);
+                        ref.read(projectProvider.notifier).getWholeProject(text);
                       },
                       decoration: InputDecoration(
                         hintText: '검색',

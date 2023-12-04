@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '/providers/projectProvider.dart';
 
@@ -34,9 +35,14 @@ class _MyProjectState extends ConsumerState<MyProject> {
                       itemCount: myProjectList.length,
                       itemBuilder: (content, index) {
                         ProjectCardData cardData = myProjectList[index];
-                        return CustomCard(
-                          courseName: cardData.courseName,
-                          teamName: cardData.teamName,
+                        return InkWell(
+                          onTap: () {
+                            context.go('/projects/schedule');
+                          },
+                          child: CustomCard(
+                            courseName: cardData.courseName,
+                            teamName: cardData.teamName,
+                          ),
                         );
                       },
                     ),

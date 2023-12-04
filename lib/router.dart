@@ -1,3 +1,4 @@
+import 'package:contact/screens/projects/MyProject_schedule.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -111,6 +112,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                     builder: (context, state) {
                       return Projects();
                     },
+                    routes: <RouteBase>[
+                      GoRoute(
+                        path: 'schedule',
+                        builder: (context, state) {
+                          return MyProjectSchedule();
+                        },
+                      )
+                    ]
                   ),
                 ]
             ),

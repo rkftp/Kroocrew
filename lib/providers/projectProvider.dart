@@ -60,14 +60,21 @@ class ProjectCardData{
 class projectController extends StateNotifier<List<ProjectCardData>> {
   projectController() : super([]);
 
-  Future<void> getWholeProject() async {
+  Future<void> getWholeProject(String value) async {
     Dio _dio = DioServices().to();
     KeyBox _keyBox = KeyBox().to();
 
     late String? storedToken;
     storedToken = await _keyBox.getToken();
 
+    if (value == null) {
+      value = '';
+    }
+
     final response = await _dio.get('/list_whole_team',
+        queryParameters: {
+          'search' : value,
+        },
         options: Options(
           headers: {'Authorization': '${storedToken}'},
         )
@@ -85,14 +92,6 @@ class projectController extends StateNotifier<List<ProjectCardData>> {
       print('불러오기 실패' + response.data['success'].toString());
       // return response.data;
     }
-  }
-
-  Future<void> searchProject(String keyword) async {
-    if (keyword == '') {
-      getWholeProject();
-      return;
-    }
-    state = state.where((element) => element.courseName.contains(keyword)).toList();
   }
 }
 
