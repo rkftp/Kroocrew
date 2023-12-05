@@ -23,11 +23,8 @@ class timetableController extends StateNotifier<List<CustomCardData>> {
     late String? storedToken;
     storedToken = await _keyBox.getToken();
 
-    final response = await _dio.post('/get_timetable_from_portal',
-        data: {
-          "portal_id" : "",
-          "portal_pw" : "",
-        },
+    final response = await _dio.get('/get_timetable_from_portal',
+
         options: Options(
           headers: {'Authorization' :  '${storedToken}'},
         )
@@ -55,7 +52,7 @@ class timetableController extends StateNotifier<List<CustomCardData>> {
     late String? storedToken;
     storedToken = await _keyBox.getToken();
 
-    final response = await _dio.post('/get_timetable_from_db',
+    final response = await _dio.get('/get_timetable_from_db',
         options: Options(
           headers: {'Authorization' :  '${storedToken}'},
         )

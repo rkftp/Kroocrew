@@ -127,7 +127,7 @@ class contextBox extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SingleChildScrollView(child:Expanded(
+    return Expanded(
       child: ListView.builder(itemCount:3,itemBuilder: (c,i){
         return Container(
           margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -154,7 +154,7 @@ class contextBox extends ConsumerWidget {
                   children: [
                     Icon(icon[i]),
                     Container(
-                      width: 220,
+                      width: 200,
                       alignment: Alignment.centerLeft,
                       child: Text('${sub_name[i]}',style: TextStyle(
                         fontWeight: FontWeight.w700,
@@ -190,7 +190,7 @@ class contextBox extends ConsumerWidget {
           ),
         );
       },),
-    ));
+    );
   }
 }
 class box extends StatelessWidget {
