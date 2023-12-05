@@ -27,6 +27,63 @@ class emailDTO {
     );
   }
 }
+class idData{
+  final String id;
+  idData({
+    required this.id,
+});
+  factory idData.fromidData(Map<String, dynamic> json) {
+    final id = json['Student_id'];
+
+    return idData(
+      id : id,
+    );
+  }
+}
+
+
+final findidProvider = StateNotifierProvider<findidController, emailDTO>((ref) {
+  return findidController();
+});
+
+class findidController extends StateNotifier<emailDTO> {
+  findidController() : super(emailDTO(email: ''));
+
+  void setemail(String email) {
+    state = state.copyWith(email: email);
+  }
+  Future<void> email(emailDTO emailDTO, BuildContext context, WidgetRef ref) async {
+    Dio _dio = Dio();
+    final response = await _dio.get('http://20.39.186.138:1234/find_id_by_email?email=${emailDTO.email}');
+    print("\n토큰저장 성공, ${response}");
+
+    print('email 전송: ${emailDTO.email}');
+
+    try {
+      if (response.statusCode == 200) {
+        print("성공");
+        if(response.data['success'] == true){
+          print("쌉가능");
+        }else{
+          print("불가능");
+          emailAccessfalse();
+        }
+      } else {
+        print("이미있다 아가야");
+      }
+    } catch (e) {
+      print('오류 발생: $e');
+    }
+  }
+
+  void getId() async{
+    Dio _dio = Dio();
+    final response = await _dio.get('http://20.39.186.138:1234/find_id_by_email?email=${emailDTO.email}');
+  }
+}
+
+
+
 final emailProvider = StateNotifierProvider<emailController, emailDTO>((ref) {
   return emailController();
 });
