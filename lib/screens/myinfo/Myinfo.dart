@@ -69,92 +69,94 @@ class _MyinfoState extends ConsumerState<Myinfo> {
 
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          child:Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+        child: SingleChildScrollView(
+          child: Container(
+            child:Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
 
-              header(front: front.Myinfo(user_name: myinfoData.studentName,user_id: myinfoData.studentId,user_speed: myinfoData.speed,user_dep_name: myinfoData.department,user_num: myinfoData.studentNumber,user_uni_name: '중앙대')),
-              Name.NamePlace(user_name: myinfoData.studentName,user_speed: myinfoData.speed,),
-              SpeedChart.SpeedChart(speed: myinfoData.speed),
-              Container(
-                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                child: Text("내 소개 글",style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w800,
-                ),),
-              ),
-              Container(
-                margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                width: double.infinity,
-                height: 300,
-                decoration: BoxDecoration(
-                  color: Color(0xffffffff),
-                  borderRadius: BorderRadius.circular(5),
-                  border: Border.all(color: Color(0xff000000), width: 1.5),
-                ),
-                child: ListView(
-                  children: [Text(_editedText, style: TextStyle(
+                header(front: front.Myinfo(user_name: myinfoData.studentName,user_id: myinfoData.studentId,user_speed: myinfoData.speed,user_dep_name: myinfoData.department,user_num: myinfoData.studentNumber,user_uni_name: '중앙대')),
+                Name.NamePlace(user_name: myinfoData.studentName,user_speed: myinfoData.speed,),
+                SpeedChart.SpeedChart(speed: myinfoData.speed),
+                Container(
+                  padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  child: Text("내 소개 글",style: TextStyle(
                     fontSize: 16,
-                  ),),]
+                    fontWeight: FontWeight.w800,
+                  ),),
                 ),
-              ),
-              Container(
-                alignment: Alignment.center,
-                child: ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: Text('내용 수정'),
-                          content: Container(
-                            width: double.maxFinite, // 팝업의 너비를 최대로 설정
-                            child: TextField(
-                              controller: _textFieldController,
-                              maxLines: null,
-                              minLines: 5, // 최소 줄 수를 증가시켜 넓이를 확보
-                              decoration: InputDecoration(
-                                hintText: "텍스트를 입력하세요",
-                                border: OutlineInputBorder(), // 네모난 테두리 적용
+                Container(
+                  margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  width: double.infinity,
+                  height: 300,
+                  decoration: BoxDecoration(
+                    color: Color(0xffffffff),
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(color: Color(0xff000000), width: 1.5),
+                  ),
+                  child: ListView(
+                    children: [Text(_editedText, style: TextStyle(
+                      fontSize: 16,
+                    ),),]
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('내용 수정'),
+                            content: Container(
+                              width: double.maxFinite, // 팝업의 너비를 최대로 설정
+                              child: TextField(
+                                controller: _textFieldController,
+                                maxLines: null,
+                                minLines: 5, // 최소 줄 수를 증가시켜 넓이를 확보
+                                decoration: InputDecoration(
+                                  hintText: "텍스트를 입력하세요",
+                                  border: OutlineInputBorder(), // 네모난 테두리 적용
+                                ),
                               ),
                             ),
-                          ),
-                          actions: <Widget>[
-                            TextButton(
-                              child: Text('취소'),
-                              onPressed: () {
-                                Navigator.of(context).pop(); // 팝업 닫기
-                              },
-                            ),
-                            TextButton(
-                              child: Text('저장'),
-                              onPressed: () {
-                               description(_textFieldController.text);
-                               ref.read(MyinfoProvider.notifier).getMainAPI();
-                                Navigator.of(context).pop(); // 팝업 닫기
-                              },
-                            ),
-                             // 수정된 텍스트 표시
-                          ],
-                        );
-                      },
-                    );
-                  },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Color(0xff473CCE)), // 여기에서 색상을 설정
-                    ),
-                  child: Text('수정하기'),
+                            actions: <Widget>[
+                              TextButton(
+                                child: Text('취소'),
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // 팝업 닫기
+                                },
+                              ),
+                              TextButton(
+                                child: Text('저장'),
+                                onPressed: () {
+                                 description(_textFieldController.text);
+                                 ref.read(MyinfoProvider.notifier).getMainAPI();
+                                  Navigator.of(context).pop(); // 팝업 닫기
+                                },
+                              ),
+                               // 수정된 텍스트 표시
+                            ],
+                          );
+                        },
+                      );
+                    },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Color(0xff473CCE)), // 여기에서 색상을 설정
+                      ),
+                    child: Text('수정하기'),
 
+                  ),
                 ),
-              ),
 
-            ],
+              ],
+
+            ),
+
 
           ),
-
-
         ),
       ),
     );

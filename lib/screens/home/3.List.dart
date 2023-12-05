@@ -21,8 +21,6 @@ class _listState extends State<list> {
     }
   }
 
-
-
   bool isArrowUp = false;
 
   @override

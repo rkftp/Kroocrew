@@ -127,12 +127,12 @@ class contextBox extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Expanded(
+    return SingleChildScrollView(child:Expanded(
       child: ListView.builder(itemCount:3,itemBuilder: (c,i){
         return Container(
-        margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+          margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
           height: 110,
-            width: double.infinity,
+          width: double.infinity,
           decoration: BoxDecoration(
             color: Colors.white, // 배경색
             boxShadow: [
@@ -154,15 +154,15 @@ class contextBox extends ConsumerWidget {
                   children: [
                     Icon(icon[i]),
                     Container(
-                      width: 240,
+                      width: 220,
                       alignment: Alignment.centerLeft,
                       child: Text('${sub_name[i]}',style: TextStyle(
-                          fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w700,
                         fontSize: 16,
                       )),
                     ),
                     Text('${deadline[i]}',style: TextStyle(
-                      fontWeight: FontWeight.w700
+                        fontWeight: FontWeight.w700
                     )),
                   ],
                 ),
@@ -173,24 +173,24 @@ class contextBox extends ConsumerWidget {
                   children: [
                     Icon(Icons.square_outlined),
                     Text('Check Box',style:TextStyle(
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16
                     )),
                   ],
                 ),
               ),
               Row(
-                children: [
-                  box(isOn: ontime[i][0],name:'${team_name[0]}',color:team_color[0]),
-                  box(isOn: ontime[i][1],name:'${team_name[1]}',color:team_color[1]),
-                  box(isOn: ontime[i][2],name:'${team_name[2]}',color:team_color[2]),
-                ]
+                  children: [
+                    box(isOn: ontime[i][0],name:'${team_name[0]}',color:team_color[0]),
+                    box(isOn: ontime[i][1],name:'${team_name[1]}',color:team_color[1]),
+                    box(isOn: ontime[i][2],name:'${team_name[2]}',color:team_color[2]),
+                  ]
               ),
             ],
           ),
-            );
+        );
       },),
-    );
+    ));
   }
 }
 class box extends StatelessWidget {

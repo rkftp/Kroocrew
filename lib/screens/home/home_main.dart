@@ -40,10 +40,9 @@ class _MiddleState extends ConsumerState<Middle> {
         deadLine: item.deadLine,
         description: item.description,
       )).toList();
+      print(scheduleList);
     }
 
-
-    
 
 
     return Scaffold(
@@ -52,7 +51,8 @@ class _MiddleState extends ConsumerState<Middle> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Head.Head(app_name: 'Kroocrew', user_uni_name: '중앙대', user_dep_name:mainData.department),
-            Cal_Test.TableCalendarScreen(),
+
+            Cal_Test.TableCalendarScreen(scheduleList: scheduleList),
             Middle_Cal.list(b1: scheduleList),
           ],
         ),
