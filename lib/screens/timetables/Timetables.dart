@@ -152,7 +152,7 @@ class _TimetableCardState extends ConsumerState<TimetableCard> {
           context.go('/projects/schedule');
         } else {
           context.go('/projects');
-          ref.read(projectProvider.notifier).getWholeProject(widget.timetableData.CourseName);
+          ref.read(projectProvider.notifier).getWholeProject(widget.timetableData.CourseName, ref);
         }
       },
       child: Card(
