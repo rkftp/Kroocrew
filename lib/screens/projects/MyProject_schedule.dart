@@ -7,6 +7,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '/utils/dio_service.dart';
 import '/utils/token_keybox.dart';
 
+final TextEditingController nameController = TextEditingController();
+
+List<String> dropDownList = ['1', '2', '3'];
+
 final team_name = ['김효준','이주형','한진우'];
 final team_color = [Color(0xffEF9191),Color(0xff91EFBC),Color(0xff91C7EF)];
 final sub_name = ['API 수정','데모 영상 제작','최종 보고서'];
@@ -84,16 +88,7 @@ class headBox extends ConsumerWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ElevatedButton(onPressed: (){},
-                    child: Text('+ 일정추가',style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    )),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Color(0xff473CCE)),
-                    minimumSize: MaterialStateProperty.all(Size(110, 40)),
-                  ),
-                ),
+                popUp(),
                 Container(
                     width: 140,
 
@@ -236,3 +231,198 @@ class box extends StatelessWidget {
   }
 }
 
+class popUp extends ConsumerWidget {
+  popUp({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ElevatedButton(onPressed: (){
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('일정 추가',style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 18,
+            ),),
+            content: SingleChildScrollView(
+              child: Container(
+                  width: double.maxFinite,
+                  height: 200 +(50*team_name.length).toDouble(),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: 30,
+                            width: 45,
+                            child: Text("이름: ",style:TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            )),
+                          ),
+                          Container(
+                            height: 30,
+                            width: 170,
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                            child: TextField(
+                                controller: nameController,
+                                decoration: InputDecoration(
+                                )
+                            ),
+                          ),
+                          Container(
+                            height: 60,
+                            width: 40,
+                            child: DropdownButton(
+                              items: dropDownList.map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (String? value){},
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        height: 40,
+                        width: double.infinity,
+                        alignment: Alignment.centerLeft,
+                        child: Text('마감 기한',style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        )),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: 60,
+                            width: 40,
+                            child: DropdownButton(
+                              items: dropDownList.map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (String? value){},
+                            ),
+                          ),
+                          Text("년",style:TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                          )),
+                          Container(
+                            height: 60,
+                            width: 40,
+                            child: DropdownButton(
+                              items: dropDownList.map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (String? value){},
+                            ),
+                          ),
+                          Text("월",style:TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                          )),
+                          Container(
+                            height: 60,
+                            width: 40,
+                            child: DropdownButton(
+                              items: dropDownList.map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (String? value){},
+                            ),
+                          ),
+                          Text("일",style:TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                          )),
+
+                        ],
+                      ),
+                      Container(height: 30),//여백용 Container
+                      Container(
+                        height: (50*team_name.length).toDouble(),
+                        child: ListView.builder(
+                            itemCount: team_name.length,
+                            itemBuilder: (c, i) {
+                              return nameBox(name : '${team_name[i]}');
+                            }
+                        ),
+                      )
+
+                    ],
+                  )
+              ),
+            ),
+            actions: <Widget>[
+
+              TextButton(
+                child: Text('추가'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // 팝업 닫기
+                },
+              ),
+              TextButton(
+                child: Text('취소'),
+                onPressed: () {
+
+                  Navigator.of(context).pop(); // 팝업 닫기
+                },
+              ),
+              // 수정된 텍스트 표시
+            ],
+            actionsAlignment: MainAxisAlignment.spaceEvenly,
+          );
+        },
+      );
+    },
+      child: Text('+ 일정추가',style: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+      )),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(Color(0xff473CCE)),
+        minimumSize: MaterialStateProperty.all(Size(110, 40)),
+      ),
+    );
+  }
+}
+
+
+class nameBox extends ConsumerWidget {
+  const nameBox ({super.key,this.name});
+  final name;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Container(
+      height: 40,
+      width: double.infinity,
+      child: Row(
+        children: [
+          Container(
+              padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Icon(Icons.square_outlined)),
+          Text("${name}",style:TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
+          )),
+        ],
+      ),
+    );
+  }
+}
