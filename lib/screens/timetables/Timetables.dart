@@ -40,11 +40,10 @@ class _TimetablesState extends ConsumerState<Timetables> {
         child: ListView.builder(
           itemCount: timetableList.length,
           itemBuilder: (context, index) {
-            CustomCardData cardData = timetableList[index];
+            TimetableData timetableData = timetableList[index];
 
-            return CustomCard(
-              subjectName: cardData.CourseId,
-              time: cardData.time,
+            return TimetableCard(
+              courseName: timetableData.CourseName,
             );
           },
         ),
@@ -130,90 +129,19 @@ class CustomAppBar extends ConsumerWidget {
   }
 }
 
-class CustomFloatingButton extends ConsumerWidget {
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Positioned(
-      bottom: 20, // 하단 여백을 제거
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          InkWell(
-            onTap: () { // "가져오기" 버튼을 눌렀을 때 수행할 동작 추가
+class TimetableCard extends ConsumerStatefulWidget {
+  final String courseName;
 
-        },
-            child: Container(
-              height: 55,
-              width: 100,
-              decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFFDFD9EC), width: 3),
-                color: Color(0xFF7365F8), // 버튼 배경색상
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.horizontal(
-                  left: Radius.circular(50.0),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.search_rounded, color: Colors.white), // 아이콘 추가
-                  SizedBox(width: 5), // 아이콘과 텍스트 간격 조정
-                  Text(
-                    '가져오기', // 버튼 텍스트 추가
-                    style: TextStyle(color: Colors.white, fontSize: 15),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          InkWell(
-            onTap: () {
-              ref.read(timetableProvider.notifier).getDB(context, ref);
-              // "직접 추가" 버튼을 눌렀을 때 수행할 동작 추가
-            },
-            child: Container(
-              height: 55,
-              width: 105,
-              decoration: BoxDecoration(
-                border: Border.all(color: Color(0xFFDFD9EC), width: 3),
-                color: Color(0xFF7365F8), // 버튼 배경색상
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.horizontal(
-                  right: Radius.circular(50.0),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.add, color: Colors.white), // 아이콘 추가
-                  SizedBox(width: 5), // 아이콘과 텍스트 간격 조정
-                  Text(
-                    '직접 추가', // 버튼 텍스트 추가
-                    style: TextStyle(color: Colors.white, fontSize: 15),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class CustomCard extends ConsumerStatefulWidget {
-  final String subjectName;
-  final String time;
-
-  CustomCard({required this.subjectName, required this.time});
+  TimetableCard({required this.courseName});
 
   @override
-  ConsumerState<CustomCard> createState() => _CustomCardState();
+  ConsumerState<TimetableCard> createState() => _TimetableCardState();
 }
 
-class _CustomCardState extends ConsumerState<CustomCard> {
+class _TimetableCardState extends ConsumerState<TimetableCard> {
   @override
   Widget build(BuildContext context) {
+    final bool isActive;
     return Card(
       elevation: 2.0,
       shape: RoundedRectangleBorder(
@@ -225,14 +153,14 @@ class _CustomCardState extends ConsumerState<CustomCard> {
       child: ListTile(
         leading: Icon(CupertinoIcons.circle, size: 30, color: Color(0xFF7365F8)),
         title: Text(
-          widget.subjectName,
+          widget.courseName,
           style: TextStyle(
             fontWeight: FontWeight.w600,
             color:  Color(0xFF7365F8) ,
           ),
         ),
         subtitle: Text(
-          widget.time,
+         '샌즈',
           style: TextStyle(
             color:  Color(0xFF7365F8) ,
           ),
