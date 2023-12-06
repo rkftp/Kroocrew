@@ -35,7 +35,8 @@ class MyApp extends ConsumerWidget{
       routerConfig: _router,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.white,
+
       ),
       title: 'Kroocrew',
     );

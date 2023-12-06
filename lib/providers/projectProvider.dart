@@ -17,6 +17,7 @@ class ProjectCardData{
   final String teamLeader;
   final String? description;
   final String finishTime;
+  final int averageSpeed;
 
 
 
@@ -30,6 +31,7 @@ class ProjectCardData{
     required this.teamLeader,
     required this.description,
     required this.finishTime,
+    required this.averageSpeed,
   });
 
   factory ProjectCardData.fromProjects(Map<String,dynamic> json) {
@@ -42,6 +44,7 @@ class ProjectCardData{
     final teamLeader = json["head"];
     final description = json["description"];
     final finishTime = json["finish_time"];
+    final averageSpeed = json["average_speed"];
 
 
     return ProjectCardData(
@@ -54,9 +57,10 @@ class ProjectCardData{
       teamLeader: teamLeader,
       description: description,
       finishTime: finishTime,
+      averageSpeed: averageSpeed,
     );}
-
 }
+
 class projectController extends StateNotifier<List<ProjectCardData>> {
   projectController() : super([]);
 
