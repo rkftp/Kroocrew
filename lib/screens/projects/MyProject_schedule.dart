@@ -10,6 +10,8 @@ import '/utils/token_keybox.dart';
 final TextEditingController nameController = TextEditingController();
 
 List<String> dropDownList = ['1', '2', '3'];
+List<String> dayList = ['1', '2', '3','4','5'];
+String selectedDay = '';
 
 final team_name = ['김효준','이주형','한진우'];
 final team_color = [Color(0xffEF9191),Color(0xff91EFBC),Color(0xff91C7EF)];
@@ -17,6 +19,12 @@ final sub_name = ['API 수정','데모 영상 제작','최종 보고서'];
 final icon = [Icons.video_camera_back,Icons.monitor,Icons.file_copy_outlined];
 final deadline = ['2023/12/2(토)','2023/12/6(수)','2023/12/8(금)'];
 final ontime = [[true,false,false],[false,false,true],[true,true,false]];
+
+
+
+
+
+
 
 class MyProjectSchedule extends ConsumerStatefulWidget {
   const MyProjectSchedule({Key? key}) : super(key: key);
@@ -231,11 +239,14 @@ class box extends StatelessWidget {
   }
 }
 
-class popUp extends ConsumerWidget {
-  popUp({super.key});
+class popUp extends ConsumerStatefulWidget {
+  popUp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() => _popUpState();
+}
+class _popUpState extends ConsumerState<popUp> with SingleTickerProviderStateMixin{
+  Widget build(BuildContext context) {
     return ElevatedButton(onPressed: (){
       showDialog(
         context: context,
@@ -337,15 +348,20 @@ class popUp extends ConsumerWidget {
                           Container(
                             height: 60,
                             width: 40,
-                            child: DropdownButton(
-                              items: dropDownList.map<DropdownMenuItem<String>>((String value) {
+                            child:DropdownButtonFormField(
+                              value: selectedDay,
+                              items: dayList.map((String item) {
                                 return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
+                                  child: Text('$item'),
+                                  value: item,
                                 );
                               }).toList(),
-                              onChanged: (String? value){},
-                            ),
+                              onChanged: (dynamic value) {
+                                setState(() {
+                                  selectedDay = value;
+                                });
+                              },
+                            )
                           ),
                           Text("일",style:TextStyle(
                             fontWeight: FontWeight.w600,
