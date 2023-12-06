@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:random_color/random_color.dart';
+import 'package:flutter/cupertino.dart';
 
 import '/providers/projectProvider.dart';
 
@@ -69,6 +71,7 @@ class CustomCard extends ConsumerStatefulWidget {
 class _CustomCardState extends ConsumerState<CustomCard> {
   @override
   Widget build(BuildContext context) {
+    RandomColor _randomColor = RandomColor();
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.zero, // 둥근 모서리를 없앰
@@ -79,10 +82,13 @@ class _CustomCardState extends ConsumerState<CustomCard> {
         visualDensity: VisualDensity(horizontal: 0, vertical: -4), // 아이콘과 텍스트 간격을 조절
 
         // leading을 직접 정의
-        leading: Container(
-          width: 48,
-          height: 48,
-          color: Color(0xffe8e4e4),
+        leading: Icon(
+          CupertinoIcons.circle_fill,
+          color: _randomColor.randomColor(
+            colorBrightness: ColorBrightness.light,
+            colorSaturation: ColorSaturation.lowSaturation,
+          ),
+          size: 30,
         ),
 
         title: Text(

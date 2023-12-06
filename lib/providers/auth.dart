@@ -32,7 +32,20 @@ class AuthStateNotifier extends StateNotifier<bool> {
   void setAuthState(bool isLoggedIn) {
     state = isLoggedIn;
   }
+
+  Future<void> checkAuthState() async {
+    KeyBox _keyBox = KeyBox().to();
+    String? token = await _keyBox.getToken();
+    if (token != null) {
+      state = true;
+    } else {
+      state = false;
+    }
+  }
+
+
 }
+
 final authStateProvider = StateNotifierProvider<AuthStateNotifier, bool>((ref) => AuthStateNotifier());
 
 final loginProvider = StateNotifierProvider<LoginController, LoginDTO>((ref) {

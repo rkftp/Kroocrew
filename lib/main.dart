@@ -25,6 +25,9 @@ void main() async {
 class MyApp extends ConsumerWidget{
   const MyApp({Key? key}) : super(key: key);
 
+  //keybox에 토큰이 없으면 로그인 페이지로 이동하도록 설정
+
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final GoRouter _router = ref.watch(goRouterProvider);

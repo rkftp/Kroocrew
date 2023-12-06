@@ -10,101 +10,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '/utils/dio_service.dart';
 import '/utils/token_keybox.dart';
 
-import 'dart:convert';
-
-class timetableController extends StateNotifier<List<CustomCardData>> {
-  timetableController() : super([]);
-
-  Future<void> getPortal(BuildContext context, WidgetRef ref) async {
-    Dio _dio = DioServices().to();
-
-    KeyBox _keyBox = KeyBox().to();
-
-    late String? storedToken;
-    storedToken = await _keyBox.getToken();
-
-    final response = await _dio.get('/get_timetable_from_portal',
-
-        options: Options(
-          headers: {'Authorization' :  '${storedToken}'},
-        )
-    );
-
-    if (response.statusCode == 200) {
-      print("성공해버린..");
-      final List<dynamic> data = response.data['timetable_small'];
-
-      state = data
-          .map((item) => CustomCardData.fromTimetableSmall(item))
-          .toList();
-      print(data);
-
-    } else {
-      print('불러오기 실패' + response.data['success'].toString());
-    }
-  }
-
-  Future<void> getDB(BuildContext context, WidgetRef ref) async {
-    Dio _dio = DioServices().to();
-
-    KeyBox _keyBox = KeyBox().to();
-
-    late String? storedToken;
-    storedToken = await _keyBox.getToken();
-
-    final response = await _dio.get('/get_timetable_from_db',
-        options: Options(
-          headers: {'Authorization' :  '${storedToken}'},
-        )
-    );
-
-    if (response.statusCode == 200) {
-      print("성공해버린..");
-      final List<dynamic> data = response.data['timetable_small'];
-
-      state = data
-          .map((item) => CustomCardData.fromTimetableSmall(item))
-          .toList();
-      print(data);
-    } else {
-      print('불러오기 실패' + response.data['success'].toString());
-    }
-  }
-
-}
-
-final timetableProvider = StateNotifierProvider<timetableController, List<CustomCardData>>((ref) {
-  return timetableController();
-});
-
-
-
-class CustomCardData {
-  final String CourseId;
-  final String time;
-
-  CustomCardData({
-    required this.CourseId,
-    required this.time,
-  });
-
-  factory CustomCardData.fromTimetableSmall(Map<String,dynamic> json) {
-    final courseId = json['Course_id'];
-
-    return CustomCardData(
-      CourseId: extractCourseId(courseId),
-      time: extractTime(courseId),
-    );
-  }
-
-  static String extractCourseId(String courseId) {
-    return courseId.substring(12); // Extract from the 13th character onward
-  }
-
-  static String extractTime(String courseId) {
-    return courseId.substring(7, 12); // Extract from the 8th to 12th characters
-  }
-}
+import '/providers/timetableProvider.dart';
 
 class Timetables extends ConsumerStatefulWidget{
   const Timetables({Key? key}) : super(key: key);
@@ -143,7 +49,13 @@ class _TimetablesState extends ConsumerState<Timetables> {
           },
         ),
       ),
-      floatingActionButton: CustomFloatingButton(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // "시간표 추가" 버튼을 눌렀을 때 수행할 동작 추가
+        },
+        child: Icon(Icons.refresh, color:Colors.white),
+        backgroundColor: Color(0xFF7365F8),
+      ),
     );
   }
 }
@@ -152,53 +64,24 @@ class CustomAppBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context,WidgetRef ref) {
     return AppBar(
+      backgroundColor: Colors.white,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                '2023년',
-                //색 정하기
-                style: TextStyle(
-                  color: Color(0xff473CCE),
-                  fontSize: 14,
-                ),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Text(
+              '23년 2학기',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
               ),
-              SizedBox(width: 5),
-              Text(
-                '2학기',
-                style: TextStyle(
-                  color: Color(0xff473CCE),
-                  fontSize: 14,
-                ),
-              ),
-            ],
-          ),
-          Text(
-            '시간표1',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
             ),
           ),
         ],
       ),
       actions: [
-        IconButton(
-          icon: Icon(Icons.bug_report),
-          onPressed: () {
-            // 버그 아이콘을 눌렀을 때 수행할 동작 추가
-          },
-        ),
-        IconButton(
-          icon: Icon(Icons.settings),
-          onPressed: () {
-            // 설정 아이콘을 눌렀을 때 수행할 동작 추가
-          },
-        ),
         IconButton(
           icon: Icon(Icons.list),
           onPressed: () {
@@ -338,20 +221,20 @@ class _CustomCardState extends ConsumerState<CustomCard> {
         side: BorderSide(color: Colors.white, width: 2),
       ),
 
-      color: Color(0xff8983ee),
+      color: Colors.white,
       child: ListTile(
-        leading: Icon(CupertinoIcons.list_dash, size: 30, color: Colors.white),
+        leading: Icon(CupertinoIcons.circle, size: 30, color: Color(0xFF7365F8)),
         title: Text(
           widget.subjectName,
           style: TextStyle(
             fontWeight: FontWeight.w600,
-            color: Colors.white ,
+            color:  Color(0xFF7365F8) ,
           ),
         ),
         subtitle: Text(
           widget.time,
           style: TextStyle(
-            color: Colors.white ,
+            color:  Color(0xFF7365F8) ,
           ),
         ),
       ),

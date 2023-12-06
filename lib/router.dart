@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:contact/screens/projects/MyProject_schedule.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -13,20 +15,25 @@ import 'screens/chat/Chat.dart';
 import 'screens/myinfo/Myinfo.dart';
 import 'providers/auth.dart';
 
+import '/utils/token_keybox.dart';
+
 var app_name = 'Kroocrew';
 var user_uni_name = "중앙대";
 var user_speed = '100';
 
+
+
+
 final goRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-      initialLocation: '/login',
+      initialLocation: '/',
       redirect: (context, state) {
-        if(ref.read(authStateProvider.notifier).state == false) {
+        ref.read(authStateProvider.notifier).checkAuthState();
+        if(ref.watch(authStateProvider) == false) {
           return '/login';
         }
         return null;
       },
-
       routes: <RouteBase>[
         GoRoute(
           path: '/login',

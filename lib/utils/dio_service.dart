@@ -34,4 +34,42 @@ class DioServices {
   Dio to() => _dio;
 }
 
+class Interceptor {
+
+
+
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    // Do something before request is sent
+    return handler.next(options); //continue
+    // If you want to resolve the request with some custom data，
+    // you can resolve a `Response` object eg: return handler.resolve(response);
+    // If you want to reject the request with a error message,
+    // you can reject a `DioError` object eg: return  handler.reject(dioError);
+  }
+
+  void onResponse(DioError err, ErrorInterceptorHandler handler) async {
+    // Do something with response data
+    KeyBox _keyBox = KeyBox().to();
+    late String? storedToken;
+    storedToken = await _keyBox.getToken();
+
+    if(storedToken == null){
+      return handler.reject(err);
+    }
+
+    final isStatus401 = err.response?.statusCode == 401;
+
+
+    // If you want to reject the request with a error message,
+    // you can reject a `DioError` object eg: return  handler.reject(dioError);
+  }
+
+  void onError(DioError err, ErrorInterceptorHandler handler) {
+    // Do something with response error
+    return handler.next(err); //continue
+    // If you want to resolve the request with some custom data，
+    // you can resolve a `Response` object eg: return handler.resolve(response);
+
+  }
+}
 
