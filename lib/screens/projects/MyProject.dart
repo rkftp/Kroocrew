@@ -39,7 +39,7 @@ class _MyProjectState extends ConsumerState<MyProject> {
                             ProjectCardData cardData = myProjectList[index];
                             return InkWell(
                               onTap: () {
-                                context.go('/projects/schedule');
+                                return context.go('/projects/manage', extra: cardData);
                               },
                               child: CustomCard(
                                 courseName: cardData.courseName,

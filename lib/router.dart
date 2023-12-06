@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:contact/providers/projectProvider.dart';
+import 'package:contact/screens/projects/MyProject_manage.dart';
 import 'package:contact/screens/projects/MyProject_schedule.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -141,9 +143,9 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                     },
                     routes: <RouteBase>[
                       GoRoute(
-                        path: 'schedule',
+                        path: 'manage',
                         builder: (context, state) {
-                          return MyProjectSchedule();
+                          return ManageMyProjects(projectData: state.extra as ProjectCardData);
                         },
                       )
                     ]

@@ -149,7 +149,7 @@ class _TimetableCardState extends ConsumerState<TimetableCard> {
     return InkWell(
       onTap: () {
         if(widget.timetableData.isActive) {
-          context.go('/projects/schedule');
+          context.go('/projects/manage', extra: widget.timetableData.CourseId);
         } else {
           context.go('/projects');
           ref.read(projectProvider.notifier).getWholeProject(widget.timetableData.CourseName, ref);
