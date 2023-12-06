@@ -1,17 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-import '/utils/dio_service.dart';
-import '/utils/token_keybox.dart';
+import 'package:contact/widgets/flutter_dropdown_page.dart';
 
 final TextEditingController nameController = TextEditingController();
-
-List<String> dropDownList = ['1', '2', '3'];
-List<String> dayList = ['1', '2', '3','4','5'];
-String selectedDay = '';
 
 final team_name = ['김효준','이주형','한진우'];
 final team_color = [Color(0xffEF9191),Color(0xff91EFBC),Color(0xff91C7EF)];
@@ -19,8 +11,6 @@ final sub_name = ['API 수정','데모 영상 제작','최종 보고서'];
 final icon = [Icons.video_camera_back,Icons.monitor,Icons.file_copy_outlined];
 final deadline = ['2023/12/2(토)','2023/12/6(수)','2023/12/8(금)'];
 final ontime = [[true,false,false],[false,false,true],[true,true,false]];
-
-
 
 
 
@@ -286,16 +276,8 @@ class _popUpState extends ConsumerState<popUp> with SingleTickerProviderStateMix
                           ),
                           Container(
                             height: 60,
-                            width: 40,
-                            child: DropdownButton(
-                              items: dropDownList.map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              onChanged: (String? value){},
-                            ),
+                            width: 60,
+                            child: FlutterDropdownIcon(),
                           ),
                         ],
                       ),
@@ -312,34 +294,20 @@ class _popUpState extends ConsumerState<popUp> with SingleTickerProviderStateMix
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Container(
-                            height: 60,
-                            width: 40,
-                            child: DropdownButton(
-                              items: dropDownList.map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              onChanged: (String? value){},
-                            ),
+                              height: 60,
+                              width: 100,
+                              child:FlutterDropdownYear(),
+
+
                           ),
                           Text("년",style:TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 16,
                           )),
                           Container(
-                            height: 60,
-                            width: 40,
-                            child: DropdownButton(
-                              items: dropDownList.map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              onChanged: (String? value){},
-                            ),
+                              height: 60,
+                              width: 40,
+                              child:FlutterDropdownMonth(),
                           ),
                           Text("월",style:TextStyle(
                             fontWeight: FontWeight.w600,
@@ -348,20 +316,7 @@ class _popUpState extends ConsumerState<popUp> with SingleTickerProviderStateMix
                           Container(
                             height: 60,
                             width: 40,
-                            child:DropdownButtonFormField(
-                              value: selectedDay,
-                              items: dayList.map((String item) {
-                                return DropdownMenuItem<String>(
-                                  child: Text('$item'),
-                                  value: item,
-                                );
-                              }).toList(),
-                              onChanged: (dynamic value) {
-                                setState(() {
-                                  selectedDay = value;
-                                });
-                              },
-                            )
+                            child:FlutterDropdownDay(),
                           ),
                           Text("일",style:TextStyle(
                             fontWeight: FontWeight.w600,

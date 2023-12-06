@@ -25,34 +25,35 @@ class _MyProjectState extends ConsumerState<MyProject> {
   Widget build(BuildContext context) {
     final myProjectList = ref.watch(myProjectProvider);
     return Column(
-        children: [
-          Container(
-            margin: EdgeInsets.fromLTRB(20, 14, 14, 0),
-            alignment: Alignment.centerLeft,
-            child: Column(
-                children:[
-                  Container(
-                    height: 500,
-                    child: ListView.builder(
-                      itemCount: myProjectList.length,
-                      itemBuilder: (content, index) {
-                        ProjectCardData cardData = myProjectList[index];
-                        return InkWell(
-                          onTap: () {
-                            context.go('/projects/schedule');
+            children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(20, 14, 14, 0),
+                alignment: Alignment.centerLeft,
+                child: Column(
+                    children:[
+                      Container(
+                        height: 500,
+                        child: ListView.builder(
+                          itemCount: myProjectList.length,
+                          itemBuilder: (content, index) {
+                            ProjectCardData cardData = myProjectList[index];
+                            return InkWell(
+                              onTap: () {
+                                context.go('/projects/schedule');
+                              },
+                              child: CustomCard(
+                                courseName: cardData.courseName,
+                                teamName: cardData.teamName,
+                              ),
+                            );
                           },
-                          child: CustomCard(
-                            courseName: cardData.courseName,
-                            teamName: cardData.teamName,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ]
-            ),
-          ),
-        ]
+                        ),
+                      ),
+                    ]
+                ),
+              ),
+            ]
+
     );
   }
 }

@@ -18,31 +18,6 @@ import '/utils/token_keybox.dart';
 
 
 
-Future<void> description(text) async {
-  Dio _dio = Dio(); // dio_service에서 생성한 객체를 가져옵니다.
-  KeyBox _keyBox = KeyBox().to();
-  late String? storedToken;
-  storedToken = await _keyBox.getToken();
-  print("2");
-  final response = await _dio.get('http://20.39.186.138:1234/add_student_description?description=${text}',
-      options: Options(
-        headers : {'Authorization': '${storedToken}'},
-      ));
-  print("3");
-  try {
-    if (response.statusCode == 200) {
-      print("성공");
-      print(response.data['success']);
-      if (response.data['success'] == true) {
-        print("찐성공");
-      } else {
-        print("미친 실패");
-      }
-    } else {}
-  } catch (e) {
-    print('오류 발생: $e');
-  }
-}
 class Myinfo extends ConsumerStatefulWidget {
   const Myinfo({Key? key}) : super(key: key);
   @override
@@ -80,7 +55,7 @@ class _MyinfoState extends ConsumerState<Myinfo> {
                 SpeedChart.SpeedChart(speed: myinfoData.speed),
                 Container(
                   padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                  child: Text("내 소개 글",style: TextStyle(
+                  child: Text("내 소개 글 ${ _textFieldController.text.length}/2000자",style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w800,
                   ),),
@@ -132,9 +107,38 @@ class _MyinfoState extends ConsumerState<Myinfo> {
                               TextButton(
                                 child: Text('저장'),
                                 onPressed: () {
-                                 description(_textFieldController.text);
-                                 ref.read(MyinfoProvider.notifier).getMainAPI();
-                                  Navigator.of(context).pop(); // 팝업 닫기
+                                  ref.read(MyinfoProvider.notifier).description(_textFieldController.text);
+                                 if(_textFieldController.text.length > 2000) {
+                                   showDialog(
+                                       context: context,
+                                       barrierDismissible: true, // 바깥 영역 터치시 닫을지 여부
+                                       builder: (BuildContext context) {
+                                         return AlertDialog(
+                                           content: Text("2000자 이하로 작성해 주세요",style: TextStyle(
+                                             color: Color(0xffD95D5D),
+                                             fontWeight: FontWeight.w400,
+                                           ),),
+                                           insetPadding: const  EdgeInsets.fromLTRB(0,80,0, 80),
+                                           actions: [
+                                             TextButton(
+                                               child: const Text('확인',style: TextStyle(
+                                                 color: Colors.black,
+                                                 fontWeight: FontWeight.w400,
+                                               ),),
+                                               onPressed: () {
+                                                 Navigator.of(context).pop();
+                                               },
+                                             ),
+                                           ],
+                                         );
+                                       }
+                                   );
+                                 }
+                                 else{
+                                   ref.read(MyinfoProvider.notifier).getMainAPI();
+                                   Navigator.of(context).pop();
+                                 }
+                                  // 팝업 닫기
                                 },
                               ),
                                // 수정된 텍스트 표시
