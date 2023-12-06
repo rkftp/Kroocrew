@@ -35,7 +35,31 @@ class login extends ConsumerWidget {
                 ),
                 box1(),
                 login_button(),
-                box2(),
+                Container(
+                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                            child: TextButton( onPressed: () {
+                              context.push('/login/findid');
+                            }, child: Text('아이디 찾기' ,style: TextStyle(
+                              color:Colors.grey,
+                              fontSize: 14,
+                            ),), )
+                        ),
+                        button(text:'비밀번호 재설정',next_page: find_pw.find_pw()),
+                        Container(
+                            child: TextButton( onPressed: () {
+                              context.push('/login/email');
+                            }, child: Text('회원가입' ,style: TextStyle(
+                              color:Colors.grey,
+                              fontSize: 14,
+                            ),), )
+                        ),
+                      ],
+                    )
+                ),
               ],
             ),
           ),
@@ -186,7 +210,14 @@ class box2 extends ConsumerWidget {
         children: [
           button(text:'아이디 찾기',next_page: find_id.find_id()),
           button(text:'비밀번호 찾기',next_page: find_pw.find_pw()),
-          button(text:'회원가입',next_page: email.email()),
+          Container(
+              child: TextButton( onPressed: () {
+                context.go('/login/sign_up');
+              }, child: Text('회원가입' ,style: TextStyle(
+                color:Colors.grey,
+                fontSize: 14,
+              ),), )
+          )
         ],
       )
     );
@@ -201,7 +232,6 @@ class button extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         child: TextButton( onPressed: () {
-
 
           Navigator.push(
               context,

@@ -74,9 +74,34 @@ class myinfoController extends StateNotifier<MyinfoData> {
       print('불러오기 실패' +response.data['success'].toString());
     }
   }
+  Future<void> description(text) async {
+    Dio _dio = Dio(); // dio_service에서 생성한 객체를 가져옵니다.
+    KeyBox _keyBox = KeyBox().to();
+
+    late String? storedToken;
+    storedToken = await _keyBox.getToken();
+
+    final response = await _dio.get('http://20.39.186.138:1234/add_student_description?description=${text}',
+        options: Options(
+          headers : {'Authorization': '${storedToken}'},
+        ));
+    try {
+      if (response.statusCode == 200) {
+        print("성공");
+        if (response.data['success'] == true) {
+          print("찐성공");
+        } else {
+          print("미친 실패");
+        }
+      } else {}
+    } catch (e) {
+      print('오류 발생: $e');
+    }
+  }
 
 }
 
 final MyinfoProvider = StateNotifierProvider<myinfoController, MyinfoData>((ref){
   return myinfoController();
 });
+
