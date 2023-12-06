@@ -48,7 +48,14 @@ class login extends ConsumerWidget {
                               fontSize: 14,
                             ),), )
                         ),
-                        button(text:'비밀번호 재설정',next_page: find_pw.find_pw()),
+                        Container(
+                            child: TextButton( onPressed: () {
+                              context.push('/login/findpwemail');
+                            }, child: Text('비밀번호 재설정' ,style: TextStyle(
+                              color:Colors.grey,
+                              fontSize: 14,
+                            ),), )
+                        ),
                         Container(
                             child: TextButton( onPressed: () {
                               context.push('/login/email');

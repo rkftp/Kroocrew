@@ -78,7 +78,7 @@ class LoginController extends StateNotifier<LoginDTO> {
     print('로그인 시도: ${loginDTO.id}, ${loginDTO.password}');
 
     try {
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && response.data['success'] == true ) {
         String? token = response.data['token'];
 
           _keyBox.deleteToken();
@@ -88,9 +88,33 @@ class LoginController extends StateNotifier<LoginDTO> {
             print('토큰 저장 완료: $token');
             ref.read(authStateProvider.notifier).setAuthState(true);
             context.go('/');
+
+
+
           }
-      } else {
-        //snackbar
+      }  else{
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('로그인 실패'),
+              content: Container(
+                  width: double.maxFinite, // 팝업의 너비를 최대로 설정
+                  child: Text("ID 혹은 PW 가 일치하지 않습니다.")
+              ),
+              actions: <Widget>[
+                TextButton(
+                    child: Text('확인'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }
+                ),
+
+                // 수정된 텍스트 표시
+              ],
+            );
+          },
+        );
       }
     } catch (e) {
       print('오류 발생: $e');

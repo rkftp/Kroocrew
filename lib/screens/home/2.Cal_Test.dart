@@ -2,8 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart'; // 날짜 포매팅을 위해 추가
 import '/providers/mainprovider.dart';
+bool check = false;
+
+checktrue(){
+  check = true;
+}
+checkfalse(){
+  check = false;
+}
+
 class TableCalendarScreen extends StatefulWidget {
   final List<Schedule> scheduleList;
+
 
   TableCalendarScreen({Key? key, required this.scheduleList}) : super(key: key);
 
@@ -13,7 +23,9 @@ class TableCalendarScreen extends StatefulWidget {
 
 class _TableCalendarScreenState extends State<TableCalendarScreen> {
 
-  Map<DateTime, List<Event>> events = {};
+  Map<DateTime, List<Event>> events = {
+    DateTime.utc(2023, 12, 19): [Event('lol'), Event('snas')],
+  };
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
 
@@ -32,7 +44,9 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
     }
     setState(() {
       events = updatedEvents;
+      checktrue();
     });
+
     print(events);
   }
   List<Event> _getEventsForDay(DateTime day) {
@@ -71,10 +85,12 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
     return Column(
       children: [
         ElevatedButton(
-          onPressed: addEvents,
+          onPressed:
+          addEvents,
+
           child: Text('Add Events'),
         ),
-        Container(
+        check == true ? Container(
           child: TableCalendar(
             locale: 'ko_KR',
             firstDay: DateTime.utc(2001, 1, 1),
@@ -147,7 +163,7 @@ class _TableCalendarScreenState extends State<TableCalendarScreen> {
               },
             ),
           ),
-        ),
+        ) : Container(),
       ],
     );
   }

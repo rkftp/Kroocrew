@@ -4,8 +4,8 @@ import '/providers/signup_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:go_router/go_router.dart';
 
-final TextEditingController emailController = TextEditingController();
-String id ='ㅅ';
+final TextEditingController emailController2 = TextEditingController();
+String id ='';
 Future<void> duplicatedId(text) async {
   Dio _dio = Dio();
   final response = await _dio.get('http://20.39.186.138:1234/find_id_by_email?email=${text}');
@@ -105,7 +105,7 @@ class _find_idState extends ConsumerState<find_id> with SingleTickerProviderStat
                               alignment: Alignment.centerLeft,
                               padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
                               child: TextField(
-                                controller: emailController,
+                                controller: emailController2,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   hintText: 'email 입력',
@@ -118,11 +118,11 @@ class _find_idState extends ConsumerState<find_id> with SingleTickerProviderStat
                               padding: EdgeInsets.fromLTRB(0, 25, 0, 10),
                               child:ElevatedButton(
                                 onPressed: ()async{
-                                  if (isEmailValid(emailController.text)==true) {
+                                  if (isEmailValid(emailController2.text)==true) {
                                     setState(() {
                                       emailRule = true;
                                     });
-                                    await duplicatedId(emailController.text);
+                                    await duplicatedId(emailController2.text);
                                      showDialog(
                                       context: context,
                                       builder: (context) {

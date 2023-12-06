@@ -69,7 +69,7 @@ class _listState extends State<list> {
             ),
             week_box == true ? Container(margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
                 padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                height: (widget.b1.length > 0? widget.b1.length*65+5: 45).toDouble(),
+                height: 200,
                 decoration: BoxDecoration(
                   color: Color(0xffD9D9D9),
                   borderRadius: BorderRadius.circular(15),

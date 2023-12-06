@@ -1,5 +1,6 @@
 import 'dart:async';
 
+
 import 'package:contact/screens/projects/MyProject_schedule.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +9,8 @@ import 'screens/login/login.dart';
 import 'screens/login/sign_up.dart';
 import 'screens/login/email.dart';
 import 'screens/login/find_id.dart';
+import 'screens/login/find_pw.dart';
+import 'screens/login/find_pw_email.dart';
 import 'screens/home/home_main.dart';
 import 'screens/timetables/Timetables.dart';
 import 'screens/projects/Projects.dart';
@@ -47,10 +50,17 @@ final goRouterProvider = Provider<GoRouter>((ref) {
               },
             ),
             GoRoute(
+              path: 'findpwemail',
+              builder: (context, state) {
+                return find_pw_email();
+              },
+              routes: <RouteBase>[
+              GoRoute(
               path: 'findpw',
               builder: (context, state) {
-                return find_id();
+              return find_pw();
               },
+              )]
             ),
             GoRoute(
               path: 'email',

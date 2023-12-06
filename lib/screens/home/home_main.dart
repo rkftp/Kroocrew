@@ -35,7 +35,7 @@ class _MiddleState extends ConsumerState<Middle> {
     if (scheduleData != null) {
       scheduleList = scheduleData.map((item) => Schedule(
         courseName: item.courseName,
-        projectName: item.projectName,
+        courseId: item.courseId,
         teamName: item.teamName,
         deadLine: item.deadLine,
         description: item.description,

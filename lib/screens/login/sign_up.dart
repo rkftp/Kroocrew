@@ -240,7 +240,7 @@ class _sign_upState extends ConsumerState<sign_up> with SingleTickerProviderStat
                                 final signupDTO = SignupDTO(id: idController.text, pw: pwController.text, potalid: potalidController.text, potalpw: potalpwController.text,email: emailController.text);
                                 ref.read(signupProvider.notifier).signup(signupDTO,context,ref);
                               } else{
-                                print("애송이");// 밑에 띄워야겠지?
+                                print("애송이");
                               }
 
                             },

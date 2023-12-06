@@ -5,14 +5,14 @@ import '/utils/token_keybox.dart';
 
 class Schedule{
   final String courseName;
-  final String projectName;
+  final String courseId;
   final String teamName;
   final String deadLine;
   final String description;
 
   Schedule({
     required this.courseName,
-    required this.projectName,
+    required this.courseId,
     required this.teamName,
     required this.deadLine,
     required this.description,
@@ -21,7 +21,7 @@ class Schedule{
   factory Schedule.fromSchedule(Map<String, dynamic> json) {
     return Schedule(
         courseName: json["Course_name"],
-        projectName: json["Project_name"],
+        courseId: json["Course_id"],
         teamName: json["Team_name"],
         deadLine: json["Deadline"],
         description: json["description"]
