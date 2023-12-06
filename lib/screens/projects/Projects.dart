@@ -5,13 +5,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:functional_widget_annotation/functional_widget_annotation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:random_color/random_color.dart';
+
 
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '/utils/dio_service.dart';
 import '/utils/token_keybox.dart';
 
+
 import '/providers/projectProvider.dart';
+import 'JoinProject.dart';
+
 
 
 part 'Projects.g.dart';
@@ -161,9 +166,19 @@ class _WholeProjectState extends ConsumerState<WholeProject> {
                       itemCount: projectList.length,
                       itemBuilder: (content, index) {
                         ProjectCardData cardData = projectList[index];
-                        return CustomCard(
-                          courseName: cardData.courseName,
-                          teamName: cardData.teamName,
+                        return InkWell(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                barrierDismissible: true,
+                                builder: ((BuildContext context) {
+                                  return JoinProject(projectData: cardData);
+                                }));
+                          },
+                          child: CustomCard(
+                            courseName: cardData.courseName,
+                            teamName: cardData.teamName,
+                          ),
                         );
                       },
                     ),
@@ -197,6 +212,7 @@ class CustomCard extends ConsumerStatefulWidget {
 class _CustomCardState extends ConsumerState<CustomCard> {
   @override
   Widget build(BuildContext context) {
+    RandomColor _randomColor = RandomColor();
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.zero, // 둥근 모서리를 없앰
@@ -207,10 +223,13 @@ class _CustomCardState extends ConsumerState<CustomCard> {
         visualDensity: VisualDensity(horizontal: 0, vertical: -4), // 아이콘과 텍스트 간격을 조절
 
         // leading을 직접 정의
-        leading: Container(
-          width: 48,
-          height: 48,
-          color: Color(0xffe8e4e4),
+        leading: Icon(
+          CupertinoIcons.circle_fill,
+          color: _randomColor.randomColor(
+            colorBrightness: ColorBrightness.light,
+            colorSaturation: ColorSaturation.lowSaturation,
+          ),
+          size: 30,
         ),
 
         title: Text(

@@ -76,10 +76,10 @@ class findidController extends StateNotifier<emailDTO> {
     }
   }
 
-  void getId() async{
+  /*void getId() async{
     Dio _dio = Dio();
     final response = await _dio.get('http://20.39.186.138:1234/find_id_by_email?email=${emailDTO.email}');
-  }
+  }*/
 }
 
 
