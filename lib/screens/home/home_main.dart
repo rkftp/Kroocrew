@@ -22,6 +22,7 @@ class _MiddleState extends ConsumerState<Middle> {
   void initState() {
     super.initState();
     ref.read(MainProvider.notifier).getMainAPI();
+
   }
 
   @override

@@ -1,7 +1,60 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:contact/widgets/flutter_dropdown_page.dart';
+import 'package:dio/dio.dart';
+import '/utils/token_keybox.dart';
+
+List<String> list = ['캡디','인공지능','컴그','컴통'];
+bool rapid_match = false;
+setmatchtrue(){
+  rapid_match = true;
+}
+setmatchfalse(){
+  rapid_match = false;
+}
+
 TextEditingController _textFieldController = TextEditingController();
+
+Future<void> addproject(name,subject,num,description,rapid_match) async {
+  Dio _dio = Dio();
+  KeyBox _keyBox = KeyBox().to();
+
+  late String? storedToken;
+  storedToken = await _keyBox.getToken();
+  final response = await _dio.get('http://20.39.186.138:1234/create_team',options: Options(
+      headers : {'Authorization': '${storedToken}'},
+      ),
+      queryParameters: {
+        "Student_id" : storedToken,
+        "Course_id" : subject,
+        "Team_name" : name,
+        "max_member" : num,
+        "description" : description,
+        "rapid_match" : rapid_match,
+      });
+      print("\n토큰저장 성공, ${response}");
+      print(response.data);
+
+
+  try {
+    if (response.statusCode == 200) {
+      print("성공");
+      if(response.data['success'] == true){
+        print("쌉가능");
+
+      }else{
+        print("불가능");
+
+      }
+    } else {
+      print("이미있다 아가야");
+    }
+  } catch (e) {
+    print('오류 발생: $e');
+  }
+}
+
+
 class AddProject extends ConsumerStatefulWidget {
   const AddProject({Key? key}) : super(key: key);
 
@@ -86,7 +139,7 @@ class _AddProjectState extends ConsumerState<AddProject> {
                           width: 200,
                           alignment: Alignment.centerLeft,
                           padding: EdgeInsets.fromLTRB(20, 10, 0, 10),
-                          child: FlutterDropdownSubject(),
+                          child: FlutterDropdownSubject(list: list),
                         ),
                       ],
                     ),
@@ -165,6 +218,15 @@ class _AddProjectState extends ConsumerState<AddProject> {
                           ),]
                       ),
                     ),
+                    Row(
+                      children: [
+                        /*IconButton(onPressed:
+                        rapid_match==true?
+                        setState
+                        setmatchfalse():setmatchtrue(),
+                            icon: Icon(rapid_match==true?Icons.square_outlined:Icons.square))*/
+                      ],
+                    )
 
                   ],
                 ),

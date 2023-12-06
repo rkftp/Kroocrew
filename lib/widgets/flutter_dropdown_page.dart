@@ -167,16 +167,20 @@ class _FlutterDropdownIconState extends State<FlutterDropdownIcon> {
 }
 
 class FlutterDropdownSubject extends StatefulWidget {
-  const FlutterDropdownSubject({Key? key}) : super(key: key);
-
+  const FlutterDropdownSubject({Key? key,this.list}) : super(key: key);
+  final list;
   @override
   State<FlutterDropdownSubject> createState() => _FlutterDropdownSubjectState();
 }
 class _FlutterDropdownSubjectState extends State<FlutterDropdownSubject> {
-  String dropdownValue = '캡스톤디자인(1)';
+
 
   @override
+
   Widget build(BuildContext context) {
+    List<String> dropdownInput = widget.list;
+    String dropdownValue = widget.list[0];
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -194,7 +198,7 @@ class _FlutterDropdownSubjectState extends State<FlutterDropdownSubject> {
               dropdownValue = newValue!;
             });
           },
-          items: <String>['캡스톤디자인(1)','인공지능','컴퓨터통신','리눅스시스템응용설계']
+          items: dropdownInput
               .map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,

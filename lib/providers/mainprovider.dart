@@ -91,6 +91,7 @@ class mainController extends StateNotifier<MainData> {
     }
   }
 
+
 }
 
 final MainProvider = StateNotifierProvider<mainController, MainData>((ref){
