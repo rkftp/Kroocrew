@@ -122,6 +122,8 @@ class timetableController extends StateNotifier<List<TimetableData>> {
 
       final List<dynamic> teamData = response.data['teams'];
 
+
+
       final List<TeamData> mappedTeamData = teamData
           .map((item) => TeamData.fromJson(item))
           .toList();

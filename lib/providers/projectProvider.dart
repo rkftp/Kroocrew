@@ -15,7 +15,7 @@ class ProjectCardData{
   final int maxMember;
   final int currentMember;
   final String teamLeader;
-  final String? description;
+  final String description;
   final String finishTime;
   final int averageSpeed;
 
@@ -66,7 +66,8 @@ class ProjectCardData{
 class projectController extends StateNotifier<List<ProjectCardData>> {
   projectController() : super([]);
 
-  Future<void> getWholeProject(String value) async {
+
+  Future<void> getWholeProject(String value, WidgetRef ref) async {
     Dio _dio = DioServices().to();
     KeyBox _keyBox = KeyBox().to();
 
@@ -88,10 +89,23 @@ class projectController extends StateNotifier<List<ProjectCardData>> {
 
     if (response.statusCode == 200) {
       final List<dynamic> data = response.data['teams'];
+      ref.read(myProjectProvider.notifier).getMyProject();
+      final List<ProjectCardData> myProjectList = ref.watch(myProjectProvider);
 
-      state = data
+      final List<ProjectCardData> projectList = data
           .map((item) => ProjectCardData.fromProjects(item))
           .toList();
+
+      for(int i = 0; i < projectList.length; i++){
+        for(int j = 0; j < myProjectList.length; j++){
+          if(projectList[i].teamId == myProjectList[j].teamId){
+            projectList.removeAt(i);
+          }
+        }
+      }
+
+
+      state = projectList;
 
       // return response.data;
     } else {
@@ -99,6 +113,7 @@ class projectController extends StateNotifier<List<ProjectCardData>> {
       // return response.data;
     }
   }
+
 }
 
 final projectProvider = StateNotifierProvider<projectController, List<ProjectCardData>>((ref) {
@@ -141,3 +156,45 @@ class myProjectController extends StateNotifier<List<ProjectCardData>> {
 final myProjectProvider = StateNotifierProvider<myProjectController, List<ProjectCardData>>((ref) {
   return myProjectController();
 });
+
+class joinTeamController extends StateNotifier<String> {
+  joinTeamController() : super('');
+
+  Future<void> joinTeam(int teamId) async {
+    Dio _dio = DioServices().to();
+    KeyBox _keyBox = KeyBox().to();
+
+    late String? storedToken;
+    storedToken = await _keyBox.getToken();
+
+    final response = await _dio.get('/join_team_request',
+        queryParameters: {
+          'Team_id' : teamId,
+        },
+        options: Options(
+          headers: {'Authorization': '${storedToken}'},
+        )
+    );
+
+    if (response.statusCode == 200) {
+      print('성공');
+      print(response.data);
+      if(response.data['message'] == "already requested")
+        state = '이미 신청을 완료했습니다.';
+      else if(response.data['messeage'] == "requested")
+        state = '신청에 성공했습니다.';
+      else
+        state = response.data['message'];
+      // return response.data;
+    } else {
+      print('불러오기 실패' + response.data['success'].toString());
+      state = '신청에 실패했습니다.';
+      // return response.data;
+    }
+  }
+}
+
+final joinTeamProvider = StateNotifierProvider<joinTeamController, String>((ref) {
+  return joinTeamController();
+});
+

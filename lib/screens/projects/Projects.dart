@@ -107,7 +107,7 @@ class _WholeProjectState extends ConsumerState<WholeProject> {
   @override
   void initState() {
     super.initState();
-    ref.read(projectProvider.notifier).getWholeProject('');
+    ref.read(projectProvider.notifier).getWholeProject('', ref);
   }
 
   @override
@@ -127,7 +127,7 @@ class _WholeProjectState extends ConsumerState<WholeProject> {
                       child: TextField(
                         focusNode: FocusNode(),
                         onChanged: (text) {
-                          ref.read(projectProvider.notifier).getWholeProject(text);
+                          ref.read(projectProvider.notifier).getWholeProject(text, ref);
                         },
                         decoration: InputDecoration(
                           hintText: '검색',
@@ -146,10 +146,10 @@ class _WholeProjectState extends ConsumerState<WholeProject> {
                             child: Padding(
                               //눌렀을때 provider로 다시 받아오기
                               padding: EdgeInsets.only(right: 10),
-                              child: Icon(Icons.refresh, color: Colors.grey),
+                              child: Icon(Icons.clear, color: Colors.grey),
                             ),
                             onTap: () {
-                              ref.read(projectProvider.notifier).getWholeProject('');
+                              ref.read(projectProvider.notifier).getWholeProject('', ref);
                             },
                           ),
                         ),
@@ -168,6 +168,7 @@ class _WholeProjectState extends ConsumerState<WholeProject> {
                                 builder: (BuildContext context) {
                                   return JoinProject(projectData: cardData);
                                 },
+                                backgroundColor: Colors.transparent,
                               );
                             },
                             child: CustomCard(
