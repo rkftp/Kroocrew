@@ -102,10 +102,6 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                         label: '프로젝트',
                       ),
                       BottomNavigationBarItem(
-                        icon: Icon(Icons.question_answer),
-                        label: '톡',
-                      ),
-                      BottomNavigationBarItem(
                         icon: Icon(Icons.person),
                         label: '내정보',
                       ),
@@ -158,16 +154,6 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                         },
                       )
                     ]
-                  ),
-                ]
-            ),
-            StatefulShellBranch(
-                routes: <RouteBase>[
-                  GoRoute(
-                    path: '/chat',
-                    builder: (context, state) {
-                      return Chat();
-                    },
                   ),
                 ]
             ),

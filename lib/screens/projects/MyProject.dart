@@ -42,8 +42,7 @@ class _MyProjectState extends ConsumerState<MyProject> {
                                 return context.go('/projects/manage', extra: cardData);
                               },
                               child: CustomCard(
-                                courseName: cardData.courseName,
-                                teamName: cardData.teamName,
+                                cardData: cardData,
                               ),
                             );
                           },
@@ -60,10 +59,9 @@ class _MyProjectState extends ConsumerState<MyProject> {
 
 
 class CustomCard extends ConsumerStatefulWidget {
-  final String courseName;
-  final String teamName;
+  final ProjectCardData cardData;
 
-  CustomCard({required this.courseName, required this.teamName});
+  CustomCard({required this.cardData});
 
   @override
   ConsumerState<CustomCard> createState() => _CustomCardState();
@@ -93,7 +91,7 @@ class _CustomCardState extends ConsumerState<CustomCard> {
         ),
 
         title: Text(
-          widget.courseName,
+          widget.cardData.courseName,
           style: TextStyle(
             fontWeight: FontWeight.w600,
             color: Colors.black,
@@ -101,7 +99,7 @@ class _CustomCardState extends ConsumerState<CustomCard> {
           ),
         ),
         subtitle: Text(
-          widget.teamName,
+          widget.cardData.teamName,
           style: TextStyle(
             color: Colors.black,
           ),

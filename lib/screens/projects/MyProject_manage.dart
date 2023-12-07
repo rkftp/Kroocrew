@@ -31,13 +31,14 @@ class _ManageMyProjectsState extends ConsumerState<ManageMyProjects> {
   void initState() {
     super.initState();
     ref.read(manageProvider.notifier).getSchedule(context, ref, widget.projectData.teamId);
+    ref.read(rapidMatchProvider.notifier).getRapidMatch(widget.projectData.teamId);
   }
 
   @override
   Widget build(BuildContext context) {
     RandomColor _randomColor = RandomColor();
-
     final scheduleList = ref.watch(manageProvider);
+    final rapidValue = ref.watch(rapidMatchProvider);
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -216,27 +217,49 @@ class _ManageMyProjectsState extends ConsumerState<ManageMyProjects> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                  ElevatedButton(onPressed: (){
-                    QuickAlert.show(
-                      context: context,
-                      type: QuickAlertType.confirm,
-                      text: '신속 매칭을 하시겠습니까?',
-                      confirmBtnText: '확인',
-                      cancelBtnText: '취소',
-                      confirmBtnColor: Color(0xFF7365F8),
-                      onConfirmBtnTap: () {
-                        context.pop();
-                        editRapidMatch(widget.projectData.teamId, true, context);
-                      },
-                    );
-                  }, child: Row(
+                    Row(
                     children: [
-                      Icon(CupertinoIcons.forward_end_alt_fill),
-                      Text(
-                        '신속 매칭'
+                      Container(
+                        child: Row(
+                          children: [
+                            Icon(CupertinoIcons.bolt_fill),
+                            
+                             CupertinoSwitch(
+                              value: rapidValue,
+                              onChanged: (value) {
+                                QuickAlert.show(
+                                  context: context,
+                                  type: QuickAlertType.confirm,
+                                  text: rapidValue ? '신속 매칭을 해제하시겠습니까?' : '신속 매칭을 하시겠습니까?',
+                                  confirmBtnText: '확인',
+                                  cancelBtnText: '취소',
+                                  confirmBtnColor: Color(0xFF7365F8),
+                                  onConfirmBtnTap: () {
+                                    context.pop();
+                                    rapidValue ? ref.read(rapidMatchProvider.notifier).editRapidMatch(widget.projectData.teamId, false, context)
+                                    : ref.read(rapidMatchProvider.notifier).editRapidMatch(widget.projectData.teamId, true, context);
+                                  },
+                                );
+                              },
+                            ) /*:
+                            GestureDetector(
+                              onTap: (){
+                                QuickAlert.show(
+                                  context: context,
+                                  type: QuickAlertType.error,
+                                  text: '팀장만이 신속 매칭을 설정할 수 있습니다.',
+                                );
+                              },
+                              child: CupertinoSwitch(
+                                value: false,
+                                onChanged: (value){},
+                              ),
+                            )*/
+                          ],
+                        ),
                       ),
                     ],
-                  )),
+                  ),
                   ElevatedButton(onPressed: (){
                     showDialog(
                       context: context,
@@ -458,38 +481,3 @@ class AddSchedule extends ConsumerWidget {
   }
 }
 
-void editRapidMatch(TeamId, rapidValue, BuildContext context) async{
-  Dio _dio = DioServices().to();
-  KeyBox _keyBox = KeyBox().to();
-
-  late String? storedToken;
-  storedToken = await _keyBox.getToken();
-
-
-  final response = await _dio.get('/rapid_match_on_off',
-      queryParameters: {
-        'Team_id': TeamId,
-        'rapid_match': rapidValue,
-      },
-      options: Options(
-        headers : {'Authorization': '${storedToken}'},
-      )
-  );
-
-  if (response.statusCode == 200) {
-    print(response.data);
-    QuickAlert.show(
-      context: context,
-      type: QuickAlertType.success,
-      text: '신속 매칭모드로 전환되었습니다.',
-      confirmBtnText: '확인',
-      confirmBtnColor: Color(0xFF7365F8),
-      onConfirmBtnTap: () {
-        context.pop();
-      },
-    );
-
-  } else {
-    print("실패해버린..");
-  }
-}
