@@ -3,19 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:contact/widgets/flutter_dropdown_page.dart';
 import 'package:dio/dio.dart';
 import '/utils/token_keybox.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 
-List<String> list = ['캡디','인공지능','컴그','컴통'];
-bool rapid_match = false;
-setmatchtrue(){
-  rapid_match = true;
-}
-setmatchfalse(){
-  rapid_match = false;
-}
+import '/providers/timetableProvider.dart';
 
+
+
+TextEditingController _nameFieldController = TextEditingController();
 TextEditingController _textFieldController = TextEditingController();
 
-Future<void> addproject(name,subject,num,description,rapid_match) async {
+Future<void> addproject(name,subject,formattDate,num,description,rapid_match) async {
   Dio _dio = Dio();
   KeyBox _keyBox = KeyBox().to();
 
@@ -27,6 +25,7 @@ Future<void> addproject(name,subject,num,description,rapid_match) async {
       queryParameters: {
         "Student_id" : storedToken,
         "Course_id" : subject,
+        "finish_time" : formattDate,
         "Team_name" : name,
         "max_member" : num,
         "description" : description,
@@ -58,16 +57,43 @@ Future<void> addproject(name,subject,num,description,rapid_match) async {
 class AddProject extends ConsumerStatefulWidget {
   const AddProject({Key? key}) : super(key: key);
 
+
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _AddProjectState();
 }
 
 class _AddProjectState extends ConsumerState<AddProject> {
+  bool rapid_match = false;
+  int num =2;
+  String subject = '';
 
+  DateTime today = DateTime.now();
+
+  void _handleDropdownChanged(int newValue) {
+    setState(() {
+      num = newValue;
+    });
+  }
+  void _handleDropdownChanged1(String newValue) {
+    setState(() {
+      subject = newValue;
+    });
+  }
+  @override
+  void initState() {
+    super.initState();
+    ref.read(timetableProvider.notifier).getDB(context, ref);
+  }
 
   @override
   Widget build(BuildContext context) {
 
+    final List<TimetableData> timetableList = ref.watch(timetableProvider);
+    List<String> list = timetableList.map((item) {
+      return item.CourseId;
+    }).toList();
+
+    String formattDate = DateFormat('yyyy-MM-dd HH:mm').format(today);
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -115,7 +141,7 @@ class _AddProjectState extends ConsumerState<AddProject> {
                           alignment: Alignment.center,
                           padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                           child: TextField(
-                              controller: _textFieldController,
+                              controller: _nameFieldController,
                               decoration: InputDecoration(
                               )
                           ),
@@ -134,12 +160,14 @@ class _AddProjectState extends ConsumerState<AddProject> {
                             fontWeight:FontWeight.w500,
                           ),),
                         ),
-                        Container(
-                          height: 60,
-                          width: 200,
-                          alignment: Alignment.centerLeft,
-                          padding: EdgeInsets.fromLTRB(20, 10, 0, 10),
-                          child: FlutterDropdownSubject(list: list),
+                        Expanded(
+                          child: Container(
+                            height: 60,
+
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.fromLTRB(20, 10, 60, 10),
+                            child: FlutterDropdownSubject(list: list,onDropdownChanged: _handleDropdownChanged1,),
+                          ),
                         ),
                       ],
                     ),
@@ -160,7 +188,9 @@ class _AddProjectState extends ConsumerState<AddProject> {
                           width: 100,
                           alignment: Alignment.centerLeft,
                           padding: EdgeInsets.fromLTRB(20, 10, 0, 10),
-                          child: FlutterDropdownTeamnum(),
+                          child: FlutterDropdownTeamnum(
+                            onDropdownChanged: _handleDropdownChanged,
+                          ),
                         ),
                         Container(
                           height: 60,
@@ -172,6 +202,56 @@ class _AddProjectState extends ConsumerState<AddProject> {
                             fontWeight:FontWeight.w500,
                           ),),
                         ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          height: 60,
+                          width: 100,
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.fromLTRB(20, 10, 0, 10),
+                          child: Text('마감시간',style:TextStyle(
+                            fontSize: 18,
+                            fontWeight:FontWeight.w500,
+                          ),),
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: 60,
+
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                            child: TextButton(onPressed: (){
+
+                              showCupertinoDialog(context: context,
+                                  barrierDismissible: true,
+                                  builder: (BuildContext context){
+                                return Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Container(
+                                    color: Colors.white,
+                                    height:300,
+                                    child: CupertinoDatePicker(
+                                      mode: CupertinoDatePickerMode.dateAndTime,
+                                      onDateTimeChanged: (DateTime date){
+                                      setState(() {
+                                        today = date;
+                                      });
+                                        },
+
+                                    ),
+                                  )
+                                );
+                              });
+                            },child: Text(formattDate,style: TextStyle(
+                              color: Colors.indigo,
+                              fontSize: 18,
+
+                            ),))
+                          ),
+                        ),
+
                       ],
                     ),
                   ],
@@ -220,11 +300,24 @@ class _AddProjectState extends ConsumerState<AddProject> {
                     ),
                     Row(
                       children: [
-                        /*IconButton(onPressed:
-                        rapid_match==true?
-                        setState
-                        setmatchfalse():setmatchtrue(),
-                            icon: Icon(rapid_match==true?Icons.square_outlined:Icons.square))*/
+                        Container(
+                          child: IconButton(
+                            icon: Icon(
+                              rapid_match ? Icons.square : Icons.square_outlined, // 상태에 따라 아이콘 변경
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                rapid_match = !rapid_match; // 상태 토글
+                              });
+                            },
+                          ),
+                        ),
+                        Container(
+                          child: Text("빠른 매칭을 허용합니다.",style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),),
+                        )
                       ],
                     )
 
@@ -236,43 +329,48 @@ class _AddProjectState extends ConsumerState<AddProject> {
                       color: Color(0xffD9D9D9),
                       width: 0.5,
                     ),
+
                   ),
                 ),
               ),
 
               Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                        height: 50,
-                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        child:ElevatedButton(
-                          onPressed: (){
-                          },
-                          child: Text('닫기',style: TextStyle(
-                            color: Colors.black
-                          ),),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Color(0xffffffff)), // 여기에서 색상을 설정
-                          ),
-                        )
+                  height: 50,
+                  alignment: Alignment.centerRight,
+                  padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
+                  child:ElevatedButton(
+                    onPressed: ()async{
+                      await addproject (_nameFieldController.text,subject,formattDate,num,_textFieldController.text,rapid_match);
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text('프로젝트 생성'),
+                            content: Container(
+                                width: double.maxFinite, // 팝업의 너비를 최대로 설정
+                                child: Text("새 팀 생성에 성공하였습니다.")
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                  child: Text('확인'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  }
+                              ),
+
+                              // 수정된 텍스트 표시
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: Text('추가하기'),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Color(0xff473CCE)),
+                      // 여기에서 색상을 설정
                     ),
-                    Container(
-                        height: 50,
-                        padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
-                        child:ElevatedButton(
-                          onPressed: (){
-                          },
-                          child: Text('추가하기'),
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Color(0xff473CCE)), // 여기에서 색상을 설정
-                          ),
-                        )
-                    )
-                  ],
-                ),
-              ),
+                  )
+              )
             ],
           )
         ),
@@ -280,3 +378,20 @@ class _AddProjectState extends ConsumerState<AddProject> {
     );
   }
 }
+class CuDatePicker extends StatelessWidget {
+  const CuDatePicker({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoDatePicker(
+      initialDateTime: DateTime.now(),
+      maximumDate: new DateTime.now(),
+      minimumYear: 2010,
+      maximumYear: 2030,
+      mode: CupertinoDatePickerMode.date,
+      onDateTimeChanged: (DateTime value) {},
+    );
+  }
+}
+
+
