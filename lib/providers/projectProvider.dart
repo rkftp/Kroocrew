@@ -8,6 +8,7 @@ import '/utils/dio_service.dart';
 import '/utils/token_keybox.dart';
 
 class ProjectCardData{
+  final bool rapidMatch;
   final String teamName;
   final String courseName;
   final int teamId;
@@ -22,6 +23,7 @@ class ProjectCardData{
 
 
   ProjectCardData({
+    required this.rapidMatch,
     required this.teamName,
     required this.courseName,
     required this.teamId,
@@ -35,6 +37,7 @@ class ProjectCardData{
   });
 
   factory ProjectCardData.fromProjects(Map<String,dynamic> json) {
+    final rapidMatch = json["rapid_match"];
     final courseName = json["Course_name"];
     final teamName = json["Team_name"];
     final teamId = json["Team_id"];
@@ -48,6 +51,7 @@ class ProjectCardData{
 
 
     return ProjectCardData(
+      rapidMatch: rapidMatch,
       courseName: courseName,
       teamName: teamName,
       teamId: teamId,
