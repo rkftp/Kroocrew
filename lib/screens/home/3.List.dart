@@ -1,6 +1,12 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import '/providers/mainprovider.dart';
-import '/widgets/box.dart';
+import 'package:go_router/go_router.dart';
+import 'package:random_color/random_color.dart';
+import 'package:flutter/cupertino.dart';
+
+import '../../providers/mainprovider.dart';
+import '/providers/projectProvider.dart';
+
 class list extends StatefulWidget {
   list({super.key,this.b1});
   final b1;
@@ -12,146 +18,127 @@ class list extends StatefulWidget {
 class _listState extends State<list> {
 
 
-  bool week_box = true;
-
-  onoff_week() {
-    if(week_box == true) {
-      setState((){week_box = false;});
-    }else{
-      setState((){week_box = true;});
-    }
-  }
-
-  bool isArrowUp = false;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
-        child:Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            GestureDetector(
-              onTap: () {
-                onoff_week();
-                setState(() {
-                  isArrowUp = !isArrowUp;
-                });
+    return  Container(
+      height: 500,
+      width: double.infinity,
+      child: Column(
+        children: [
+          Container(
+            height: 70,
+            margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+            padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+              alignment: Alignment.centerLeft,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(color: Colors.grey,
+                width: 1,)
+              )
+            ),
+            child: Text("내 일정",style: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+              ),),
+
+          ),
+          Expanded(
+            child: Container(
+
+              width: double.infinity,
+              margin: EdgeInsets.fromLTRB(20, 14, 14, 0),
+              alignment: Alignment.centerLeft,
+
+              child : widget.b1.length > 0?ListView.builder(itemCount: widget.b1.length,itemBuilder: (c,i){
+                Schedule cardData = widget.b1[i];
+                return CustomCard(
+                  cardData: cardData,
+                );
+              },) :
+              ListView.builder(itemCount:1,itemBuilder: (c,i){
+                return Container(
+                    padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    child: Text('일정이 없습니다.',style: TextStyle(
+                      fontSize: 15,
+                    )));
               },
-              child: Container(
-                margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                height: 34,
-                width: 120,
-                decoration: BoxDecoration(
-                  color: Color(0xffD9D9D9),
-                  borderRadius: BorderRadius.circular(50),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      isArrowUp ? Icons.arrow_drop_up : Icons.arrow_drop_down,
-                      size: 25,
-                      color: Color(0xff473CCE),
-                    ),
-                    SizedBox(width: 8),
-                    Text(
-                      '전체 일정',
-                      style: TextStyle(
-                        color: Color(0xff473CCE),
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            week_box == true ? Container(margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
-                padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                height: 200,
-                decoration: BoxDecoration(
-                  color: Color(0xffD9D9D9),
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: Color(0xff473cce), width: 2),
-                ),
-                child: widget.b1.length > 0?ListView.builder(itemCount: widget.b1.length,itemBuilder: (c,i){
-                  return Con(schedule: widget.b1[i]);
-                },) :
-                ListView.builder(itemCount:1,itemBuilder: (c,i){
-                  return Container(
-                      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                      child: Text('일정이 없습니다.',style: TextStyle(
-                        fontSize: 15,
-                      )));
-                },)
-            ) :
-            Container(),
-          ],
-      )
+              ),),
+          ),
+        ],
+      ),
     );
   }
 }
 
 
+class CustomCard extends ConsumerStatefulWidget {
 
 
-
-
-
-class Con extends StatelessWidget {
-  Con({super.key, required this.schedule});
-  final Schedule schedule;
+  CustomCard({required this.cardData});
+  final Schedule cardData;
 
   @override
+  ConsumerState<CustomCard> createState() => _CustomCardState();
+}
 
+class _CustomCardState extends ConsumerState<CustomCard> {
+  @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Row(
-          children: [
-            Flexible(child: Container(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 25),
-                child: Icon(Icons.star, size: 15, color: Color(0xff000000))
-            ),
-                flex: 1),
-            Flexible(child: Container(
-              padding: EdgeInsets.fromLTRB(0, 7, 0, 10),
-              child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+    RandomColor _randomColor = RandomColor();
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero, // 둥근 모서리를 없앰
+      ),
+      elevation: 0, // 그림자를 없앰
+      child: ListTile(
+        contentPadding: EdgeInsets.all(0), // 내용의 패딩을 없앰
+        visualDensity: VisualDensity(horizontal: 0, vertical: -4), // 아이콘과 텍스트 간격을 조절
 
-                        Text("${DateTime.parse(schedule.deadLine).month.toString().padLeft(2, '0')}월${DateTime.parse(schedule.deadLine).day.toString().padLeft(2, '0')}일", style: TextStyle(
-                          color: Color(0xff000000),
-                          fontSize: 15,
-                        )),
-                        Text(schedule.description, style: TextStyle(
-                          color: Color(0xff000000),
-                          fontSize: 15,
-                        )),
-                      ],
-                    ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(schedule.courseName, style: TextStyle(
-                            color: Color(0xff000000),
-                            fontSize: 15,
-                          )),
-                          Text(schedule.teamName, style: TextStyle(
-                            color: Color(0xff000000),
-                            fontSize: 15,
-                          )),
-                        ]
-                    )
-                  ]
+        // leading을 직접 정의
+        leading: Icon(
+          CupertinoIcons.circle_fill,
+          color: _randomColor.randomColor(
+            colorBrightness: ColorBrightness.light,
+            colorSaturation: ColorSaturation.lowSaturation,
+          ),
+          size: 30,
+        ),
+
+        title: Text(
+          widget.cardData.courseName,
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            color: Colors.black,
+            fontSize: 20,
+          ),
+        ),
+        subtitle: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              child: Text(
+                widget.cardData.teamName,
+                style: TextStyle(
+                  color:Colors.indigo,
+                  fontWeight: FontWeight.w700
+                ),
               ),
             ),
-                flex: 10),
+            Container(
+              padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+              child: Text(
+                widget.cardData.deadLine,
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+            ),
           ],
-        )
+        ),
+      ),
     );
   }
 }
+

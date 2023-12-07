@@ -42,191 +42,174 @@ class _ManageMyProjectsState extends ConsumerState<ManageMyProjects> {
     final rapidValue = ref.watch(rapidMatchProvider);
     final idState = ref.watch(authStateProvider);
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: 150,
-              width: double.infinity,
-              child: Card(
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero, // 둥근 모서리를 없앰
-                ),
-                elevation: 0, // 그림자를 없앰
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(60),
+          child: AppBar(
+          backgroundColor: Colors.white,
+            elevation: 0,
+            foregroundColor: Colors.black,
+          ),
+        ),
+        endDrawer: Drawer(
+
+        ),
+        body: SafeArea(
+        child: Container(
+          color: Colors.white,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 110,
+                width: double.infinity,
+                child: Card(
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero, // 둥근 모서리를 없앰
+                  ),
+                  elevation: 0, // 그림자를 없앰
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Flexible(
+                        child: Container(
                           width: 80,
-                          height: 40,
+                          alignment: Alignment.center,
 
-                          alignment: Alignment.centerLeft,
-                          child: IconButton(
-                            onPressed: () {
-                              context.go('/projects');
-                            },
-                            icon: Icon(Icons.arrow_back),
-                            splashRadius: 1,
-                          ),
-                        ),
-                        Expanded(
-                          child: Container(
-
-
-                            width: 80,
-                            alignment: Alignment.center,
-
-                            child: Icon(
-                              CupertinoIcons.circle_grid_hex,
-                              color: _randomColor.randomColor(
-                                colorBrightness: ColorBrightness.light,
-                                colorSaturation: ColorSaturation.lowSaturation,
-                              ),
-                              size: 50,
+                          child: Icon(
+                            CupertinoIcons.circle_grid_hex,
+                            color: _randomColor.randomColor(
+                              colorBrightness: ColorBrightness.light,
+                              colorSaturation: ColorSaturation.lowSaturation,
                             ),
+                            size: 50,
                           ),
-                        ),
-                      ],
-                    ),
-                    Expanded(
-                      child: Container(
+                        ),flex: 1
+                      ),
+                      Flexible(
+                        child: Container(
 
-                        child: Column(
-                          children: [
-                            Container(height: 50,),
-                            Container(
-                              height: 30,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
 
-                              alignment: Alignment.centerLeft,
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    '팀 ',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
+                              Container(
+                                height: 30,
 
+                                alignment: Alignment.centerLeft,
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '팀 ',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    widget.projectData.teamName,
-                                    style: TextStyle(
-                                      color: Color(0xFF7365F8),
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600,
+                                    Text(
+                                      widget.projectData.teamName,
+                                      style: TextStyle(
+                                        color: Color(0xFF7365F8),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600,
 
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              height: 30,
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                widget.projectData.courseName,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black,
-                                  fontSize: 20,
+                                  ],
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Container(
-                            width: 120,
-                            height: 40,
-
-                            alignment: Alignment.centerRight,
-                            child: IconButton(
-                              onPressed: () {
-                                const Drawer(
-                                  child: Text('This is a Drawer'),
-                                );
-                              },
-                              icon: Icon(Icons.menu),
-                              splashRadius: 1,
-                            ),
-                          ),
-                          Container(
-                            height: 40,
-                            width: 120,
-
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                            child:Text('${widget.projectData.currentMember.toString()}/${widget.projectData.maxMember.toString()}',
-                              style: TextStyle(
-                                color: Color(0xFF7365F8),
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Container(
-
-                              height: 60,
-                              width: 120,
-
-                              alignment: Alignment.center,
-                              padding: EdgeInsets.fromLTRB(0, 10,0, 10),
-                              child: ElevatedButton(
-                                onPressed: (){},
-                                child: Text('팀원 관리'),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFF7365F8),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
+                              Container(
+                                height: 30,
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  widget.projectData.courseName,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
+                                    fontSize: 20,
                                   ),
-                                )
-                            )
-                          )
-                        ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),flex:2
                       ),
-                    ),
-                  ],
+                      Flexible(
+                        child: Container(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Flexible(
+                                child: Container(
+                                  height: 40,
+                                  width: 120,
+
+                                  alignment: Alignment.center,
+                                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                  child:Text('${widget.projectData.currentMember.toString()}/${widget.projectData.maxMember.toString()}',
+                                    style: TextStyle(
+                                      color: Color(0xFF7365F8),
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),flex: 1,
+                              ),
+                              Flexible(
+                                  child: Container(
+                                      height: 60,
+                                      width: 120,
+
+                                      alignment: Alignment.center,
+                                      padding: EdgeInsets.fromLTRB(0, 10,0, 10),
+                                      child: ElevatedButton(
+                                          onPressed: (){},
+                                          child: Text('팀원 관리'),
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Color(0xFF7365F8),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(20),
+                                            ),
+                                          )
+                                      )
+                                  ),flex: 1
+                              )
+                            ],
+                          ),
+                        ),flex: 1
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Container(
+              Container(
 
-              height: 20,
-              width: double.infinity,
-              alignment: Alignment.center,
-              child: Divider(
-                height: 0,
-                thickness: 1,
-                color: Colors.grey,
+                height: 20,
+                width: double.infinity,
+                alignment: Alignment.center,
+                child: Divider(
+                  height: 0,
+                  thickness: 1,
+                  color: Colors.grey,
+                ),
               ),
-            ),
-            Container(
-              height: 70,
-              width: double.infinity,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Row(
+              Container(
+                height: 70,
+                width: double.infinity,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Container(
                         child: Row(
                           children: [
-                            Icon(CupertinoIcons.bolt_fill),
-                            
-                           widget.projectData.teamLeader == idState  ? CupertinoSwitch(
+                            Container(child: Icon(CupertinoIcons.bolt_fill)),
+
+                            widget.projectData.teamLeader == idState  ? CupertinoSwitch(
                               value: rapidValue,
                               onChanged: (value) {
                                 QuickAlert.show(
@@ -239,7 +222,7 @@ class _ManageMyProjectsState extends ConsumerState<ManageMyProjects> {
                                   onConfirmBtnTap: () {
                                     context.pop();
                                     rapidValue ? ref.read(rapidMatchProvider.notifier).editRapidMatch(widget.projectData.teamId, false, context)
-                                    : ref.read(rapidMatchProvider.notifier).editRapidMatch(widget.projectData.teamId, true, context);
+                                        : ref.read(rapidMatchProvider.notifier).editRapidMatch(widget.projectData.teamId, true, context);
                                   },
                                 );
                               },
@@ -257,45 +240,44 @@ class _ManageMyProjectsState extends ConsumerState<ManageMyProjects> {
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                  ElevatedButton(onPressed: (){
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AddSchedule();
-                      },
-                    );
-                  }, child: Row(
-                    children: [
-                      Icon(CupertinoIcons.add),
-                      Text(
-                          '일정 추가'
-                      ),
-                    ],
-                  ))
-                ]
-              ),
-            ),
-            Container(height: 10),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-                height: MediaQuery.of(context).size.height*0.5,
-                width: double.infinity,
-
-                child: ListView.builder(
-                    itemCount: scheduleList.length,
-                    itemBuilder: (c, i){
-                      ScheduleData scheduleData = scheduleList[i];
-                      return ScheduleCard(scheduleData: scheduleData);
-                    }
+                    ElevatedButton(onPressed: (){
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AddSchedule();
+                        },
+                      );
+                    }, child: Row(
+                      children: [
+                        Icon(CupertinoIcons.add),
+                        Text(
+                            '일정 추가'
+                        ),
+                      ],
+                    ))
+                  ]
                 ),
               ),
-            ),
+              Container(height: 10),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  height: MediaQuery.of(context).size.height*0.5,
+                  width: double.infinity,
+
+                  child: ListView.builder(
+                      itemCount: scheduleList.length,
+                      itemBuilder: (c, i){
+                        ScheduleData scheduleData = scheduleList[i];
+                        return ScheduleCard(scheduleData: scheduleData);
+                      }
+                  ),
+                ),
+              ),
 
 
-          ]
+            ]
+          ),
         )
       )
     );
