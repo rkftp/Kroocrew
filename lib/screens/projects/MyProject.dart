@@ -46,6 +46,10 @@ class _MyProjectState extends ConsumerState<MyProject> {
             },
           ),
         ),
+        GestureDetector(
+          child: reviewCard(cardData: myProjectList[0]),
+        )
+
       ],
     );
   }
@@ -96,6 +100,48 @@ class _CustomCardState extends ConsumerState<CustomCard> {
           widget.cardData.teamName,
           style: TextStyle(
             color: Colors.black,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class reviewCard extends ConsumerWidget {
+
+  final ProjectCardData cardData;
+
+  reviewCard({required this.cardData});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return InkWell(
+      onTap: () {
+        return context.go('/projects/review' );
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero, // 둥근 모서리를 없앰
+        ),
+        elevation: 0, // 그림자를 없앰
+        child: ListTile(
+          contentPadding: EdgeInsets.all(0), // 내용의 패딩을 없앰
+          visualDensity: VisualDensity(horizontal: 0, vertical: -4), // 아이콘과 텍스트 간격을 조절
+
+          // leading을 직접 정의
+          leading: Icon(
+            CupertinoIcons.star_circle_fill,
+            color: Colors.black,
+            size: 30,
+          ),
+
+          title: Text(
+            '완료된 프로젝트',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              color: Colors.black,
+              fontSize: 20,
+            ),
           ),
         ),
       ),

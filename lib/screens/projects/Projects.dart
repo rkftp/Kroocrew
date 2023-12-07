@@ -164,7 +164,17 @@ class _WholeProjectState extends ConsumerState<WholeProject> {
                 Expanded(
                   child: Container(
                     width: double.infinity,
-                    child: ListView.builder(
+                    child: projectList.isEmpty ?
+                        Center(
+                          child: Text(
+                            '검색 결과가 없습니다.',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        )
+                        : ListView.builder(
                       itemCount: projectList.length,
                       itemBuilder: (content, index) {
                         ProjectCardData cardData = projectList[index];

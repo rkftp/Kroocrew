@@ -21,7 +21,7 @@ class MyinfoData{
     required this.department,
     required this.speed,
     required this.description,
-});
+  });
   factory MyinfoData.fromMain(Map<String, dynamic> json) {
     final studentId = json['Student_id'];
     final retCode = json['retCode'];
@@ -105,4 +105,3 @@ class myinfoController extends StateNotifier<MyinfoData> {
 final MyinfoProvider = StateNotifierProvider<myinfoController, MyinfoData>((ref){
   return myinfoController();
 });
-
