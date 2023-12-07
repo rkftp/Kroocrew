@@ -10,8 +10,6 @@ import '/providers/projectProvider.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
-import 'package:dotted_line/dotted_line.dart';
-
 
 
 class JoinProject extends ConsumerStatefulWidget{
