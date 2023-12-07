@@ -13,6 +13,8 @@ import '/utils/token_keybox.dart';
 import '/providers/projectProvider.dart';
 import '/providers/timetableProvider.dart';
 
+import 'MatchModal.dart';
+
 class Timetables extends ConsumerStatefulWidget{
   const Timetables({Key? key}) : super(key: key);
 
@@ -100,7 +102,7 @@ class CustomAppBar extends ConsumerWidget {
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
               child: Text(
-                '*시간표가 보이지 않는다면?',
+                '*시간표를 다시 가져오고 싶다면?',
                 style: TextStyle(
                   color: Colors.grey,
                   fontSize: 14,
@@ -115,14 +117,16 @@ class CustomAppBar extends ConsumerWidget {
               child: ElevatedButton(
                 onPressed: () {
                   ref.read(timetableProvider.notifier).getPortal(context, ref);
-                  // "개설 신청하기" 버튼을 눌렀을 때 수행할 동작 추가
                 },
-                child: Text('시간표 가져오기'),
+                child: Text('시간표 새로 가져오기'),
                 //size 작게하기
                 style: ElevatedButton.styleFrom(
                   primary: Color(0xFF7365F8),
                   onPrimary: Colors.white,
                   minimumSize: Size(80, 30),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
                 ),
               ),
             ),
@@ -149,10 +153,14 @@ class _TimetableCardState extends ConsumerState<TimetableCard> {
     return InkWell(
       onTap: () {
         if(widget.timetableData.isActive) {
-          context.go('/projects/manage', extra: widget.timetableData.CourseId);
+          // context.go('/projects/manage', extra: widget.timetableData.CourseId);
         } else {
-          context.go('/projects');
-          ref.read(projectProvider.notifier).getWholeProject(widget.timetableData.CourseName, ref);
+          showModalBottomSheet(
+            context: context,
+            builder: (BuildContext context) {
+              return MatchModal(timetableData: widget.timetableData);
+            }
+          );
         }
       },
       child: Card(
@@ -195,13 +203,12 @@ class _TimetableCardState extends ConsumerState<TimetableCard> {
           ),
           subtitle: widget.timetableData.isActive ?
           Text(
-            '팀 이름',
+            widget.timetableData.CourseDay + ' ' + widget.timetableData.CourseStartTime + '~',
             style: TextStyle(
               color: Color(0xFF7365F8),
-              fontSize: 18,
             ),
           ) : Text(
-            widget.timetableData.CourseDay + ' ' + widget.timetableData.CourseStartTime,
+            widget.timetableData.CourseDay + ' ' + widget.timetableData.CourseStartTime + '~',
             style: TextStyle(
               color: Colors.black,
             ),
