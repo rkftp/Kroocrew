@@ -29,15 +29,12 @@ class LoginDTO {
 class AuthStateNotifier extends StateNotifier<String> {
   AuthStateNotifier() : super('');
 
-  Future<void> setIdState(String ID) async {
-    KeyBox _keyBox = KeyBox().to();
-    String? token = await _keyBox.getToken();
-    if (token != null) {
+  void setIdState(String ID) async {
+
       state = ID;
-    } else {
     }
-  }
 }
+
 
 final authStateProvider = StateNotifierProvider<AuthStateNotifier, String>((ref) => AuthStateNotifier());
 

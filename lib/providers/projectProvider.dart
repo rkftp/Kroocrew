@@ -202,3 +202,99 @@ final joinTeamProvider = StateNotifierProvider<joinTeamController, String>((ref)
   return joinTeamController();
 });
 
+
+
+class reviewController extends StateNotifier<List<ProjectCardData>> {
+  reviewController() : super([]);
+
+  Future<void> getExpiredTeam() async {
+    Dio _dio = DioServices().to();
+    KeyBox _keyBox = KeyBox().to();
+
+    late String? storedToken;
+    storedToken = await _keyBox.getToken();
+
+    final response = await _dio.get('/vote_my_team_list_expired_teams',
+        options: Options(
+          headers: {'Authorization': '${storedToken}'},
+        )
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = response.data['teams'];
+
+      print(data);
+      state = data
+          .map((item) => ProjectCardData.fromProjects(item))
+          .toList();
+
+      // return response.data;
+    } else {
+      print('불러오기 실패' + response.data['success'].toString());
+      // return response.data;
+    }
+  }
+
+}
+
+final reviewProvider = StateNotifierProvider<reviewController, List<ProjectCardData>>((ref) {
+  return reviewController();
+});
+
+class studentDTO{
+  final String studentId;
+  final String studentName;
+
+  studentDTO({
+    required this.studentId,
+    required this.studentName,
+  });
+
+  factory studentDTO.fromProjects(Map<String,dynamic> json) {
+    final studentId = json["Student_id"];
+    final studentName = json["Student_name"];
+
+    return studentDTO(
+      studentId: studentId,
+      studentName: studentName,
+    );}
+}
+
+class voteMemberController extends StateNotifier<List<studentDTO>> {
+  voteMemberController() : super([]);
+
+  Future<void> getVoteMember(int teamId) async {
+    Dio _dio = DioServices().to();
+    KeyBox _keyBox = KeyBox().to();
+
+    late String? storedToken;
+    storedToken = await _keyBox.getToken();
+
+    final response = await _dio.get('/vote_my_team_list_team_people',
+        queryParameters: {
+          'Team_id' : teamId,
+        },
+        options: Options(
+          headers: {'Authorization': '${storedToken}'},
+        )
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = response.data['people'];
+
+      print(data);
+      state = data
+          .map((item) => studentDTO.fromProjects(item))
+          .toList();
+
+      // return response.data;
+    } else {
+      print('불러오기 실패' + response.data['success'].toString());
+      // return response.data;
+    }
+  }
+}
+
+final voteMemberProvider = StateNotifierProvider<voteMemberController, List<studentDTO>>((ref) {
+  return voteMemberController();
+});

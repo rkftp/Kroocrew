@@ -265,7 +265,18 @@ class _ManageMyProjectsState extends ConsumerState<ManageMyProjects> {
                   height: MediaQuery.of(context).size.height*0.5,
                   width: double.infinity,
 
-                  child: ListView.builder(
+                  child: scheduleList.isEmpty ?
+                      Center(
+                        child: Text(
+                          '생성된 일정이 없습니다.',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      )
+                      : ListView.builder(
                       itemCount: scheduleList.length,
                       itemBuilder: (c, i){
                         ScheduleData scheduleData = scheduleList[i];
