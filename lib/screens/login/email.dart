@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/providers/signup_provider.dart';
-import 'sign_up.dart' as sign_up;
 import 'package:go_router/go_router.dart';
 import 'package:quickalert/quickalert.dart';
 
@@ -155,6 +154,7 @@ class _emailState extends ConsumerState<email> with SingleTickerProviderStateMix
                               final AuthnumDTO = authnumDTO(email: emailController.text, authnum: authnumController.text);
                               await ref.read(authnumProvider.notifier).authnum(AuthnumDTO,context,ref);
                               if(authnumAccess == true) {
+                                authnumController.text = '';
                                 context.push('/login/email/signup');
                               } else {
                                 QuickAlert.show(
@@ -194,8 +194,6 @@ class _emailState extends ConsumerState<email> with SingleTickerProviderStateMix
             )
         ),
       ),
-
-
     );
   }
 }

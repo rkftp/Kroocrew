@@ -5,9 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quickalert/quickalert.dart';
-import 'auth.dart';
-import '/utils/dio_service.dart';
-import 'dart:convert';
 
 
 final emailControllerProvider = Provider<TextEditingController>((ref) {
@@ -50,16 +47,11 @@ class emailController extends StateNotifier<emailDTO> {
       if (response.statusCode == 200) {
         print("성공");
         if(response.data['success'] == true){
-          print("쌉가능");
           emailAccesstrue();
         }else{
-          print("불가능");
           emailAccessfalse();
         }
-
-      } else {
-        print("이미있다 아가야");
-      }
+      } else {}
     } catch (e) {
       print('오류 발생: $e');
     }
@@ -111,16 +103,11 @@ class authnumController extends StateNotifier<authnumDTO> {
       if (response.statusCode == 200) {
         print("성공");
         if(response.data['success'] == true){
-          print("쌉가능");
           authnumAccesstrue();
         }else{
-          print("불가능");
           authnumAccessfalse();
         }
-
-      } else {
-        print("이미있다 아가야");
-      }
+      } else {}
     } catch (e) {
       print('오류 발생: $e');
     }
@@ -166,15 +153,11 @@ class IdcheckController extends StateNotifier<IDcheckDTO> {
       if (response.statusCode == 200) {
         print("성공");
         if(response.data['success'] == true){
-          print("쌉가능");
           idAccesstrue();
         }else{
-          print("불가능");
           idAccessfalse();
         }
-
       } else {
-        print("이미있다 아가야");
       }
     } catch (e) {
       print('오류 발생: $e');
@@ -268,7 +251,6 @@ class SignupController extends StateNotifier<SignupDTO> {
       if (response.statusCode == 200) {
         print("성공");
         if(response.data['success'] == true){
-          print("쌉가능");
           QuickAlert.show(
             context: context,
             type: QuickAlertType.success,
@@ -279,18 +261,12 @@ class SignupController extends StateNotifier<SignupDTO> {
               context.pop();
               context.go('/login');
             },
-
           );
-
         }else{
-          print("불가능");
-
+          print("실패");
         }
-        print("찐성공");
-
-      } else {
-        print("되겠냐 ㅋ");
-      }
+        print("성공");
+      } else {}
     } catch (e) {
       print('오류 발생: $e');
     }

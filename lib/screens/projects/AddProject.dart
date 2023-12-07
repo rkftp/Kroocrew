@@ -364,7 +364,9 @@ class _AddProjectState extends ConsumerState<AddProject> {
                         },
                       );
                     },
-                    child: Text('추가하기'),
+                    child: Text('추가하기',style: TextStyle(
+                      color: Colors.white,
+                    ),),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Color(0xff473CCE)),
                       // 여기에서 색상을 설정

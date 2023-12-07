@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'empty.dart';
 import 'package:image_picker/image_picker.dart';
@@ -29,3 +30,4 @@ class NamePlace extends StatelessWidget {
 
 
 
+*/

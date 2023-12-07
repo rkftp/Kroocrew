@@ -1,7 +1,6 @@
 import 'package:contact/screens/login/find_pw_email.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '/providers/signup_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quickalert/quickalert.dart';
@@ -9,6 +8,7 @@ import 'package:quickalert/quickalert.dart';
 final TextEditingController authnumController2 = TextEditingController();
 final TextEditingController newpwController = TextEditingController();
 final TextEditingController newpwController1 = TextEditingController();
+
 
 var pwAccess = false;
 var pwRule = false;
@@ -38,14 +38,11 @@ Future<void> duplicatedpw(id,auth,newpw) async {
     if (response.statusCode == 200) {
       print("성공");
       if(response.data['success'] == true){
-        print("쌉가능");
         setchecktrue();
       }else{
-        print("불가능");
         setcheckfalse();
       }
     } else {
-      print("이미있다 아가야");
     }
   } catch (e) {
     print('오류 발생: $e');
@@ -126,7 +123,7 @@ class _find_pwState extends ConsumerState<find_pw> with SingleTickerProviderStat
                       Container(
 
                           height: 70,
-                          width: 300,
+                          width: double.infinity,
                           alignment: Alignment.centerLeft,
                           padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
                           child: TextField(
@@ -140,7 +137,7 @@ class _find_pwState extends ConsumerState<find_pw> with SingleTickerProviderStat
                       Container(
 
                           height: 70,
-                          width: 300,
+                          width: double.infinity,
                           alignment: Alignment.centerLeft,
                           padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
                           child: TextField(
@@ -155,7 +152,7 @@ class _find_pwState extends ConsumerState<find_pw> with SingleTickerProviderStat
                       Container(
 
                           height: 70,
-                          width: 300,
+                          width: double.infinity,
                           alignment: Alignment.centerLeft,
                           padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
                           child: TextField(
@@ -196,8 +193,12 @@ class _find_pwState extends ConsumerState<find_pw> with SingleTickerProviderStat
                                   confirmBtnText: '확인',
                                   confirmBtnColor: Color(0xFF7365F8),
                                   onConfirmBtnTap: () {
+                                    authnumController2.text = '';
+                                    newpwController.text = '';
+                                    newpwController1.text = '';
                                     context.pop();
                                     context.go('/login');
+
                                   },
 
                                 );
@@ -216,7 +217,16 @@ class _find_pwState extends ConsumerState<find_pw> with SingleTickerProviderStat
 
                               }
                             } else{
-                              print("애송이");
+                              QuickAlert.show(
+                                context: context,
+                                type: QuickAlertType.error,
+                                text: '새 비밀번호와 인증번호를 입력해주세요.',
+                                confirmBtnText: '확인',
+                                confirmBtnColor: Color(0xFF7365F8),
+                                onConfirmBtnTap: () {
+                                  context.pop();
+                                },
+                              );
                             }
 
                           },
@@ -224,16 +234,11 @@ class _find_pwState extends ConsumerState<find_pw> with SingleTickerProviderStat
                                 color:Colors.black
                             ),), )
                       )
-
-
-
                     ]
                 )
             )
         ),
       ),
-
-
     );
   }
 }
@@ -255,7 +260,8 @@ class _pw_testState  extends State<pw_test> {
         padding: EdgeInsets.fromLTRB(25, 0, 0, 20),
         child: Text('형식에 맞지 않는 비밀번호 입니다.',style: TextStyle(
             color: Colors.red
-        ),),
+          ),
+        ),
       );
     }else{}
     if(pwAccess == false) {
@@ -263,13 +269,12 @@ class _pw_testState  extends State<pw_test> {
         padding: EdgeInsets.fromLTRB(25, 0, 0, 20),
         child: Text('비밀번호가 일치하지 않습니다.',style: TextStyle(
             color: Colors.red
-        ),),
+          ),
+        ),
       );
     }else{
       return Container(
         padding: EdgeInsets.fromLTRB(25, 0, 0, 20),
-
-
       );
     }
   }

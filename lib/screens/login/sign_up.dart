@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/providers/signup_provider.dart';
-import 'sign_up.dart';
 
 final TextEditingController idController = TextEditingController();
 final TextEditingController pwController = TextEditingController();
@@ -239,23 +238,17 @@ class _sign_upState extends ConsumerState<sign_up> with SingleTickerProviderStat
                               if(idAccess == true && pwAccess == true) {
                                 final signupDTO = SignupDTO(id: idController.text, pw: pwController.text, potalid: potalidController.text, potalpw: potalpwController.text,email: emailController.text);
                                 ref.read(signupProvider.notifier).signup(signupDTO,context,ref);
-                              } else{
-                                print("애송이");
-                              }
-
+                              } else{}
                             },
                               child: Text("회원가입",style: TextStyle(
                                   color:Colors.black
                               ),), )
                         )
-
                       ]
                   )
               )
           ),
         ),
-
-
     );
   }
 }
@@ -363,8 +356,6 @@ class _pw_testState  extends State<pw_test> {
     }else{
       return Container(
         padding: EdgeInsets.fromLTRB(25, 0, 0, 20),
-
-
       );
     }
   }

@@ -77,15 +77,10 @@ class LoginController extends StateNotifier<LoginDTO> {
           _keyBox.deleteToken();
           _keyBox.setToken(token!);
 
-          if (token != null) {
-            print('토큰 저장 완료: $token');
-            ref.read(authStateProvider.notifier).setIdState(loginDTO.id);
-            context.go('/');
-
-
-
-          }
-      }  else{
+          print('토큰 저장 완료: $token');
+          ref.read(authStateProvider.notifier).setIdState(loginDTO.id);
+          context.go('/');
+              }  else{
         QuickAlert.show(
           context: context,
           type: QuickAlertType.error,
@@ -95,7 +90,6 @@ class LoginController extends StateNotifier<LoginDTO> {
           onConfirmBtnTap: () {
             context.pop();
           },
-
         );
       }
     } catch (e) {

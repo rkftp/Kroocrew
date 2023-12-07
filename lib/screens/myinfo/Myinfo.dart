@@ -45,7 +45,7 @@ class _MyinfoState extends ConsumerState<Myinfo> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                header(front: front.Myinfo(user_name: myinfoData.studentName,user_id: myinfoData.studentId,user_speed: myinfoData.speed,user_dep_name: myinfoData.department,user_num: myinfoData.studentNumber,user_uni_name: '중앙대')),
+                header(front: front.Setting(user_name: myinfoData.studentName,user_id: myinfoData.studentId,user_speed: myinfoData.speed,user_dep_name: myinfoData.department,user_num: myinfoData.studentNumber,user_uni_name: '중앙대')),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -150,6 +150,18 @@ class _MyinfoState extends ConsumerState<Myinfo> {
                         alignment: Alignment.center,
                         child: ElevatedButton(
                           onPressed: () {
+                            /*QuickAlert.show(
+                              context: context,
+                              type: QuickAlertType.custom.,
+                              text: 'ID 또는 PW 가 틀렸습니다.',
+                              confirmBtnText: '확인',
+                              confirmBtnColor: Color(0xFF7365F8),
+                              onConfirmBtnTap: () {
+                                context.pop();
+                              },
+
+                            );*/
+
                             showDialog(
                               context: context,
                               builder: (context) {
@@ -233,12 +245,13 @@ class _MyinfoState extends ConsumerState<Myinfo> {
 
 
               ],
+          )
 
             ),
 
 
           ),
-        ),
+
       ),
     );
   }
@@ -271,6 +284,7 @@ class header extends StatelessWidget {
                 context,
                 MaterialPageRoute(builder: (context) => front)
             );
+
           }, icon: Icon(Icons.settings)),
         ],
       ),
@@ -349,8 +363,7 @@ class _NamePlaceState extends ConsumerState<NamePlace> {
               children: [
 
                 Text('${widget.user_speed}',style:TextStyle(
-                    color:(widget.user_speed <100 ? Colors.blue :
-                    widget.user_speed <200? Color(0xFF7365F8): Colors.red),
+                    color:(Color(0xFF7365F8)),
                     fontSize: 25,
                     fontWeight: FontWeight.w700
                 )),
@@ -411,7 +424,7 @@ class _speedchartState extends ConsumerState<speedchart> {
                     width: 0.2,
                     sizeUnit: GaugeSizeUnit.factor,
                     gradient: const SweepGradient(
-                      colors: <Color>[Colors.blue,Color(0xFF7365F8)],
+                      colors: <Color> [Colors.blue,Color(0xFF7365F8)],
                       stops: <double>[0.25, 0.75],
                     ),
                   ),

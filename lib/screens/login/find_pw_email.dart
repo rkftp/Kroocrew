@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '/providers/signup_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:go_router/go_router.dart';
 import 'package:quickalert/quickalert.dart';
@@ -24,14 +23,11 @@ Future<void> duplicatedId(text) async {
     if (response.statusCode == 200) {
       print("성공");
       if(response.data['success'] == true){
-        print("쌉가능");
           setchecktrue();
       }else{
-        print("불가능");
         setcheckfalse();
       }
     } else {
-      print("이미있다 아가야");
     }
   } catch (e) {
     print('오류 발생: $e');
@@ -113,6 +109,7 @@ class _find_pw_emailState extends ConsumerState<find_pw_email> with SingleTicker
                                         confirmBtnText: '확인',
                                         confirmBtnColor: Color(0xFF7365F8),
                                         onConfirmBtnTap: () {
+                                          idController2.text = '';
                                           context.pop();
                                           context.go('/login/findpwemail/findpw');
                                         },

@@ -24,26 +24,29 @@ class _MyProjectState extends ConsumerState<MyProject> {
   @override
   Widget build(BuildContext context) {
     final myProjectList = ref.watch(myProjectProvider);
-    return Expanded(
-      child: Container(
-        width: double.infinity,
-        margin: EdgeInsets.fromLTRB(20, 14, 14, 0),
-        alignment: Alignment.centerLeft,
-        child: ListView.builder(
-          itemCount: myProjectList.length,
-          itemBuilder: (content, index) {
-            ProjectCardData cardData = myProjectList[index];
-            return InkWell(
-              onTap: () {
-                return context.go('/projects/manage', extra: cardData);
-              },
-              child: CustomCard(
-                cardData: cardData,
-              ),
-            );
-          },
+    return Column(
+      children: [
+        Container(
+          height: 300,
+          width: double.infinity,
+          margin: EdgeInsets.fromLTRB(20, 14, 14, 0),
+          alignment: Alignment.centerLeft,
+          child: ListView.builder(
+            itemCount: myProjectList.length,
+            itemBuilder: (content, index) {
+              ProjectCardData cardData = myProjectList[index];
+              return InkWell(
+                onTap: () {
+                  return context.go('/projects/manage', extra: cardData);
+                },
+                child: CustomCard(
+                  cardData: cardData,
+                ),
+              );
+            },
+          ),
         ),
-      ),
+      ],
     );
   }
 }

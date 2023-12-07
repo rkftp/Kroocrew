@@ -2,16 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:contact/providers/auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
 import 'find_id.dart' as find_id;
 import 'find_pw.dart' as find_pw;
-import 'sign_up.dart' as sign_up;
-import 'email.dart' as email;
 
 
 final TextEditingController idController = TextEditingController();
 final TextEditingController pwController = TextEditingController();
-
 
 
 class login extends ConsumerWidget {
@@ -42,6 +38,8 @@ class login extends ConsumerWidget {
                       children: [
                         Container(
                             child: TextButton( onPressed: () {
+                              idController.text = '';
+                              pwController.text = '';
                               context.push('/login/findid');
                             }, child: Text('아이디 찾기' ,style: TextStyle(
                               color:Colors.grey,
@@ -50,6 +48,8 @@ class login extends ConsumerWidget {
                         ),
                         Container(
                             child: TextButton( onPressed: () {
+                              idController.text = '';
+                              pwController.text = '';
                               context.push('/login/findpwemail');
                             }, child: Text('비밀번호 재설정' ,style: TextStyle(
                               color:Colors.grey,
@@ -58,6 +58,8 @@ class login extends ConsumerWidget {
                         ),
                         Container(
                             child: TextButton( onPressed: () {
+                              idController.text = '';
+                              pwController.text = '';
                               context.push('/login/email');
                             }, child: Text('회원가입' ,style: TextStyle(
                               color:Colors.grey,
@@ -194,9 +196,11 @@ class login_button extends ConsumerWidget {
             ),
           ]
         ),
-        child: TextButton( onPressed: () {
+        child: TextButton( onPressed: () async{
           final loginDTO = LoginDTO(id: idController.text, password: pwController.text);
-          ref.read(loginProvider.notifier).login(loginDTO, context, ref);
+          await ref.read(loginProvider.notifier).login(loginDTO, context, ref);
+          idController.text = '';
+          pwController.text = '';
           },
           child: Text("로그인",style: TextStyle(
             color:Colors.black

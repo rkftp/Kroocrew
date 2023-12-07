@@ -17,6 +17,7 @@ import 'screens/timetables/Timetables.dart';
 import 'screens/projects/Projects.dart';
 import 'screens/chat/Chat.dart';
 import 'screens/myinfo/Myinfo.dart';
+
 import 'providers/auth.dart';
 import '/utils/token_keybox.dart';
 
@@ -169,11 +170,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                     builder: (context, state) {
                       return Myinfo();
                     },
-                  ),
-                ]
+
+
+
             ),
           ],
         )
       ]
+  )
+  ]
   );
 });

@@ -34,86 +34,78 @@ class _MatchModalState extends ConsumerState<MatchModal>{
     return Container(
       padding: const EdgeInsets.all(20.0),
       decoration: BoxDecoration(
-        //border radius only top
         color: Colors.white,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
         ),
-
       ),
-      height: MediaQuery.of(context).size.height * 0.45,
-
+      height: 330,
       child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Column(
-              children: [
-                Container(
-                  child: Column(
+            Container(
+              height: 75,
+              margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+              child: Card(
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.zero, // 둥근 모서리를 없앰
+                ),
+
+                elevation: 0, // 그림자를 없앰
+                child: ListTile(
+                  contentPadding: EdgeInsets.all(0), // 내용의 패딩을 없앰
+                  visualDensity: VisualDensity(horizontal: 0, vertical: -4), // 아이콘과 텍스트 간격을 조절
+                  // leading을 직접 정의
+                  leading: Icon(
+                    CupertinoIcons.doc_text_search,
+                    color: Colors.black,
+                    size: 40,
+                  ),
+                  title: Text(
+                    '인공지능',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black,
+                      fontSize: 20,
+                    ),
+                  ),
+                  subtitle: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        child: Card(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.zero, // 둥근 모서리를 없앰
-                          ),
-                          elevation: 0, // 그림자를 없앰
-                          child: ListTile(
-                            contentPadding: EdgeInsets.all(0), // 내용의 패딩을 없앰
-                            visualDensity: VisualDensity(horizontal: 0, vertical: -4), // 아이콘과 텍스트 간격을 조절
-
-                            // leading을 직접 정의
-                            leading: Icon(
-                              CupertinoIcons.doc_text_search,
-                              color: Colors.black,
-                              size: 40,
-                            ),
-                            title: Text(
-                              '인공지능',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
-                                fontSize: 20,
-                              ),
-                            ),
-                            subtitle: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  '함께할 크루를 찾아보세요!',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18,
-
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        child: Divider(
-                          color: Colors.grey,
-                          thickness: 1,
+                      Text(
+                        '함께할 크루를 찾아보세요!',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
                         ),
                       ),
                     ],
                   ),
                 ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
-                  color: Color(0xffEFEFEF),
-                  width: double.infinity,
+              ),
+              decoration: BoxDecoration(
+                border:Border(
+                  bottom: BorderSide(width: 1, color:Colors.grey)
+                )
+              ),
+            ),
+            Container(
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  color: Colors.white,
                   height: 200,
+                  width: double.infinity,
+
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ElevatedButton(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 40,
+                          width: 120,
+                          margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                          child: ElevatedButton(
                               onPressed: (){
                                 QuickAlert.show(
                                   context: context,
@@ -125,25 +117,32 @@ class _MatchModalState extends ConsumerState<MatchModal>{
                                 );
                               },
                               child: Row(
-                                children: [
-                                  Icon(Icons.bolt_sharp, color:Color(0xFF7365F8)),
-                                  Text('신속 매칭', style: TextStyle(color:Colors.black, fontWeight: FontWeight.bold))
-                                ]
+                                  children: [
+                                    Icon(Icons.bolt_sharp, color:Color(0xFF7365F8)),
+                                    Text('신속 매칭', style: TextStyle(color:Colors.black, fontWeight: FontWeight.bold))
+                                  ]
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                shape:  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)
+                                ),
+                                primary: Color(0xffEFEFEF),
                               )
                           ),
-                          Container(
-                              color: Colors.white,
-                              child: Text(
-                                  '가장 빠르게 훌륭한 크루를 매칭해드립니다.'
-                              )
-                          )
+                        ),
+                        Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
 
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          ElevatedButton(
+                            color: Colors.white,
+                            child: Text(
+                                '가장 빠르게 훌륭한 크루를 매칭해드립니다.'
+                            )
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                          height: 40,
+                          width: 120,
+                          child: ElevatedButton(
                               onPressed: (){
                                 context.go('/projects');
                                 ref.read(projectProvider.notifier).getWholeProject(widget.timetableData.CourseName, ref);
@@ -153,21 +152,29 @@ class _MatchModalState extends ConsumerState<MatchModal>{
                                     Icon(Icons.person_search, color:Color(0xFF7365F8)),
                                     Text('일반 매칭', style: TextStyle(color:Colors.black, fontWeight: FontWeight.bold))
                                   ]
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                shape:  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20)
+                                ),
+                                primary: Color(0xffEFEFEF),
                               )
+
                           ),
-                          Container(
+                        ),
+                        Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
+
                             color: Colors.white,
                             child: Text(
-                              '크루원들의 정보와 속도를 확인하고 매칭에 참여해보세요.'
+                                '크루원들의 정보와 속도를 확인하고 매칭에 참여해보세요.'
                             )
-                          )
-                        ],
-                      ),
-                    ]
+                        ),
+
+                      ]
                   )
-                ),
-              ],
-            ),
+              ),
+
           ]
       ),
 
