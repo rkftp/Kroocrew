@@ -90,6 +90,7 @@ class myinfoController extends StateNotifier<MyinfoData> {
         print("성공");
         if (response.data['success'] == true) {
           print("찐성공");
+          print(response.data);
         } else {
           print("미친 실패");
         }

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/providers/signup_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:go_router/go_router.dart';
+import 'package:quickalert/quickalert.dart';
 
 final TextEditingController authnumController2 = TextEditingController();
 final TextEditingController newpwController = TextEditingController();
@@ -188,53 +189,31 @@ class _find_pwState extends ConsumerState<find_pw> with SingleTickerProviderStat
                             if(pwAccess == true) {
                               await duplicatedpw(idController2.text,authnumController2.text,newpwController.text) ;
                               if(check == true) {
-                                showDialog(
+                                QuickAlert.show(
                                   context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: Text('성공'),
-                                      content: Container(
-                                          width: double.maxFinite, // 팝업의 너비를 최대로 설정
-                                          child: Text("변경에 성공했습니다.")
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                            child: Text('확인'),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                              context.go('/login');
-                                            }
-                                        ),
-
-                                        // 수정된 텍스트 표시
-                                      ],
-                                    );
+                                  type: QuickAlertType.success,
+                                  text: '변경에 성공했습니다.',
+                                  confirmBtnText: '확인',
+                                  confirmBtnColor: Color(0xFF7365F8),
+                                  onConfirmBtnTap: () {
+                                    context.pop();
+                                    context.go('/login');
                                   },
+
                                 );
 
                               } else {
-                                showDialog(
+                                QuickAlert.show(
                                   context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: Text('인증번호 확인'),
-                                      content: Container(
-                                          width: double.maxFinite, // 팝업의 너비를 최대로 설정
-                                          child: Text("인증번호가 틀렸습니다.")
-                                      ),
-                                      actions: <Widget>[
-                                        TextButton(
-                                            child: Text('확인'),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            }
-                                        ),
-
-                                        // 수정된 텍스트 표시
-                                      ],
-                                    );
+                                  type: QuickAlertType.error,
+                                  text: '인증번호가 틀렸습니다.',
+                                  confirmBtnText: '확인',
+                                  confirmBtnColor: Color(0xFF7365F8),
+                                  onConfirmBtnTap: () {
+                                    context.pop();
                                   },
                                 );
+
                               }
                             } else{
                               print("애송이");

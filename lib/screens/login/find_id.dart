@@ -3,9 +3,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/providers/signup_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:quickalert/quickalert.dart';
 final TextEditingController emailController2 = TextEditingController();
 String id ='';
+bool target = false;
+settargettrue(){
+  target = true;
+}
+settargetfalse(){
+  target = false;
+}
+
 Future<void> duplicatedId(text) async {
   Dio _dio = Dio();
   final response = await _dio.get('http://20.39.186.138:1234/find_id_by_email?email=${text}');
@@ -21,9 +29,12 @@ Future<void> duplicatedId(text) async {
         print("쌉가능");
         id = response.data['Student_id'];
         print(id);
+        settargettrue();
+
       }else{
         print("불가능");
         id = '';
+        settargetfalse();
 
       }
     } else {
@@ -33,7 +44,7 @@ Future<void> duplicatedId(text) async {
     print('오류 발생: $e');
   }
 }
-final TextEditingController authnumController = TextEditingController();
+
 bool isEmailValid(String email) {
   RegExp emailRegExp = RegExp(
     r'^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+',
@@ -44,15 +55,14 @@ bool isEmailValid(String email) {
   return emailRegExp.hasMatch(email);
 }
 
-var emailAccess = false;
+var emailAccess1 = false;
 emailAccesstrue() {
-  emailAccess = true;
+  emailAccess1 = true;
 }
 emailAccessfalse() {
-  emailAccess = false;
+  emailAccess1 = false;
 }
-var emailRule = false;
-var authnumAccess = false;
+var emailRule1 = false;
 
 
 
@@ -120,34 +130,36 @@ class _find_idState extends ConsumerState<find_id> with SingleTickerProviderStat
                                 onPressed: ()async{
                                   if (isEmailValid(emailController2.text)==true) {
                                     setState(() {
-                                      emailRule = true;
+                                      emailRule1 = true;
                                     });
                                     await duplicatedId(emailController2.text);
-                                     showDialog(
+                                    target == true
+                                        ?
+                                    QuickAlert.show(
                                       context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: Text('Id 확인'),
-                                          content: Container(
-                                            width: double.maxFinite, // 팝업의 너비를 최대로 설정
-                                            child: id !='' ? Text('등록된 ID는 ${id} 입니다.') :Text('이메일과 연동된 ID 가 없습니다.')
-                                          ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              child: Text('확인'),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                                context.go('/login');                                              },
-                                            ),
-
-                                            // 수정된 텍스트 표시
-                                          ],
-                                        );
+                                      type: QuickAlertType.success,
+                                      text: '등록된 ID는 ${id} 입니다.',
+                                      confirmBtnText: '확인',
+                                      confirmBtnColor: Color(0xFF7365F8),
+                                      onConfirmBtnTap: () {
+                                        context.pop();
+                                        context.go('/login');
+                                      } ):
+                                      QuickAlert.show(
+                                      context: context,
+                                      type: QuickAlertType.error,
+                                      text: '등록된 ID 가 없습니다.',
+                                      confirmBtnText: '확인',
+                                      confirmBtnColor: Color(0xFF7365F8),
+                                      onConfirmBtnTap: () {
+                                      context.pop();
                                       },
+
                                     );
+
                                   } else {
                                     setState(() {
-                                      emailRule = false;
+                                      emailRule1 = false;
                                     });
                                   }
                                 },
@@ -159,8 +171,6 @@ class _find_idState extends ConsumerState<find_id> with SingleTickerProviderStat
                           )
                         ],
                       ),
-                      id_test(),
-
 
                     ]
                 )
@@ -175,64 +185,3 @@ class _find_idState extends ConsumerState<find_id> with SingleTickerProviderStat
 
 
 
-class id_test  extends ConsumerStatefulWidget {
-  const id_test({Key? key}) : super(key: key);
-
-  @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _id_testState();
-}
-
-class _id_testState  extends ConsumerState<id_test> {
-  @override
-  Widget build(BuildContext context) {
-    final emailController = ref.watch(emailControllerProvider);
-    if(emailController.text.isEmpty) {
-      return Container(
-        padding: EdgeInsets.fromLTRB(25, 0, 0, 20),
-      );
-    }else{
-      if(emailRule == false) {
-        return Container(
-          padding: EdgeInsets.fromLTRB(25, 0, 0, 20),
-          child: Text('이메일 형식이 아닙니다..',style: TextStyle(
-              color: Colors.red
-          ),),
-        );
-      }else{
-        return Container(
-          padding: EdgeInsets.fromLTRB(25, 0, 0, 20),
-          child: Text('이건 뜨면 안됨 ㅋ',style: TextStyle(
-              color: Colors.blue
-          ),),
-        );
-      }
-    }
-
-  }
-
-}
-class pw_test  extends StatefulWidget {
-  const pw_test({super.key});
-
-  @override
-  State<pw_test> createState() => _pw_testState();
-}
-
-class _pw_testState  extends State<pw_test> {
-  @override
-  Widget build(BuildContext context) {
-    if(authnumAccess == false) {
-      return Container(
-        padding: EdgeInsets.fromLTRB(25, 0, 0, 20),
-        child: Text('인증번호가 일치하지 않습니다.',style: TextStyle(
-            color: Colors.red
-        ),),
-      );
-    }else{
-      return Container(
-        padding: EdgeInsets.fromLTRB(25, 0, 0, 20),
-
-      );
-    }
-  }
-}

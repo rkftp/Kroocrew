@@ -193,8 +193,6 @@ class button_2 extends ConsumerWidget {
                           TextButton(
                             child: const Text('네'),
                             onPressed: () {
-                              ref.read(authStateProvider.notifier).setAuthState(false);
-
                               _keyBox.deleteToken();
                               context.go('/login');
                               Navigator.of(context).pop();

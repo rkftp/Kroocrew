@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '/providers/mainprovider.dart';
+import '/widgets/box.dart';
 class list extends StatefulWidget {
   list({super.key,this.b1});
   final b1;

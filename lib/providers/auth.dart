@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:quickalert/quickalert.dart';
 
 import '/utils/token_keybox.dart';
 
@@ -26,27 +26,20 @@ class LoginDTO {
   }
 }
 
-class AuthStateNotifier extends StateNotifier<bool> {
-  AuthStateNotifier() : super(false);
+class AuthStateNotifier extends StateNotifier<String> {
+  AuthStateNotifier() : super('');
 
-  void setAuthState(bool isLoggedIn) {
-    state = isLoggedIn;
-  }
-
-  Future<void> checkAuthState() async {
+  Future<void> setIdState(String ID) async {
     KeyBox _keyBox = KeyBox().to();
     String? token = await _keyBox.getToken();
     if (token != null) {
-      state = true;
+      state = ID;
     } else {
-      state = false;
     }
   }
-
-
 }
 
-final authStateProvider = StateNotifierProvider<AuthStateNotifier, bool>((ref) => AuthStateNotifier());
+final authStateProvider = StateNotifierProvider<AuthStateNotifier, String>((ref) => AuthStateNotifier());
 
 final loginProvider = StateNotifierProvider<LoginController, LoginDTO>((ref) {
   return LoginController();
@@ -86,34 +79,23 @@ class LoginController extends StateNotifier<LoginDTO> {
 
           if (token != null) {
             print('토큰 저장 완료: $token');
-            ref.read(authStateProvider.notifier).setAuthState(true);
+            ref.read(authStateProvider.notifier).setIdState(loginDTO.id);
             context.go('/');
 
 
 
           }
       }  else{
-        showDialog(
+        QuickAlert.show(
           context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text('로그인 실패'),
-              content: Container(
-                  width: double.maxFinite, // 팝업의 너비를 최대로 설정
-                  child: Text("ID 혹은 PW 가 일치하지 않습니다.")
-              ),
-              actions: <Widget>[
-                TextButton(
-                    child: Text('확인'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    }
-                ),
-
-                // 수정된 텍스트 표시
-              ],
-            );
+          type: QuickAlertType.error,
+          text: 'ID 또는 PW 가 틀렸습니다.',
+          confirmBtnText: '확인',
+          confirmBtnColor: Color(0xFF7365F8),
+          onConfirmBtnTap: () {
+            context.pop();
           },
+
         );
       }
     } catch (e) {

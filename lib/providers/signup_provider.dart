@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:go_router/go_router.dart';
+import 'package:quickalert/quickalert.dart';
 import 'auth.dart';
 import '/utils/dio_service.dart';
 import 'dart:convert';
@@ -240,17 +241,16 @@ class SignupController extends StateNotifier<SignupDTO> {
     Dio _dio = Dio(); // dio_service에서 생성한 객체를 가져옵니다.
 
 
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(''),
-            content: Container(
-              child: Text('회원가입 진행중입니다. 잠시만 기다려 주세요'),
-            ),
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.loading,
+      text: '회원가입이 진행 중 입니다. ',
 
-          );
-        }
+      confirmBtnColor: Color(0xFF7365F8),
+      onConfirmBtnTap: () {
+        context.pop();
+      },
+
     );
 
     final response = await _dio.post('http://20.39.186.138:1234/signup', data: {
@@ -269,10 +269,19 @@ class SignupController extends StateNotifier<SignupDTO> {
         print("성공");
         if(response.data['success'] == true){
           print("쌉가능");
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.success,
+            text: '회원가입을 성공적으로 완료하였습니다.',
+            confirmBtnText: '확인',
+            confirmBtnColor: Color(0xFF7365F8),
+            onConfirmBtnTap: () {
+              context.pop();
+              context.go('/login');
+            },
 
-          Navigator.pop(context);
-          Navigator.pop(context);
-          Navigator.pop(context);
+          );
+
         }else{
           print("불가능");
 

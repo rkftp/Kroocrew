@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:contact/widgets/flutter_dropdown_page.dart';
 import 'package:quickalert/quickalert.dart';
 
+
 import 'package:dio/dio.dart';
 import '/utils/dio_service.dart';
 import '/utils/token_keybox.dart';
@@ -14,7 +15,7 @@ import '/utils/token_keybox.dart';
 
 import '/providers/projectProvider.dart';
 import '/providers/manageProjectsProvider.dart';
-
+import '/providers/auth.dart';
 
 class ManageMyProjects extends ConsumerStatefulWidget {
   final ProjectCardData projectData;
@@ -39,6 +40,7 @@ class _ManageMyProjectsState extends ConsumerState<ManageMyProjects> {
     RandomColor _randomColor = RandomColor();
     final scheduleList = ref.watch(manageProvider);
     final rapidValue = ref.watch(rapidMatchProvider);
+    final idState = ref.watch(authStateProvider);
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -224,7 +226,7 @@ class _ManageMyProjectsState extends ConsumerState<ManageMyProjects> {
                           children: [
                             Icon(CupertinoIcons.bolt_fill),
                             
-                             CupertinoSwitch(
+                           widget.projectData.teamLeader == idState  ? CupertinoSwitch(
                               value: rapidValue,
                               onChanged: (value) {
                                 QuickAlert.show(
@@ -241,20 +243,17 @@ class _ManageMyProjectsState extends ConsumerState<ManageMyProjects> {
                                   },
                                 );
                               },
-                            ) /*:
-                            GestureDetector(
-                              onTap: (){
+                            ) :
+                            CupertinoSwitch(
+                              value: false,
+                              onChanged: (value){
                                 QuickAlert.show(
                                   context: context,
-                                  type: QuickAlertType.error,
-                                  text: '팀장만이 신속 매칭을 설정할 수 있습니다.',
+                                  type:QuickAlertType.error,
+                                  text:'팀장만이 신속 매칭을 설정할 수 있습니다.',
                                 );
                               },
-                              child: CupertinoSwitch(
-                                value: false,
-                                onChanged: (value){},
-                              ),
-                            )*/
+                            )
                           ],
                         ),
                       ),
@@ -279,21 +278,22 @@ class _ManageMyProjectsState extends ConsumerState<ManageMyProjects> {
               ),
             ),
             Container(height: 10),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
+            Expanded(
               child: Container(
-                height: 300,
+                padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                height: MediaQuery.of(context).size.height*0.5,
                 width: double.infinity,
 
                 child: ListView.builder(
-                  itemCount: scheduleList.length,
-                  itemBuilder: (c, i){
-                    ScheduleData scheduleData = scheduleList[i];
-                    return ScheduleCard(scheduleData: scheduleData);
-                  }
+                    itemCount: scheduleList.length,
+                    itemBuilder: (c, i){
+                      ScheduleData scheduleData = scheduleList[i];
+                      return ScheduleCard(scheduleData: scheduleData);
+                    }
                 ),
               ),
-            )
+            ),
+
 
           ]
         )

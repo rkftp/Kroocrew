@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/providers/signup_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:go_router/go_router.dart';
+import 'package:quickalert/quickalert.dart';
 
 final TextEditingController idController2 = TextEditingController();
 bool check = false;
@@ -105,55 +106,31 @@ class _find_pw_emailState extends ConsumerState<find_pw_email> with SingleTicker
                                 onPressed: ()async{
                                     await duplicatedId(idController2.text);
                                     if(check == true) {
-                                      showDialog(
+                                      QuickAlert.show(
                                         context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            title: Text('확인'),
-                                            content: Container(
-                                                width: double.maxFinite, // 팝업의 너비를 최대로 설정
-                                                child: Text("인증번호가 전송되었습니다.")
-                                            ),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                  child: Text('확인'),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                    context.go('/login/findpwemail/findpw');
-                                                  }
-                                              ),
-
-                                              // 수정된 텍스트 표시
-                                            ],
-                                          );
+                                        type: QuickAlertType.success,
+                                        text: '인증번호가 전송되었습니다.',
+                                        confirmBtnText: '확인',
+                                        confirmBtnColor: Color(0xFF7365F8),
+                                        onConfirmBtnTap: () {
+                                          context.pop();
+                                          context.go('/login/findpwemail/findpw');
                                         },
+
                                       );
 
                                     } else {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            title: Text('Id 확인'),
-                                            content: Container(
-                                                width: double.maxFinite, // 팝업의 너비를 최대로 설정
-                                                child: Text("인증 요청이 실패했습니다. 다시 시도해 주세요.")
-                                            ),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                  child: Text('확인'),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  }
-                                              ),
-
-                                              // 수정된 텍스트 표시
-                                            ],
-                                          );
-                                        },
+                                      QuickAlert.show(
+                                      context: context,
+                                      type: QuickAlertType.error,
+                                      text: '인증 요청이 실패했습니다. 다시 시도해 주세요.',
+                                      confirmBtnText: '확인',
+                                      confirmBtnColor: Color(0xFF7365F8),
+                                      onConfirmBtnTap: () {
+                                      context.pop();
+                                      },
                                       );
                                     }
-
                                 },
                                 child: Text('인증 요청'),
                                 style: ButtonStyle(

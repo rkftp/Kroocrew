@@ -113,75 +113,82 @@ class _WholeProjectState extends ConsumerState<WholeProject> {
   @override
   Widget build(BuildContext context) {
     final projectList = ref.watch(projectProvider);
-    return Container(
-      color: Colors.white,
-      child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.fromLTRB(20, 14, 14, 0),
-              alignment: Alignment.centerLeft,
-              child: Column(
-                  children:[
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                      child: TextField(
-                        focusNode: FocusNode(),
-                        onChanged: (text) {
-                          ref.read(projectProvider.notifier).getWholeProject(text, ref);
-                        },
-                        decoration: InputDecoration(
-                          hintText: '검색',
-                          contentPadding: EdgeInsets.symmetric(vertical: 0),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                            borderSide: BorderSide.none, // 테두리 선 없음
-                          ),
-                          filled: true,
-                          fillColor: Colors.grey[200],
-                          prefixIcon: Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Icon(Icons.search, color: Colors.grey),
-                          ),
-                          suffixIcon: GestureDetector(
-                            child: Padding(
-                              //눌렀을때 provider로 다시 받아오기
-                              padding: EdgeInsets.only(right: 10),
-                              child: Icon(Icons.refresh, color: Colors.grey),
+    return GestureDetector(
+      onTap: (){
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: SingleChildScrollView(
+        child: Container(
+          color: Colors.white,
+          child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.fromLTRB(20, 14, 14, 0),
+                  alignment: Alignment.centerLeft,
+                  child: Column(
+                      children:[
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                          child: TextField(
+                            focusNode: FocusNode(),
+                            onChanged: (text) {
+                              ref.read(projectProvider.notifier).getWholeProject(text, ref);
+                            },
+                            decoration: InputDecoration(
+                              hintText: '검색',
+                              contentPadding: EdgeInsets.symmetric(vertical: 0),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: BorderSide.none, // 테두리 선 없음
+                              ),
+                              filled: true,
+                              fillColor: Colors.grey[200],
+                              prefixIcon: Padding(
+                                padding: EdgeInsets.only(left: 10),
+                                child: Icon(Icons.search, color: Colors.grey),
+                              ),
+                              suffixIcon: GestureDetector(
+                                child: Padding(
+                                  //눌렀을때 provider로 다시 받아오기
+                                  padding: EdgeInsets.only(right: 10),
+                                  child: Icon(Icons.refresh, color: Colors.grey),
+                                ),
+                                onTap: () {
+                                  ref.read(projectProvider.notifier).getWholeProject('', ref);
+                                },
+                              ),
                             ),
-                            onTap: () {
-                              ref.read(projectProvider.notifier).getWholeProject('', ref);
+                          ),
+                        ),
+                        Container(
+                          height: 500,
+                          child: ListView.builder(
+                            itemCount: projectList.length,
+                            itemBuilder: (content, index) {
+                              ProjectCardData cardData = projectList[index];
+                              return InkWell(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return JoinProject(projectData: cardData);
+                                    },
+                                  );
+                                },
+                                child: CustomCard(
+                                  courseName: cardData.courseName,
+                                  teamName: cardData.teamName,
+                                ),
+                              );
                             },
                           ),
                         ),
-                      ),
-                    ),
-                    Container(
-                      height: 500,
-                      child: ListView.builder(
-                        itemCount: projectList.length,
-                        itemBuilder: (content, index) {
-                          ProjectCardData cardData = projectList[index];
-                          return InkWell(
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return JoinProject(projectData: cardData);
-                                },
-                              );
-                            },
-                            child: CustomCard(
-                              courseName: cardData.courseName,
-                              teamName: cardData.teamName,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ]
-              ),
-            ),
-          ]
+                      ]
+                  ),
+                ),
+              ]
+          ),
+        ),
       ),
     );
   }

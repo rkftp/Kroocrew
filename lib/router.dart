@@ -59,7 +59,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
               path: 'findpw',
               builder: (context, state) {
-                return find_id();
+                return find_pw();
               },
               )]
             ),
@@ -85,36 +85,41 @@ final goRouterProvider = Provider<GoRouter>((ref) {
 
         StatefulShellRoute.indexedStack(
           builder: (BuildContext context, GoRouterState state, StatefulNavigationShell navigationShell) {
-            return Scaffold(
-                body: navigationShell,
-                bottomNavigationBar: BottomNavigationBar(
-                    items: <BottomNavigationBarItem>[
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.home),
-                        label: '홈',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.calendar_today),
-                        label: '시간표',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.widgets),
-                        label: '프로젝트',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(Icons.person),
-                        label: '내정보',
-                      ),
-                    ],
-                    backgroundColor: Colors.white,
-                    selectedItemColor: Color(0xff473CCE),
-                    unselectedItemColor: Colors.grey,
-                    type: BottomNavigationBarType.fixed,
-                    currentIndex: navigationShell.currentIndex,
-                    onTap: (int index) {
-                      navigationShell.goBranch(index);
-                    }
-                )
+            return GestureDetector(
+              onTap: (){
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
+              child: Scaffold(
+                  body: navigationShell,
+                  bottomNavigationBar: BottomNavigationBar(
+                      items: <BottomNavigationBarItem>[
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.home),
+                          label: '홈',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.calendar_today),
+                          label: '시간표',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.widgets),
+                          label: '프로젝트',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Icons.person),
+                          label: '내정보',
+                        ),
+                      ],
+                      backgroundColor: Colors.white,
+                      selectedItemColor: Color(0xff473CCE),
+                      unselectedItemColor: Colors.grey,
+                      type: BottomNavigationBarType.fixed,
+                      currentIndex: navigationShell.currentIndex,
+                      onTap: (int index) {
+                        navigationShell.goBranch(index);
+                      }
+                  )
+              ),
             );
           },
           branches: <StatefulShellBranch>[

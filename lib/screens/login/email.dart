@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/providers/signup_provider.dart';
 import 'sign_up.dart' as sign_up;
 import 'package:go_router/go_router.dart';
+import 'package:quickalert/quickalert.dart';
 
 final TextEditingController authnumController = TextEditingController();
 bool isEmailValid(String email) {
@@ -156,28 +157,30 @@ class _emailState extends ConsumerState<email> with SingleTickerProviderStateMix
                               if(authnumAccess == true) {
                                 context.push('/login/email/signup');
                               } else {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                          title: Text(''),
-                                          content: Container(
-                                            child: Text('인증번호가 일치하지 않습니다.'),
-                                          ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              child: Text('닫기'),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            )
-                                          ]
-                                      );
-                                    }
+                                QuickAlert.show(
+                                  context: context,
+                                  type: QuickAlertType.error,
+                                  text: '인증번호가 일치하지 않습니다.',
+                                  confirmBtnText: '확인',
+                                  confirmBtnColor: Color(0xFF7365F8),
+                                  onConfirmBtnTap: () {
+                                    context.pop();
+                                  },
+
                                 );
                               }
                             } else{
+                              QuickAlert.show(
+                                context: context,
+                                type: QuickAlertType.error,
+                                text: '인증을 진행해 주세요',
+                                confirmBtnText: '확인',
+                                confirmBtnColor: Color(0xFF7365F8),
+                                onConfirmBtnTap: () {
+                                  context.pop();
+                                },
 
+                              );
                             }
 
                           },
@@ -197,38 +200,8 @@ class _emailState extends ConsumerState<email> with SingleTickerProviderStateMix
   }
 }
 
-class text extends StatelessWidget {
-  const text({super.key,this.al});
-  final al;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-      alignment: Alignment.centerLeft,
-      child: Text('${al}: ',style: TextStyle(
-          fontSize: 14,
-          color: Colors.grey
-      )),
-    );
-  }
-}
-class box extends StatelessWidget {
-  const box({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      width: 250,
-      alignment: Alignment.centerRight,
-      padding: EdgeInsets.fromLTRB(40, 0, 20, 20),
-      child: TextField(
-          decoration: InputDecoration(
-          )
-      ),
-    );
-  }
-}
+
 class id_test  extends ConsumerStatefulWidget {
   const id_test({Key? key}) : super(key: key);
 

@@ -47,15 +47,17 @@ class _MiddleState extends ConsumerState<Middle> {
 
 
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Head.Head(app_name: 'Kroocrew', user_uni_name: '중앙대', user_dep_name:mainData.department),
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Head.Head(app_name: 'Kroocrew', user_uni_name: '중앙대', user_dep_name:mainData.department),
 
-            Cal_Test.TableCalendarScreen(scheduleList: scheduleList),
-            Middle_Cal.list(b1: scheduleList),
-          ],
+              Cal_Test.TableCalendarScreen(scheduleList: scheduleList),
+              Middle_Cal.list(b1: scheduleList),
+            ],
+          ),
         ),
       )
     );

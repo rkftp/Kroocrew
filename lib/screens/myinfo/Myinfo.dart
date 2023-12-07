@@ -11,7 +11,7 @@ import '/screens/login/login.dart' as login;
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '/providers/mypageProvider.dart';
-
+import  'package:contact/widgets//box.dart';
 
 import '/utils/dio_service.dart';
 import '/utils/token_keybox.dart';
@@ -60,6 +60,7 @@ class _MyinfoState extends ConsumerState<Myinfo> {
                     fontWeight: FontWeight.w800,
                   ),),
                 ),
+
                 Container(
                   margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
                   padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -106,8 +107,8 @@ class _MyinfoState extends ConsumerState<Myinfo> {
                               ),
                               TextButton(
                                 child: Text('저장'),
-                                onPressed: () {
-                                  ref.read(MyinfoProvider.notifier).description(_textFieldController.text);
+                                onPressed: () async{
+                                  await ref.read(MyinfoProvider.notifier).description(_textFieldController.text);
                                  if(_textFieldController.text.length > 2000) {
                                    showDialog(
                                        context: context,
