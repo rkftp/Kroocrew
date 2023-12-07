@@ -53,9 +53,13 @@ class manageController extends StateNotifier<List<ScheduleData>> {
         )
     );
 
+
+
     if (response.statusCode == 200) {
       print("성공해버린..");
-      state = response.data['schedule']
+
+      final List<dynamic> data = response.data['schedule'];
+      state = data
           .map((item) => ScheduleData.fromSchedule(item))
           .toList();
 
