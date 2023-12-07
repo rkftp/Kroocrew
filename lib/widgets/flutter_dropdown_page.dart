@@ -166,25 +166,39 @@ class _FlutterDropdownIconState extends State<FlutterDropdownIcon> {
   }
 }
 
+
+
+
+
 class FlutterDropdownSubject extends StatefulWidget {
-  const FlutterDropdownSubject({Key? key,this.list}) : super(key: key);
-  final list;
+  final Function(String) onDropdownChanged;
+  final List<String> list;
+
+  const FlutterDropdownSubject({Key? key, required this.list, required this.onDropdownChanged})
+      : super(key: key);
+
   @override
   State<FlutterDropdownSubject> createState() => _FlutterDropdownSubjectState();
 }
-class _FlutterDropdownSubjectState extends State<FlutterDropdownSubject> {
 
+class _FlutterDropdownSubjectState extends State<FlutterDropdownSubject> {
+  String? dropdownValue; // null 허용 변수로 변경
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.list.isNotEmpty) {
+      dropdownValue = widget.list[0]; // 리스트가 비어있지 않은 경우에만 초기화
+    }
+  }
 
+  @override
   Widget build(BuildContext context) {
-    List<String> dropdownInput = widget.list;
-    String dropdownValue = widget.list[0];
-
+    // DropdownButton 위젯에서 dropdownValue가 null인지 확인
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: DropdownButton<String>(
+        child: widget.list.isNotEmpty ? DropdownButton<String>(
           value: dropdownValue,
           icon: const Icon(Icons.arrow_downward),
           elevation: 16,
@@ -197,35 +211,44 @@ class _FlutterDropdownSubjectState extends State<FlutterDropdownSubject> {
             setState(() {
               dropdownValue = newValue!;
             });
+            widget.onDropdownChanged(newValue!);
           },
-          items: dropdownInput
+          items: widget.list
               .map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(value),
+              child: Text(value.substring(12)),
             );
           }).toList(),
-        ),
+        ) : CircularProgressIndicator(), // 리스트가 비어있으면 로딩 인디케이터 표시
       ),
     );
   }
 }
 
-class FlutterDropdownTeamnum extends StatefulWidget {
-  const FlutterDropdownTeamnum({Key? key}) : super(key: key);
 
+
+
+
+
+
+
+class FlutterDropdownTeamnum extends StatefulWidget {
+  final Function(int) onDropdownChanged;
+
+  const FlutterDropdownTeamnum({Key? key, required this.onDropdownChanged})
+      : super(key: key);
   @override
   State<FlutterDropdownTeamnum> createState() => _FlutterDropdownTeamnumState();
 }
 class _FlutterDropdownTeamnumState extends State<FlutterDropdownTeamnum> {
-  String dropdownValue = '2';
-
+  int dropdownValue = 2;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: DropdownButton<String>(
+        child: DropdownButton<int>(
           value: dropdownValue,
           icon: const Icon(Icons.arrow_downward),
           elevation: 16,
@@ -234,16 +257,17 @@ class _FlutterDropdownTeamnumState extends State<FlutterDropdownTeamnum> {
             height: 2,
             color: Colors.black,
           ),
-          onChanged: (String? newValue) {
+          onChanged: (int? newValue) {
             setState(() {
               dropdownValue = newValue!;
             });
+            widget.onDropdownChanged(newValue!);
           },
-          items: <String>['2','3','4','5','6','7','8','9','10']
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
+          items: <int>[2,3,4,5,6,7,8,9,10]
+              .map<DropdownMenuItem<int>>((int value) {
+            return DropdownMenuItem<int>(
               value: value,
-              child: Text(value),
+              child: Text((value).toString()),
             );
           }).toList(),
         ),
