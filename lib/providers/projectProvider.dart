@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '/utils/dio_service.dart';
 import '/utils/token_keybox.dart';
+import 'package:quickalert/quickalert.dart';
 
 class ProjectCardData{
   final bool rapidMatch;
@@ -164,7 +165,7 @@ final myProjectProvider = StateNotifierProvider<myProjectController, List<Projec
 class joinTeamController extends StateNotifier<String> {
   joinTeamController() : super('');
 
-  Future<void> joinTeam(int teamId) async {
+  Future<void> joinTeam(int teamId, BuildContext context) async {
     Dio _dio = DioServices().to();
     KeyBox _keyBox = KeyBox().to();
 
@@ -183,12 +184,35 @@ class joinTeamController extends StateNotifier<String> {
     if (response.statusCode == 200) {
       print('성공');
       print(response.data);
-      if(response.data['message'] == "already requested")
-        state = '이미 신청을 완료했습니다.';
-      else if(response.data['messeage'] == "requested")
-        state = '신청에 성공했습니다.';
+      if(response.data['message'] == "already requested"){
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.info,
+          text: '이미 신청을 완료했습니다.',
+          confirmBtnText: '확인',
+          confirmBtnColor: Color(0xFF7365F8),
+        );
+      }
+      else if(response.data['message'] == "requested")
+        {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.success,
+            text: '신청에 성공했습니다.',
+            confirmBtnText: '확인',
+            confirmBtnColor: Color(0xFF7365F8),
+          );
+        }
       else
-        state = response.data['message'];
+        {
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.warning,
+            text: '신청에 실패했습니다.',
+            confirmBtnText: '확인',
+            confirmBtnColor: Color(0xFF7365F8),
+          );
+        }
       // return response.data;
     } else {
       print('불러오기 실패' + response.data['success'].toString());

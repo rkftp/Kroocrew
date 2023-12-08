@@ -10,6 +10,7 @@ import 'package:quickalert/quickalert.dart';
 
 
 
+import 'MyProject_manage.dart';
 import '/providers/timetableProvider.dart';
 import '/providers/projectProvider.dart';
 
@@ -20,42 +21,9 @@ import '/utils/dio_service.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
-class Vote {
-  final String studentId;
-  final String voteValue;
 
-  Vote({
-    required this.studentId,
-    required this.voteValue,
-  });
-
-  Map<String, dynamic> toJson() {
-    return {
-      'Student_id': studentId,
-      'vote_value': voteValue,
-    };
-  }
-}
-
-class TeamVotes {
-  final int teamId;
-  final List<Vote> votes;
-
-  TeamVotes({
-    required this.teamId,
-    required this.votes,
-  });
-
-  Map<String, dynamic> toJson() {
-    return {
-      'Team_id': teamId,
-      'votes': votes.map((vote) => vote.toJson()).toList(),
-    };
-  }
-}
-
-class voteController extends StateNotifier<int> {
-  voteController() : super(0);
+class manageController extends StateNotifier<int> {
+  manageController() : super(0);
 
   Future<void> vote(int teamId, int voteValue) async {
     Dio _dio = DioServices().to();
@@ -65,11 +33,6 @@ class voteController extends StateNotifier<int> {
     storedToken = await _keyBox.getToken();
 
     final response = await _dio.post('/vote_my_team',
-        data: TeamVotes(
-          teamId: teamId,
-          votes: [
-          ],
-        ).toJson(),
         options: Options(
           headers: {'Authorization': '${storedToken}'},
         )
@@ -85,35 +48,17 @@ class voteController extends StateNotifier<int> {
   }
 }
 
-class VoteModal extends ConsumerStatefulWidget{
+class memberManage extends ConsumerStatefulWidget{
 
   final List<dynamic> memberData;
 
-  const VoteModal({Key? key, required this.memberData}) : super(key: key);
+  const memberManage({Key? key, required this.memberData}) : super(key: key);
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _VoteModalState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _memberManageState();
 }
 
-class _VoteModalState extends ConsumerState<VoteModal>{
-
-  void onGaugeValueChanged(double newValue, studentDTO studentData, teamId) {
-    // Create a list of Vote objects
-    final List<Vote> votes = widget.memberData.map((member) {
-      return Vote(
-        studentId: member.studentId,
-        voteValue: newValue.toInt().toString(),
-      );
-    }).toList();
-
-    // Create a TeamVotes object
-    final TeamVotes teamVotes = TeamVotes(
-      teamId: teamId,
-      votes: votes,
-    );
-
-    // Send the API POST request using voteController
-  }
+class _memberManageState extends ConsumerState<memberManage>{
 
   @override
   Widget build(BuildContext context) {
@@ -153,12 +98,12 @@ class _VoteModalState extends ConsumerState<VoteModal>{
 
                             // leading을 직접 정의
                             leading: Icon(
-                              CupertinoIcons.star_circle,
+                              Icons.exit_to_app,
                               color: Colors.black,
                               size: 40,
                             ),
                             title: Text(
-                              '평가하기',
+                              '참가 요청',
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: Colors.black,
@@ -178,14 +123,14 @@ class _VoteModalState extends ConsumerState<VoteModal>{
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
-                  color: Colors.transparent,
-                  width: double.infinity,
-                  height: 250,
-                  child: ListView.builder(
+                    padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                    color: Colors.transparent,
+                    width: double.infinity,
+                    height: 250,
+                    child: ListView.builder(
                       itemCount: widget.memberData.length,
                       itemBuilder: (context, index) {
-                        studentDTO memberData = widget.memberData[index];
+                        RequestDTO memberData = widget.memberData[index];
                         return Container(
                           child: Card(
                             color: Colors.white,
@@ -199,7 +144,7 @@ class _VoteModalState extends ConsumerState<VoteModal>{
 
                               // leading을 직접 정의
                               title: Text(
-                                memberData.studentName,
+                                memberData.studentId,
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   color: Colors.black,
@@ -207,56 +152,56 @@ class _VoteModalState extends ConsumerState<VoteModal>{
                                 ),
                               ),
                               trailing: Container(
-                                color: Colors.transparent,
-                                width: 200,
-                                child: RatingBar.builder(
-                                  initialRating: 3,
-                                  minRating: 1,
-                                  direction: Axis.horizontal,
-                                  allowHalfRating: false,
-                                  itemCount: 5,
-                                  itemBuilder: (context, _) => Icon(
-                                    Icons.star,
-                                    color: Color(0xFF7365F8),
+                                  color: Colors.transparent,
+                                  width: 200,
+                                  child: RatingBar.builder(
+                                    initialRating: 3,
+                                    minRating: 1,
+                                    direction: Axis.horizontal,
+                                    allowHalfRating: false,
+                                    itemCount: 5,
+                                    itemBuilder: (context, _) => Icon(
+                                      Icons.star,
+                                      color: Color(0xFF7365F8),
 
-                                  ),
-                                  onRatingUpdate: (rating){
-                                    print(rating);
-                                  },
-                                )
+                                    ),
+                                    onRatingUpdate: (rating){
+                                      print(rating);
+                                    },
+                                  )
                               ),
                             ),
                           ),
                         );
                       },
-                  )
+                    )
                 ),
                 Container(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                    child: ElevatedButton(
-                      onPressed:() {
-                        QuickAlert.show(
-                          context: context,
-                          type: QuickAlertType.success,
-                          title: '평가가 완료되었습니다.',
-                          confirmBtnText: '확인',
-                          confirmBtnColor: Color(0xFF7365F8),
-                          onConfirmBtnTap: () {
-                            context.pop();
-                            context.pop();
-                            context.pop();
-                          },
-                        );},
-                      child: Text('평가하기', style: TextStyle(color: Colors.white)),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF7365F8),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                      child: ElevatedButton(
+                        onPressed:() {
+                          QuickAlert.show(
+                            context: context,
+                            type: QuickAlertType.success,
+                            title: '평가가 완료되었습니다.',
+                            confirmBtnText: '확인',
+                            confirmBtnColor: Color(0xFF7365F8),
+                            onConfirmBtnTap: () {
+                              context.pop();
+                              context.pop();
+                              context.pop();
+                            },
+                          );},
+                        child: Text('확인', style: TextStyle(color: Colors.white)),
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFF7365F8),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          minimumSize: Size(70, 40),
                         ),
-                        minimumSize: Size(70, 40),
-                      ),
-                    )
+                      )
                   ),
                 ),
               ],
@@ -266,5 +211,4 @@ class _VoteModalState extends ConsumerState<VoteModal>{
 
     );
   }
-
 }
