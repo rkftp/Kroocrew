@@ -101,6 +101,10 @@ class _MatchModalState extends ConsumerState<MatchModal>{
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SizedBox(
+                        height: 20,
+                      ),
+
                       Container(
                         height: 40,
                         width: 120,
@@ -111,10 +115,17 @@ class _MatchModalState extends ConsumerState<MatchModal>{
                                 context: context,
                                 type: QuickAlertType.loading,
                                 text: '신속 매칭모드로 검색을 시작합니다.',
-                                confirmBtnText: '확인',
                                 confirmBtnColor: Color(0xFF7365F8),
-
+                                autoCloseDuration: Duration(seconds: 2),
                               );
+                              Future.delayed(Duration(seconds: 2), () {
+                                QuickAlert.show(
+                                  context: context,
+                                  type: QuickAlertType.success,
+                                  text: '매칭이 완료되었습니다.',
+                                  confirmBtnColor: Color(0xFF7365F8),
+                                );
+                              });
                             },
                             child: Row(
                                 children: [
@@ -162,13 +173,8 @@ class _MatchModalState extends ConsumerState<MatchModal>{
 
                         ),
                       ),
-                      Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
-
-                          color: Colors.white,
-                          child: Text(
-                              '크루원들의 정보와 속도를 확인하고 매칭에 참여해보세요.'
-                          )
+                      Text(
+                          '크루원들의 정보와 속도를 확인하고 매칭에 참여해보세요.'
                       ),
 
                     ]
