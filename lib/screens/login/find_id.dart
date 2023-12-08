@@ -138,7 +138,6 @@ class _find_idState extends ConsumerState<find_id> with SingleTickerProviderStat
                                       confirmBtnText: '확인',
                                       confirmBtnColor: Color(0xFF7365F8),
                                       onConfirmBtnTap: () {
-                                        emailController2.text = '';
                                         context.pop();
                                         context.go('/login');
                                       } ):

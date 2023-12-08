@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:contact/widgets/flutter_dropdown_page.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
+
 
 final TextEditingController nameController = TextEditingController();
 
@@ -25,6 +28,8 @@ class MyProjectSchedule extends ConsumerStatefulWidget {
 }
 
 class _MyProjectScheduleState extends ConsumerState<MyProjectSchedule> {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -236,7 +241,9 @@ class popUp extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _popUpState();
 }
 class _popUpState extends ConsumerState<popUp> with SingleTickerProviderStateMixin{
+  DateTime today = DateTime.now();
   Widget build(BuildContext context) {
+    String formattDate = DateFormat('yyyy-MM-dd HH:mm').format(today);
     return ElevatedButton(onPressed: (){
       showDialog(
         context: context,
@@ -290,51 +297,40 @@ class _popUpState extends ConsumerState<popUp> with SingleTickerProviderStateMix
                           fontSize: 16,
                         )),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              height: 60,
-                              width: 100,
-                              child:FlutterDropdownYear(),
-
-
-                          ),
-                          Text("년",style:TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                          )),
-                          Container(
-                              height: 60,
-                              width: 40,
-                              child:FlutterDropdownMonth(),
-                          ),
-                          Text("월",style:TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                          )),
-                          Container(
-                            height: 60,
-                            width: 40,
-                            child:FlutterDropdownDay(),
-                          ),
-                          Text("일",style:TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                          )),
-
-                        ],
-                      ),
-                      Container(height: 30),//여백용 Container
                       Container(
-                        height: (50*team_name.length).toDouble(),
-                        child: ListView.builder(
-                            itemCount: team_name.length,
-                            itemBuilder: (c, i) {
-                              return nameBox(name : '${team_name[i]}');
-                            }
-                        ),
-                      )
+                          height: 60,
+
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                          child: TextButton(onPressed: (){
+
+                            showCupertinoDialog(context: context,
+                                barrierDismissible: true,
+                                builder: (BuildContext context){
+                                  return Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Container(
+                                        color: Colors.white,
+                                        height:300,
+                                        child: CupertinoDatePicker(
+                                          mode: CupertinoDatePickerMode.dateAndTime,
+                                          onDateTimeChanged: (DateTime date){
+                                            setState(() {
+                                              today = date;
+                                            });
+                                          },
+
+                                        ),
+                                      )
+                                  );
+                                });
+                          },child: Text(formattDate,style: TextStyle(
+                            color: Colors.indigo,
+                            fontSize: 18,
+
+                          ),))
+                      ),
+
 
                     ],
                   )

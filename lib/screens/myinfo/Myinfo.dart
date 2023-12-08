@@ -78,7 +78,7 @@ class _MyinfoState extends ConsumerState<Myinfo> {
                         margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
                         padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                         width: double.infinity,
-                        height: 350,
+                        height: 300,
                         decoration: BoxDecoration(
                           color: Color(0xffffffff),
                           borderRadius: BorderRadius.circular(10),
@@ -135,7 +135,7 @@ class _MyinfoState extends ConsumerState<Myinfo> {
                             ),
                             Expanded(
                               child: Container(
-                                
+
                                 child: ListView(
                                     children: [Text(_editedText, style: TextStyle(
                                       fontSize: 16,

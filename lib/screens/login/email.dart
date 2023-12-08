@@ -154,8 +154,9 @@ class _emailState extends ConsumerState<email> with SingleTickerProviderStateMix
                               final AuthnumDTO = authnumDTO(email: emailController.text, authnum: authnumController.text);
                               await ref.read(authnumProvider.notifier).authnum(AuthnumDTO,context,ref);
                               if(authnumAccess == true) {
-                                authnumController.text = '';
+
                                 context.push('/login/email/signup');
+                                authnumController.text = '';
                               } else {
                                 QuickAlert.show(
                                   context: context,
@@ -170,7 +171,7 @@ class _emailState extends ConsumerState<email> with SingleTickerProviderStateMix
                                 );
                               }
                             } else{
-                              QuickAlert.show(
+                              /*QuickAlert.show(
                                 context: context,
                                 type: QuickAlertType.error,
                                 text: '인증을 진행해 주세요',
@@ -180,7 +181,7 @@ class _emailState extends ConsumerState<email> with SingleTickerProviderStateMix
                                   context.pop();
                                 },
 
-                              );
+                              );*/
                             }
 
                           },

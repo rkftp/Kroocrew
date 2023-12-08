@@ -7,10 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:contact/widgets/flutter_dropdown_page.dart';
 import 'package:quickalert/quickalert.dart';
 
-
-import 'package:dio/dio.dart';
-import '/utils/dio_service.dart';
-import '/utils/token_keybox.dart';
+import 'package:intl/intl.dart';
 
 
 import '/providers/projectProvider.dart';
@@ -244,7 +241,7 @@ class _ManageMyProjectsState extends ConsumerState<ManageMyProjects> {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return AddSchedule();
+                          return Addschedule();
                         },
                       );
                     }, child: Row(
@@ -357,12 +354,20 @@ class _ScheduleCardState extends ConsumerState<ScheduleCard> {
   }
 }
 
-class AddSchedule extends ConsumerWidget {
-  const AddSchedule({super.key});
+class Addschedule extends ConsumerStatefulWidget {
+const Addschedule({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
+
+@override
+ConsumerState<ConsumerStatefulWidget> createState() => _AddscheduleState();
+}
+
+class _AddscheduleState extends ConsumerState<Addschedule> {
+  DateTime today = DateTime.now();
+  Widget build(BuildContext context) {
+    String formattDate = DateFormat('yyyy-MM-dd HH:mm').format(today);
     return AlertDialog(
+      backgroundColor: Colors.white,
       title: Text('일정 추가',style: TextStyle(
         fontWeight: FontWeight.w700,
         fontSize: 18,
@@ -370,7 +375,7 @@ class AddSchedule extends ConsumerWidget {
       content: SingleChildScrollView(
         child: Container(
             width: double.maxFinite,
-            height: 200 +(50*"asdf".length).toDouble(),
+            height: 200,
             child: Column(
               children: [
                 Row(
@@ -395,11 +400,7 @@ class AddSchedule extends ConsumerWidget {
                           )
                       ),
                     ),
-                    Container(
-                      height: 60,
-                      width: 60,
-                      child: FlutterDropdownIcon(),
-                    ),
+
                   ],
                 ),
                 Container(
@@ -411,40 +412,38 @@ class AddSchedule extends ConsumerWidget {
                     fontSize: 16,
                   )),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      height: 60,
-                      width: 100,
-                      child:FlutterDropdownYear(),
+                Container(
+                    height: 60,
 
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    child: TextButton(onPressed: (){
 
-                    ),
-                    Text("년",style:TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    )),
-                    Container(
-                      height: 60,
-                      width: 40,
-                      child:FlutterDropdownMonth(),
-                    ),
-                    Text("월",style:TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    )),
-                    Container(
-                      height: 60,
-                      width: 40,
-                      child:FlutterDropdownDay(),
-                    ),
-                    Text("일",style:TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    )),
+                      showCupertinoDialog(context: context,
+                          barrierDismissible: true,
+                          builder: (BuildContext context){
+                            return Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Container(
+                                  color: Colors.white,
+                                  height:300,
+                                  child: CupertinoDatePicker(
+                                    mode: CupertinoDatePickerMode.dateAndTime,
+                                    onDateTimeChanged: (DateTime date){
+                                      setState(() {
+                                        today = date;
+                                      });
+                                    },
 
-                  ],
+                                  ),
+                                )
+                            );
+                          });
+                    },child: Text(formattDate,style: TextStyle(
+                      color: Colors.indigo,
+                      fontSize: 18,
+
+                    ),))
                 ),
                 Container(height: 30),//여백용 Container
 

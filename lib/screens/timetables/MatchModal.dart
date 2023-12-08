@@ -40,7 +40,7 @@ class _MatchModalState extends ConsumerState<MatchModal>{
           topRight: Radius.circular(20),
         ),
       ),
-      height: 330,
+      height: 400,
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -94,7 +94,7 @@ class _MatchModalState extends ConsumerState<MatchModal>{
             Container(
                 padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                 color: Colors.white,
-                height: 200,
+                height: 250,
                 width: double.infinity,
 
                 child: Column(
