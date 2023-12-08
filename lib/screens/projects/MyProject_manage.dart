@@ -7,12 +7,74 @@ import 'package:flutter/cupertino.dart';
 import 'package:contact/widgets/flutter_dropdown_page.dart';
 import 'package:quickalert/quickalert.dart';
 
+import 'package:dio/dio.dart';
+import '/utils/dio_service.dart';
+import '/utils/token_keybox.dart';
 import 'package:intl/intl.dart';
 
+import 'Member_manage.dart';
 
 import '/providers/projectProvider.dart';
 import '/providers/manageProjectsProvider.dart';
 import '/providers/auth.dart';
+
+class RequestDTO{
+  final int joinRequest_id;
+  final String studentId;
+  final int teamId;
+  final String reqStudentId;
+  final String description;
+
+  RequestDTO({
+    required this.joinRequest_id,
+    required this.studentId,
+    required this.teamId,
+    required this.reqStudentId,
+    required this.description,
+  });
+
+  factory RequestDTO.fromJson(Map<String, dynamic> json){
+    return RequestDTO(
+      joinRequest_id: json['JoinRequest_id'],
+      studentId: json['Student_id'],
+      teamId: json['Team_id'],
+      reqStudentId: json['req_Student_id'],
+      description: json['description'],
+    );
+  }
+}
+
+class requestController extends StateNotifier<List<RequestDTO>>{
+
+  requestController() : super([]);
+  Future<void> getRequest(BuildContext context, int teamId) async {
+    Dio _dio = DioServices().to();
+    KeyBox _keyBox = KeyBox().to();
+
+    late String? storedToken;
+    storedToken = await _keyBox.getToken();
+
+    final response = await _dio.get('/join_team_request_list',
+        options: Options(
+          headers: {'Authorization': '${storedToken}'},
+        )
+    );
+
+    if (response.statusCode == 200) {
+      print('팀원 요청 조회 성공');
+      print(response.data);
+      state = response.data['requested_list']
+          .map((item) => RequestDTO.fromJson(item))
+          .toList();
+    } else {
+      print('팀원 요청 조회 실패' + response.data['success'].toString());
+    }
+  }
+}
+
+final requestProvider = StateNotifierProvider<requestController, List<dynamic>>((ref) {
+  return requestController();
+});
 
 class ManageMyProjects extends ConsumerStatefulWidget {
   final ProjectCardData projectData;
@@ -30,6 +92,7 @@ class _ManageMyProjectsState extends ConsumerState<ManageMyProjects> {
     super.initState();
     ref.read(manageProvider.notifier).getSchedule(context, ref, widget.projectData.teamId);
     ref.read(rapidMatchProvider.notifier).getRapidMatch(widget.projectData.teamId);
+    ref.read(requestProvider.notifier).getRequest(context, widget.projectData.teamId);
   }
 
   @override
@@ -38,6 +101,7 @@ class _ManageMyProjectsState extends ConsumerState<ManageMyProjects> {
     final scheduleList = ref.watch(manageProvider);
     final rapidValue = ref.watch(rapidMatchProvider);
     final idState = ref.watch(authStateProvider);
+    final requestList = ref.watch(requestProvider);
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(60),
@@ -165,7 +229,13 @@ class _ManageMyProjectsState extends ConsumerState<ManageMyProjects> {
                                       alignment: Alignment.center,
                                       padding: EdgeInsets.fromLTRB(0, 10,0, 10),
                                       child: ElevatedButton(
-                                          onPressed: (){},
+                                          onPressed: (){
+                                            showModalBottomSheet(
+                                                context: context,
+                                                builder: (BuildContext context){
+                                                  return memberManage(memberData: requestList);
+                                                });
+                                          },
                                           child: Text('팀원 관리'),
                                           style: ElevatedButton.styleFrom(
                                             primary: Color(0xFF7365F8),

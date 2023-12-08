@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:random_color/random_color.dart';
 import  'package:intl/intl.dart';
 
@@ -317,25 +318,9 @@ class _JoinProjectState extends ConsumerState<JoinProject>{
                           onPressed: () {
                             // joinProject(context, ref, widget.projectData.teamId);
                             final toastText = ref.watch(joinTeamProvider);
-                            ref.read(joinTeamProvider.notifier).joinTeam(widget.projectData.teamId);
+                            ref.read(joinTeamProvider.notifier).joinTeam(widget.projectData.teamId, context);
                             print(toastText);
                             Navigator.of(context).pop();
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  content: Text(toastText),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      child: Text('확인'),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
                             },
                           child: Text('참여 요청'),
 

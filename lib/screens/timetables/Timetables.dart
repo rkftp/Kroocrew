@@ -184,7 +184,7 @@ class _TimetableCardState extends ConsumerState<TimetableCard> {
             size: 30,
           ),
           trailing: widget.timetableData.isActive ? Icon(
-            CupertinoIcons.arrow_right,
+            CupertinoIcons.checkmark_alt_circle,
             color: Color(0xFF7365F8),
             size: 30,
           ) : Icon(
